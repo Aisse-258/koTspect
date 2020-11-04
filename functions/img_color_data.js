@@ -16,7 +16,8 @@ var img_color_data = function (image) {
 		blueImg += blue;
 		bitDevs[x][y] = {
 			'redGreenStd':math.std([[red,green]],1),
-			'redBlueStd':math.std([[red,blue]],1)
+			'redBlueStd':math.std([[red,blue]],1),
+			'blueGreenStd':math.std([[green,blue]],1)
 		};
 	});
 	let area = image.bitmap.width*image.bitmap.height;
@@ -25,7 +26,8 @@ var img_color_data = function (image) {
 		'green': Math.floor(greenImg/area),
 		'blue': Math.floor(blueImg/area),
 		'redGreenStd':math.std([[Math.floor(redImg/area),Math.floor(greenImg/area)]],1),
-		'redBlueStd':math.std([[Math.floor(redImg/area),Math.floor(blueImg/area)]],1)
+		'redBlueStd':math.std([[Math.floor(redImg/area),Math.floor(blueImg/area)]],1),
+		'blueGreenStd':math.std([[Math.floor(greenImg/area),Math.floor(blueImg/area)]],1)
 	};
 	//console.log(imgDevs);
 	return {

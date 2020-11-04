@@ -1,7 +1,7 @@
 var Jimp = require('jimp');
 var math = require('mathjs');
 
-var get_paper_color = function (image) {
+var get_paper_color = function (image, imageColorData) {
 	var redPaper = 0, greenPaper = 0, bluePaper = 0, areaPaper = 0;//цвет бумаги
 	let width = image.bitmap.width;
 	let height = image.bitmap.height;
@@ -11,8 +11,10 @@ var get_paper_color = function (image) {
 		let blue = this.bitmap.data[idx + 2];
 		//var alpha = this.bitmap.data[idx + 3];
 		//console.log([red,green,blue],x,y);
-		let bitRgbDevi = math.std([[red,green,blue]], 1);
-		if (bitRgbDevi < 10 && Math.max(red, green, blue) > 120) {
+		if (imageColorData.bitDevs[x][y].redGreenStd < imageColorData.imgDevs.redGreenStd
+		&& imageColorData.bitDevs[x][y].redBlueStd < imageColorData.imgDevs.redBlueStd
+		&& imageColorData.bitDevs[x][y].blueGreenStd < imageColorData.imgDevs.blueGreenStd
+		&& Math.max(red, green, blue) > 120) {
 			redPaper += red;
 			greenPaper += green;
 			bluePaper += blue;

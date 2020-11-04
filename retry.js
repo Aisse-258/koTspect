@@ -14,8 +14,8 @@ if (err) throw err;
 	var grid1 = 32, grid2 = 16
 	simple_colors(image, grid1, 10);
 	simple_colors(image, grid2, 13);
-	var paperColor = get_paper_color(image);
-	colors_to_paper(image, paperColor, grid2);
+	var paperColor = get_paper_color(image, imageColorData);
+	colors_to_paper(image, imageColorData, paperColor, grid2);
 	//find_plain(image, 8, 20);
 	image.write(img.slice(0,-4) + '_mod.jpg');
 });
