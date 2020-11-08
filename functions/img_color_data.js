@@ -2,7 +2,7 @@ var Jimp = require('jimp');
 var math = require('mathjs');
 
 var img_color_data = function (image) {
-	var redImg = 0, greenImg = 0, blueImg = 0;
+	var redImg = [], greenImg = [], blueImg = [];
 	var bitDevs = [];
 	for (let i = 0; i < image.bitmap.width; i++) {
 		bitDevs.push([]);
@@ -11,23 +11,23 @@ var img_color_data = function (image) {
 		let red = this.bitmap.data[idx + 0];
 		let green = this.bitmap.data[idx + 1];
 		let blue = this.bitmap.data[idx + 2];
-		redImg += red;
-		greenImg += green;
-		blueImg += blue;
+		redImg.push(red);
+		greenImg.push(green);
+		blueImg.push(blue);
 		bitDevs[x][y] = {
-			'redGreenStd':math.std([[red,green]],1),
-			'redBlueStd':math.std([[red,blue]],1),
-			'blueGreenStd':math.std([[green,blue]],1)
+			'redGreenStd':Math.sqrt((red*red)/(red*red+green*green+blue*blue)),
+			'redBlueStd':Math.sqrt((green*green)/(red*red+green*green+blue*blue)),
+			'blueGreenStd':Math.sqrt((blue*blue)/(red*red+green*green+blue*blue))
 		};
 	});
 	let area = image.bitmap.width*image.bitmap.height;
 	var imgDevs = {
-		'red': Math.floor(redImg/area),
-		'green': Math.floor(greenImg/area),
-		'blue': Math.floor(blueImg/area),
-		'redGreenStd':math.std([[Math.floor(redImg/area),Math.floor(greenImg/area)]],1),
-		'redBlueStd':math.std([[Math.floor(redImg/area),Math.floor(blueImg/area)]],1),
-		'blueGreenStd':math.std([[Math.floor(greenImg/area),Math.floor(blueImg/area)]],1)
+		'red': Math.floor(math.sum(redImg)/area),
+		'green': Math.floor(math.sum(greenImg)/area),
+		'blue': Math.floor(math.sum(blueImg)/area),
+		'redGreenStd':math.std([redImg],1),
+		'redBlueStd':math.std([greenImg],1),
+		'blueGreenStd':math.std([blueImg],1)
 	};
 	//console.log(imgDevs);
 	return {

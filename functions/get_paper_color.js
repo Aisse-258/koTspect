@@ -11,10 +11,11 @@ var get_paper_color = function (image, imageColorData) {
 		let blue = this.bitmap.data[idx + 2];
 		//var alpha = this.bitmap.data[idx + 3];
 		//console.log([red,green,blue],x,y);
-		if (imageColorData.bitDevs[x][y].redGreenStd < imageColorData.imgDevs.redGreenStd
-		&& imageColorData.bitDevs[x][y].redBlueStd < imageColorData.imgDevs.redBlueStd
-		&& imageColorData.bitDevs[x][y].blueGreenStd < imageColorData.imgDevs.blueGreenStd
-		&& Math.max(red, green, blue) > 120) {
+		if (
+		math.std([[red,green,blue]],1) < 13
+		&&
+		Math.max(red, green, blue) > Math.max(imageColorData.imgDevs.red, imageColorData.imgDevs.blue, imageColorData.imgDevs.green)
+		) {
 			redPaper += red;
 			greenPaper += green;
 			bluePaper += blue;
