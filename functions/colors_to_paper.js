@@ -34,17 +34,18 @@ var colors_to_paper = function (image, imageColorData, paperColor, grid) {
 				'isPaper':0
 			};
 			if (
-			math.std([[colorsOnMap[row/grid][col/grid].redGreenStd, colorsOnMap[row/grid][col/grid].redBlueStd, colorsOnMap[row/grid][col/grid].blueGreenStd]],1)<10
+			math.std([[colorsOnMap[row/grid][col/grid].redGreenStd, colorsOnMap[row/grid][col/grid].redBlueStd, colorsOnMap[row/grid][col/grid].blueGreenStd]],1) < 2*math.std([[imageColorData.imgDevs.red, imageColorData.imgDevs.blue, imageColorData.imgDevs.green]],1)
 			&&
-			Math.min(colorsOnMap[row/grid][col/grid].redGreenStd, colorsOnMap[row/grid][col/grid].redBlueStd, colorsOnMap[row/grid][col/grid].blueGreenStd) > Math.max(imageColorData.imgDevs.red, imageColorData.imgDevs.blue, imageColorData.imgDevs.green)
+			Math.min(colorsOnMap[row/grid][col/grid].redGreenStd, colorsOnMap[row/grid][col/grid].redBlueStd, colorsOnMap[row/grid][col/grid].blueGreenStd) > 0.5*Math.max(imageColorData.imgDevs.red, imageColorData.imgDevs.blue, imageColorData.imgDevs.green)
 			) {
 				colorsOnMap[row/grid][col/grid].isPaper = 1;
 				//console.log(colorsOnMap[row/grid][col/grid]);
 			}
+			var tr = 1.5;
 			//console.log(colorsOnMap[row/grid][col/grid], math.std([[colorsOnMap[row/grid][col/grid].redGreenStd, colorsOnMap[row/grid][col/grid].redBlueStd, colorsOnMap[row/grid][col/grid].blueGreenStd]],1))
-			if (colorsOnMap[row/grid][col/grid].redGreenStd < imageColorData.imgDevs.red - imageColorData.imgDevs.redGreenStd || colorsOnMap[row/grid][col/grid].redGreenStd > imageColorData.imgDevs.red + 1.5*imageColorData.imgDevs.redGreenStd
-			|| colorsOnMap[row/grid][col/grid].redBlueStd < imageColorData.imgDevs.green - imageColorData.imgDevs.redBlueStd || colorsOnMap[row/grid][col/grid].redBlueStd > imageColorData.imgDevs.green + 1.5*imageColorData.imgDevs.redBlueStd
-			|| colorsOnMap[row/grid][col/grid].blueGreenStd < imageColorData.imgDevs.blue - imageColorData.imgDevs.blueGreenStd || colorsOnMap[row/grid][col/grid].blueGreenStd > imageColorData.imgDevs.blue + 1.5*imageColorData.imgDevs.blueGreenStd) {
+			if (colorsOnMap[row/grid][col/grid].redGreenStd < imageColorData.imgDevs.red - tr*imageColorData.imgDevs.redGreenStd || colorsOnMap[row/grid][col/grid].redGreenStd > imageColorData.imgDevs.red + tr*imageColorData.imgDevs.redGreenStd
+			|| colorsOnMap[row/grid][col/grid].redBlueStd < imageColorData.imgDevs.green - tr*imageColorData.imgDevs.redBlueStd || colorsOnMap[row/grid][col/grid].redBlueStd > imageColorData.imgDevs.green + tr*imageColorData.imgDevs.redBlueStd
+			|| colorsOnMap[row/grid][col/grid].blueGreenStd < imageColorData.imgDevs.blue - tr*imageColorData.imgDevs.blueGreenStd || colorsOnMap[row/grid][col/grid].blueGreenStd > imageColorData.imgDevs.blue + tr*imageColorData.imgDevs.blueGreenStd) {
 				colorMap[row/grid][col/grid] = 1;
 				/*for (let i = row; i < row + gridWidth; i++){
 					for (let j = col; j < col + gridHeight; j++){
