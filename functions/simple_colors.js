@@ -6,6 +6,10 @@ var simple_colors = function (image, grid, maxStd) {
 	let height = image.bitmap.height;
 	let gridWidth = grid, gridHeight = grid;
 	let gridWidthBorder = width%grid, gridHeightBorder = height%grid;
+	var simpleMap = [];
+	for(let i = 0;i < width/grid; i++) {
+		simpleMap.push([]);
+	}
 	for (let row = 0; row < width; row += grid) {
 		if (row+grid > width) {
 			gridWidth = gridWidthBorder;
@@ -33,6 +37,7 @@ var simple_colors = function (image, grid, maxStd) {
 				let r = Math.floor(redTot/(gridWidth*gridHeight));
 				let g = Math.floor(greenTot/(gridWidth*gridHeight));
 				let b = Math.floor(blueTot/(gridWidth*gridHeight));
+				simpleMap[row/grid][col/grid] = {'red':r,'green':g,'blue':b};
 				//console.log (r, g, b, w*h);
 				let hex = Jimp.rgbaToInt(r, g, b, 255);
 				for (let i = row; i < row + gridWidth; i++){
@@ -41,9 +46,13 @@ var simple_colors = function (image, grid, maxStd) {
 					}
 				}
 			}
+			else {
+				simpleMap[row/grid][col/grid] = 0;
+			}
 			gridHeight = grid;
 		}
 	}
+	return simpleMap;
 }
 
 module.exports = simple_colors;

@@ -12,11 +12,9 @@ Jimp.read(img, (err, image) => {
 if (err) throw err;
 	var imageColorData = img_color_data(image);
 	var grid1 = 32, grid2 = 16
-	simple_colors(image, grid1, 10);
-	simple_colors(image, grid2, 13);
-	var paperColor = get_paper_color(image, imageColorData);
-	//console.log(paperColor);
-	colors_to_paper(image, imageColorData, paperColor, grid2);
+	simple_colors(image, grid1, 8);
+	var simpleMap = simple_colors(image, grid2, 10);
+	colors_to_paper(image, imageColorData, simpleMap, grid2);
 	//find_plain(image, 8, 20);
 	image.write(img.slice(0,-4) + '_mod.jpg');
 });
