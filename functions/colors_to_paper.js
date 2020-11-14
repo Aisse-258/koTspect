@@ -108,39 +108,28 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 				var nei = [];
 				//if (colorsOnMap[r][c] && colorsOnMap[r][c].isPaper)
 				//	nei.push(colorsOnMap[r][c]);
-				if (colorsOnMap[r][c+1] && (colorsOnMap[r][c+1]||{'isPaper':0}).isPaper && colorMap[r][c+1] != 2)
-					nei.push(colorsOnMap[r][c+1]);
-				if (colorsOnMap[r][c-1] && (colorsOnMap[r][c-1]||{'isPaper':0}).isPaper && colorMap[r][c-1] != 2)
-					nei.push(colorsOnMap[r][c-1]);
-				if ((colorsOnMap[r+1]||[])[c] && ((colorsOnMap[r+1]||[])[c]||{'isPaper':0}).isPaper && (colorsOnMap[r+1]||[])[c] != 2)
-					nei.push(colorsOnMap[r+1][c]);
-				if ((colorsOnMap[r-1]||[])[c] && ((colorsOnMap[r-1]||[])[c]||{'isPaper':0}).isPaper && (colorsOnMap[r-1]||[])[c] != 2)
-					nei.push(colorsOnMap[r-1][c]);
+				var rad = 1;
+				do {
+					if (colorsOnMap[r][c+rad] && (colorsOnMap[r][c+rad]||{'isPaper':0}).isPaper && colorMap[r][c+rad] != 2)
+						nei.push(colorsOnMap[r][c+rad]);
+					if (colorsOnMap[r][c-rad] && (colorsOnMap[r][c-rad]||{'isPaper':0}).isPaper && colorMap[r][c-rad] != 2)
+						nei.push(colorsOnMap[r][c-rad]);
+					if ((colorsOnMap[r+rad]||[])[c] && ((colorsOnMap[r+rad]||[])[c]||{'isPaper':0}).isPaper && (colorMap[r+rad]||[])[c] != 2)
+						nei.push(colorsOnMap[r+rad][c]);
+					if ((colorsOnMap[r-rad]||[])[c] && ((colorsOnMap[r-rad]||[])[c]||{'isPaper':0}).isPaper && (colorMap[r-rad]||[])[c] != 2)
+						nei.push(colorsOnMap[r-rad][c]);
+					if ((colorsOnMap[r+rad]||[])[c+rad] && ((colorsOnMap[r+rad]||[])[c+rad]||{'isPaper':0}).isPaper && (colorMap[r+rad||[]])[c+rad] != 2)
+						nei.push(colorsOnMap[r+rad][c+rad]);
+					if ((colorsOnMap[r+rad]||[])[c-rad] && ((colorsOnMap[r+rad]||[])[c-rad]||{'isPaper':0}).isPaper && (colorMap[r+rad]||[])[c-rad] != 2)
+						nei.push(colorsOnMap[r+rad][c-rad]);
+					if ((colorsOnMap[r-rad]||[])[c+rad] && ((colorsOnMap[r-rad]||[])[c+rad]||{'isPaper':0}).isPaper && (colorMap[r-rad]||[])[c+rad] != 2)
+						nei.push(colorsOnMap[r-rad][c+rad]);
+					if ((colorsOnMap[r-rad]||[])[c-rad] && ((colorsOnMap[r-rad]||[])[c-rad]||{'isPaper':0}).isPaper && (colorMap[r-rad]||[])[c-rad] != 2)
+						nei.push(colorsOnMap[r-rad][c-rad]);
+					rad++;
+				}
+				while (nei.length == 0 && rad < 4)
 				//console.log(r,c,nei);
-				if (nei.length == 0){
-				if (colorsOnMap[r][c+2] && (colorsOnMap[r][c+2]||{'isPaper':0}).isPaper && colorMap[r][c+2] != 2)
-					nei.push(colorsOnMap[r][c+2]);
-				if (colorsOnMap[r][c-2] && (colorsOnMap[r][c-2]||{'isPaper':0}).isPaper && colorMap[r][c-2] != 2)
-					nei.push(colorsOnMap[r][c-2]);
-				if ((colorsOnMap[r+2]||[])[c] && ((colorsOnMap[r+2]||[])[c]||{'isPaper':0}).isPaper && (colorsOnMap[r+2]||[])[c] != 2)
-					nei.push(colorsOnMap[r+2][c]);
-				if ((colorsOnMap[r-2]||[])[c] && ((colorsOnMap[r-2]||[])[c]||{'isPaper':0}).isPaper && (colorsOnMap[r-2]||[])[c] != 2)
-					nei.push(colorsOnMap[r-2][c]);
-				}
-				if (nei.length == 0){
-				if (colorsOnMap[r][c+3] && (colorsOnMap[r][c+2]||{'isPaper':0}).isPaper && colorMap[r][c+3] != 2)
-					nei.push(colorsOnMap[r][c+3]);
-				if (colorsOnMap[r][c-3] && (colorsOnMap[r][c-3]||{'isPaper':0}).isPaper && colorMap[r][c-3] != 2)
-					nei.push(colorsOnMap[r][c-3]);
-				if ((colorsOnMap[r+3]||[])[c] && ((colorsOnMap[r+2]||[])[c]||{'isPaper':0}).isPaper && (colorsOnMap[r+3]||[])[c] != 2)
-					nei.push(colorsOnMap[r+3][c]);
-				if ((colorsOnMap[r+3]||[])[c+1] && ((colorsOnMap[r+2]||[])[c]||{'isPaper':0}).isPaper && (colorsOnMap[r+3]||[])[c+1] != 2)
-					nei.push(colorsOnMap[r+3][c+1]);
-				if ((colorsOnMap[r+3]||[])[c-1] && ((colorsOnMap[r+2]||[])[c]||{'isPaper':0}).isPaper && (colorsOnMap[r+3]||[])[c-1] != 2)
-					nei.push(colorsOnMap[r+3][c-1]);
-				if ((colorsOnMap[r-3]||[])[c] && ((colorsOnMap[r-2]||[])[c]||{'isPaper':0}).isPaper && (colorsOnMap[r-3]||[])[c] != 2)
-					nei.push(colorsOnMap[r-3][c]);
-				}
 				if (nei.length == 0) break;
 				var redSum = 0, blueSum = 0, greenSum = 0;
 				for (let i=0;i<nei.length;i++){
