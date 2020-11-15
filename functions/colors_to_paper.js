@@ -34,21 +34,21 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 			colorsOnMap[r][c] = {
 				'red':redTot/(gridWidth*gridHeight),
 				'green':greenTot/(gridWidth*gridHeight),
-				'blueGreenStd':blueTot/(gridWidth*gridHeight),
+				'blue':blueTot/(gridWidth*gridHeight),
 				'isPaper':0
 			};
 			/*if (
-			math.std([[colorsOnMap[r][c].red, colorsOnMap[r][c].green, colorsOnMap[r][c].blueGreenStd]],1) < 2*math.std([[imageColorData.imgDevs.red, imageColorData.imgDevs.blue, imageColorData.imgDevs.green]],1)
+			math.std([[colorsOnMap[r][c].red, colorsOnMap[r][c].green, colorsOnMap[r][c].blue]],1) < 2*math.std([[imageColorData.imgDevs.red, imageColorData.imgDevs.blue, imageColorData.imgDevs.green]],1)
 			&&
-			Math.min(colorsOnMap[r][c].red, colorsOnMap[r][c].green, colorsOnMap[r][c].blueGreenStd) > 0.5*Math.max(imageColorData.imgDevs.red, imageColorData.imgDevs.blue, imageColorData.imgDevs.green)
+			Math.min(colorsOnMap[r][c].red, colorsOnMap[r][c].green, colorsOnMap[r][c].blue) > 0.5*Math.max(imageColorData.imgDevs.red, imageColorData.imgDevs.blue, imageColorData.imgDevs.green)
 			) {
 				colorsOnMap[r][c].isPaper = 1;
 				//console.log(colorsOnMap[r][c]);
 			}*/
-			//console.log(colorsOnMap[r][c], math.std([[colorsOnMap[r][c].red, colorsOnMap[r][c].green, colorsOnMap[r][c].blueGreenStd]],1))
+			//console.log(colorsOnMap[r][c], math.std([[colorsOnMap[r][c].red, colorsOnMap[r][c].green, colorsOnMap[r][c].blue]],1))
 			if (colorsOnMap[r][c].red < imageColorData.imgDevs.red - tr*imageColorData.imgDevs.redGreenStd || colorsOnMap[r][c].red > imageColorData.imgDevs.red + tr*imageColorData.imgDevs.redGreenStd
 			|| colorsOnMap[r][c].green < imageColorData.imgDevs.green - tr*imageColorData.imgDevs.redBlueStd || colorsOnMap[r][c].green > imageColorData.imgDevs.green + tr*imageColorData.imgDevs.redBlueStd
-			|| colorsOnMap[r][c].blueGreenStd < imageColorData.imgDevs.blue - tr*imageColorData.imgDevs.blueGreenStd || colorsOnMap[r][c].blueGreenStd > imageColorData.imgDevs.blue + tr*imageColorData.imgDevs.blueGreenStd) {
+			|| colorsOnMap[r][c].blue < imageColorData.imgDevs.blue - tr*imageColorData.imgDevs.blueGreenStd || colorsOnMap[r][c].blue > imageColorData.imgDevs.blue + tr*imageColorData.imgDevs.blueGreenStd) {
 				colorMap[r][c] = 1;
 				/*for (let i = row; i < row + gridWidth; i++){
 					for (let j = col; j < col + gridHeight; j++){
@@ -138,7 +138,7 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 				for (let i=0;i<nei.length;i++){
 					redSum += nei[i].red;
 					greenSum += nei[i].green;
-					blueSum += nei[i].blueGreenStd;
+					blueSum += nei[i].blue;
 				}
 				var red = Math.floor(redSum/nei.length);
 				var green = Math.floor(greenSum/nei.length); 
@@ -152,7 +152,7 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 				colorMap[r][c] = 1;
 				colorsOnMap[r][c].red = red;
 				colorsOnMap[r][c].green = green;
-				colorsOnMap[r][c].blueGreenStd = blue;
+				colorsOnMap[r][c].blue = blue;
 				changes = 1;
 				//console.log(r, c);
 				gridHeight = grid;
