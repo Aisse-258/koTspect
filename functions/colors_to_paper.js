@@ -2,6 +2,7 @@ var Jimp = require('jimp');
 var math = require('mathjs');
 
 var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
+	var tr = 2;
 	let width = image.bitmap.width;
 	let height = image.bitmap.height;
 	let gridWidth = grid, gridHeight = grid;
@@ -43,7 +44,6 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 				colorsOnMap[row/grid][col/grid].isPaper = 1;
 				//console.log(colorsOnMap[row/grid][col/grid]);
 			}*/
-			var tr = 1.5;
 			//console.log(colorsOnMap[row/grid][col/grid], math.std([[colorsOnMap[row/grid][col/grid].redGreenStd, colorsOnMap[row/grid][col/grid].redBlueStd, colorsOnMap[row/grid][col/grid].blueGreenStd]],1))
 			if (colorsOnMap[row/grid][col/grid].redGreenStd < imageColorData.imgDevs.red - tr*imageColorData.imgDevs.redGreenStd || colorsOnMap[row/grid][col/grid].redGreenStd > imageColorData.imgDevs.red + tr*imageColorData.imgDevs.redGreenStd
 			|| colorsOnMap[row/grid][col/grid].redBlueStd < imageColorData.imgDevs.green - tr*imageColorData.imgDevs.redBlueStd || colorsOnMap[row/grid][col/grid].redBlueStd > imageColorData.imgDevs.green + tr*imageColorData.imgDevs.redBlueStd
