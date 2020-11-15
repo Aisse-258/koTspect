@@ -2,7 +2,7 @@ var Jimp = require('jimp');
 var math = require('mathjs');
 
 var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
-	var tr = 2;
+	var tr = 1.5;
 	let width = image.bitmap.width;
 	let height = image.bitmap.height;
 	let gridWidth = grid, gridHeight = grid;
@@ -144,7 +144,7 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 					this.bitmap.data[idx + 2] = blue;
 				});
 				colorsOnMap[r][c].isPaper = 1;
-				colorMap[r][c] = 1;
+				colorMap[r][c] = 3;
 				colorsOnMap[r][c].red = red;
 				colorsOnMap[r][c].green = green;
 				colorsOnMap[r][c].blue = blue;
@@ -157,24 +157,75 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 	} while (changes !=0);
 
 	for (let row = 0; row < width; row += grid) {
-			if (row+grid > width) {
-				gridWidth = gridWidthBorder;
+		if (row+grid > width) {
+			gridWidth = gridWidthBorder;
+		}
+		for (let col = 0; col < height; col += grid) {
+			r = row/grid; c = col/grid;
+			if (col + grid > height)
+				gridHeight = gridHeightBorder;
+			if(colorMap[r][c]==2){
+				image.scan(row, col, gridWidth, gridHeight, function(x, y, idx) {
+					this.bitmap.data[idx + 0] = paperColor.red;
+					this.bitmap.data[idx + 1] = paperColor.green;
+					this.bitmap.data[idx + 2] = paperColor.blue;
+				});
+				colorMap[r][c] = 3;
 			}
-			for (let col = 0; col < height; col += grid) {
-				r=row/grid; c=col/grid;
-				if (col + grid > height)
-					gridHeight = gridHeightBorder;
-				if(colorMap[r][c]==2){
-					image.scan(row, col, gridWidth, gridHeight, function(x, y, idx) {
-						this.bitmap.data[idx + 0] = paperColor.red;
-						this.bitmap.data[idx + 1] = paperColor.green;
-						this.bitmap.data[idx + 2] = paperColor.blue;
+			gridHeight = grid;
+		}
+		gridWidth = grid;
+	}
+	for (let row = 0; row < width; row += grid) {
+		if (row+grid > width) {
+			gridWidth = gridWidthBorder;
+		}
+		for (let col = 0; col < height; col += grid) {
+			r = row/grid; c = col/grid;
+			if (col + grid > height)
+				gridHeight = gridHeightBorder;
+			if(colorMap[r][c]==3){
+				var nei = [];
+				if (colorsOnMap[r][c+1] && colorMap[r][c+1] != 3)
+					nei.push([r*grid,(c+1)*grid,gridWidth,gridHeight]);
+				if (colorsOnMap[r][c-1] && colorMap[r][c-1] != 3)
+					nei.push([r*grid,(c-1)*grid,gridWidth,gridHeight]);
+				if ((colorsOnMap[r+1]||[])[c] && (colorMap[r+1]||[])[c] != 3)
+					nei.push([(r+1)*grid,c*grid,gridWidth,gridHeight]);
+				if ((colorsOnMap[r-1]||[])[c] && (colorMap[r-1]||[])[c] != 3)
+					nei.push([(r-1)*grid,c*grid,gridWidth,gridHeight]);
+				if ((colorsOnMap[r+1]||[])[c+1] && (colorMap[r+1||[]])[c+1] != 3)
+					nei.push([(r+1)*grid,(c+1)*grid,gridWidth,gridHeight]);
+				if ((colorsOnMap[r+1]||[])[c-1] && (colorMap[r+1]||[])[c-1] != 3)
+					nei.push([(r+1)*grid,(c-1)*grid,gridWidth,gridHeight]);
+				if ((colorsOnMap[r-1]||[])[c+1] && (colorMap[r-1]||[])[c+1] != 3)
+					nei.push([(r-1)*grid,(c+1)*grid,gridWidth,gridHeight]);
+				if ((colorsOnMap[r-1]||[])[c-1] && (colorMap[r-1]||[])[c-1] != 3)
+					nei.push([(r-1)*grid,(c-1)*grid,gridWidth,gridHeight]);
+				if (nei.length == 0)
+					break;
+				for (let i = 0; i < nei.length; i++) {
+					image.scan(nei[i][0], nei[i][1], nei[i][2], nei[i][3], function(x, y, idx) {
+						var r = this.bitmap.data[idx + 0];
+						var g = this.bitmap.data[idx + 1];
+						var b = this.bitmap.data[idx + 2];
+						if (r < imageColorData.imgDevs.red - tr*imageColorData.imgDevs.redGreenStd
+						|| r > imageColorData.imgDevs.red + tr*imageColorData.imgDevs.redGreenStd
+						|| g < imageColorData.imgDevs.green - tr*imageColorData.imgDevs.redBlueStd
+						|| g > imageColorData.imgDevs.green + tr*imageColorData.imgDevs.redBlueStd
+						|| b < imageColorData.imgDevs.blue - tr*imageColorData.imgDevs.blueGreenStd
+						|| b > imageColorData.imgDevs.blue + tr*imageColorData.imgDevs.blueGreenStd) {
+							this.bitmap.data[idx + 0] = paperColor.red;
+							this.bitmap.data[idx + 1] = paperColor.green;
+							this.bitmap.data[idx + 2] = paperColor.blue;
+						}
 					});
 				}
-				gridHeight = grid;
 			}
-			gridWidth = grid;
+			gridHeight = grid;
 		}
+		gridWidth = grid;
+	}
 }
 
 module.exports = colors_to_paper;
