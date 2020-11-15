@@ -47,9 +47,12 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 				//console.log(colorsOnMap[r][c]);
 			}*/
 			//console.log(colorsOnMap[r][c], math.std([[colorsOnMap[r][c].red, colorsOnMap[r][c].green, colorsOnMap[r][c].blue]],1))
-			if (colorsOnMap[r][c].red < imageColorData.imgDevs.red - tr*imageColorData.imgDevs.redStd || colorsOnMap[r][c].red > imageColorData.imgDevs.red + tr*imageColorData.imgDevs.redStd
-			|| colorsOnMap[r][c].green < imageColorData.imgDevs.green - tr*imageColorData.imgDevs.greenStd || colorsOnMap[r][c].green > imageColorData.imgDevs.green + tr*imageColorData.imgDevs.greenStd
-			|| colorsOnMap[r][c].blue < imageColorData.imgDevs.blue - tr*imageColorData.imgDevs.blueStd || colorsOnMap[r][c].blue > imageColorData.imgDevs.blue + tr*imageColorData.imgDevs.blueStd) {
+			if (colorsOnMap[r][c].red < imageColorData.imgDevs.red - tr*imageColorData.imgDevs.redStd
+			|| colorsOnMap[r][c].red > imageColorData.imgDevs.red + tr*imageColorData.imgDevs.redStd
+			|| colorsOnMap[r][c].green < imageColorData.imgDevs.green - tr*imageColorData.imgDevs.greenStd
+			|| colorsOnMap[r][c].green > imageColorData.imgDevs.green + tr*imageColorData.imgDevs.greenStd
+			|| colorsOnMap[r][c].blue < imageColorData.imgDevs.blue - tr*imageColorData.imgDevs.blueStd
+			|| colorsOnMap[r][c].blue > imageColorData.imgDevs.blue + tr*imageColorData.imgDevs.blueStd) {
 				colorMap[r][c] = 1;
 			}
 			else {
