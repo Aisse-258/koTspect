@@ -51,11 +51,6 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 			|| colorsOnMap[r][c].green < imageColorData.imgDevs.green - tr*imageColorData.imgDevs.redBlueStd || colorsOnMap[r][c].green > imageColorData.imgDevs.green + tr*imageColorData.imgDevs.redBlueStd
 			|| colorsOnMap[r][c].blue < imageColorData.imgDevs.blue - tr*imageColorData.imgDevs.blueGreenStd || colorsOnMap[r][c].blue > imageColorData.imgDevs.blue + tr*imageColorData.imgDevs.blueGreenStd) {
 				colorMap[r][c] = 1;
-				/*for (let i = row; i < row + gridWidth; i++){
-					for (let j = col; j < col + gridHeight; j++){
-						image.setPixelColor(hex, i, j);
-					}
-				}*/
 			}
 			else {
 				colorMap[r][c] = 0;
@@ -104,7 +99,6 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 			for (let col = 0; col < height; col += grid) {
 				if (col + grid > height)
 					gridHeight = gridHeightBorder;
-				let redTot = 0, greenTot = 0, blueTot = 0;
 				r=row/grid; c=col/grid;
 				if (colorMap[r][c] != 2) 
 					break;
