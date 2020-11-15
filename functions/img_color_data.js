@@ -29,9 +29,9 @@ var img_color_data = function (image) {
 		'red': Math.floor(math.sum(redImg)/area),
 		'green': Math.floor(math.sum(greenImg)/area),
 		'blue': Math.floor(math.sum(blueImg)/area),
-		'redGreenStd':math.std([redImg],1),
-		'redBlueStd':math.std([greenImg],1),
-		'blueGreenStd':math.std([blueImg],1)
+		'redStd':math.std([redImg],1),
+		'greenStd':math.std([greenImg],1),
+		'blueStd':math.std([blueImg],1)
 	};
 	//console.log(imgDevs);
 	return {
