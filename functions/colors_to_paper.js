@@ -31,10 +31,11 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 				greenTot += green;
 				blueTot += blue;
 			});
+			let gridArea = gridWidth*gridHeight;
 			colorsOnMap[r][c] = {
-				'red':redTot/(gridWidth*gridHeight),
-				'green':greenTot/(gridWidth*gridHeight),
-				'blue':blueTot/(gridWidth*gridHeight),
+				'red':redTot/gridArea,
+				'green':greenTot/gridArea,
+				'blue':blueTot/gridArea,
 				'isPaper':0
 			};
 			/*if (
