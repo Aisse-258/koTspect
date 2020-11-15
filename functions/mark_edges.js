@@ -7,7 +7,7 @@ var mark_edges =  function (colorMap) {
 					colorMap[i][j] = 2;
 					changes = 1;
 				}
-				else if (colorMap[i][j] == 1 && ((colorMap[i+1]||[])[j] == 2 || (colorMap[i-1]||[])[j] == 2)) {
+				else if (colorMap[i][j] == 1 && ((colorMap[i+1]||[])[j] == 2 || (colorMap[i-1]||[])[j] == 2 || colorMap[i][j-1] == 2 || colorMap[i][j+1] == 2)) {
 					colorMap[i][j] = 2;
 					changes = 1;
 				}
