@@ -17,7 +17,8 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 			gridWidth = gridWidthBorder;
 		}
 		for (let col = 0; col < height; col += grid) {
-			if (col + grid > height) gridHeight = gridHeightBorder;
+			if (col + grid > height)
+				gridHeight = gridHeightBorder;
 			let redTot = 0, greenTot = 0, blueTot = 0;
 			image.scan(row, col, gridWidth, gridHeight, function(x, y, idx) {
 				let red = this.bitmap.data[idx + 0];
