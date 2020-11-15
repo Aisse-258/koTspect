@@ -3,10 +3,10 @@ var math = require('mathjs');
 
 var img_color_data = function (image) {
 	var redImg = [], greenImg = [], blueImg = [];
-	var bitDevs = [];
+	/*var bitDevs = [];
 	for (let i = 0; i < image.bitmap.width; i++) {
 		bitDevs.push([]);
-	}
+	}*/
 	var widthDecile = Math.floor(image.bitmap.width*0.1);
 	var heightDecile = Math.floor(image.bitmap.height*0.1);
 	image.scan(0, 0, image.bitmap.width, image.bitmap.height, function(x, y, idx) {
@@ -18,11 +18,11 @@ var img_color_data = function (image) {
 			greenImg.push(green);
 			blueImg.push(blue);
 		}
-		bitDevs[x][y] = {
+		/*bitDevs[x][y] = {
 			'redGreenStd':Math.sqrt((red*red)/(red*red+green*green+blue*blue)),
 			'redBlueStd':Math.sqrt((green*green)/(red*red+green*green+blue*blue)),
 			'blueGreenStd':Math.sqrt((blue*blue)/(red*red+green*green+blue*blue))
-		};
+		};*/
 	});
 	let area = (image.bitmap.width - 2*widthDecile)*(image.bitmap.height - 2*heightDecile);
 	var imgDevs = {
@@ -35,7 +35,7 @@ var img_color_data = function (image) {
 	};
 	//console.log(imgDevs);
 	return {
-		'bitDevs': bitDevs,
+		//'bitDevs': bitDevs,
 		'imgDevs': imgDevs
 		};
 }
