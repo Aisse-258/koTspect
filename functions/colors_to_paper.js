@@ -75,8 +75,8 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 	//console.log(colorMap);
 	do {
 		var changes = 0;
-		for (let i=0; i<colorMap.length; i++){
-			for (let j=0; j<colorMap[i].length; j++){
+		for (let i = 0; i < colorMap.length; i++){
+			for (let j = 0; j < colorMap[i].length; j++){
 				if(colorMap[i][j] == 1 && (i*j==0 || i==colorMap.length-1 || j == colorMap[i].length-1)) {
 					colorMap[i][j] = 2;
 					changes = 1;
@@ -91,8 +91,8 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 				}
 			}
 		}
-	}
-	while (changes != 0)
+	} while (changes != 0);
+
 	do {
 		var changes = 0;
 		for (let row = 0; row < width; row += grid) {
@@ -128,10 +128,11 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 					if ((colorsOnMap[r-rad]||[])[c-rad] && ((colorsOnMap[r-rad]||[])[c-rad]||{'isPaper':0}).isPaper && (colorMap[r-rad]||[])[c-rad] != 2)
 						nei.push(colorsOnMap[r-rad][c-rad]);
 					rad++;
-				}
-				while (nei.length == 0 && rad < 4)
+				} while (nei.length == 0 && rad < 4);
+
 				//console.log(r,c,nei);
-				if (nei.length == 0) break;
+				if (nei.length == 0)
+					break;
 				var redSum = 0, blueSum = 0, greenSum = 0;
 				for (let i=0;i<nei.length;i++){
 					redSum += nei[i].redGreenStd;
@@ -157,8 +158,8 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 			}
 			gridWidth = grid;
 		}
-	}
-	while (changes !=0)
+	} while (changes !=0);
+
 	for (let row = 0; row < width; row += grid) {
 			if (row+grid > width) {
 				gridWidth = gridWidthBorder;
