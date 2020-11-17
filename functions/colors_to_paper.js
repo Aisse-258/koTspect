@@ -96,7 +96,7 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 					gridHeight = gridHeightBorder;
 				r=row/grid; c=col/grid;
 				if (colorMap[r][c] != 2) 
-					break;
+					continue;
 				var nei = [];
 				//if (colorsOnMap[r][c] && colorsOnMap[r][c].isPaper)
 				//	nei.push(colorsOnMap[r][c]);
@@ -123,7 +123,7 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 
 				//console.log(r,c,nei);
 				if (nei.length == 0)
-					break;
+					continue;
 				var redSum = 0, blueSum = 0, greenSum = 0;
 				for (let i=0;i<nei.length;i++){
 					redSum += nei[i].red;
@@ -198,7 +198,7 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 				if ((colorsOnMap[r-1]||[])[c-1] && (colorMap[r-1]||[])[c-1] != 3)
 					nei.push([(r-1)*grid,(c-1)*grid,gridWidth,gridHeight]);
 				if (nei.length == 0)
-					break;
+					continue;
 				for (let i = 0; i < nei.length; i++) {
 					image.scan(nei[i][0], nei[i][1], nei[i][2], nei[i][3], function(x, y, idx) {
 						var r = this.bitmap.data[idx + 0];
