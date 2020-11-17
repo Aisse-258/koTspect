@@ -1,6 +1,7 @@
 var Jimp = require('jimp');
 var math = require('mathjs');
 var mark_edges = require('./mark_edges');
+var is_color = require('./is_color.js');
 
 var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 	var tr = 1.5;
@@ -48,7 +49,15 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 				//console.log(colorsOnMap[r][c]);
 			}*/
 			//console.log(colorsOnMap[r][c], math.std([[colorsOnMap[r][c].red, colorsOnMap[r][c].green, colorsOnMap[r][c].blue]],1))
-			if (colorsOnMap[r][c].red < imageColorData.imgDevs.red - tr*imageColorData.imgDevs.redStd
+			colorMap[r][c] = is_color(colorsOnMap[r][c], imageColorData,tr);
+			if(!colorMap[r][c] && simpleMap[r][c]) {
+				paperColor.red += simpleMap[r][c].red;
+				paperColor.green += simpleMap[r][c].green;
+				paperColor.blue += simpleMap[r][c].blue;
+				areaPaper++;
+				colorsOnMap[r][c].isPaper = 1;
+			}
+			/*if (colorsOnMap[r][c].red < imageColorData.imgDevs.red - tr*imageColorData.imgDevs.redStd
 			|| colorsOnMap[r][c].red > imageColorData.imgDevs.red + tr*imageColorData.imgDevs.redStd
 			|| colorsOnMap[r][c].green < imageColorData.imgDevs.green - tr*imageColorData.imgDevs.greenStd
 			|| colorsOnMap[r][c].green > imageColorData.imgDevs.green + tr*imageColorData.imgDevs.greenStd
@@ -65,7 +74,7 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 					areaPaper++;
 					colorsOnMap[r][c].isPaper = 1;
 				}
-			}
+			}*/
 			gridHeight = grid;
 		}
 		gridWidth = grid;
@@ -195,12 +204,7 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid) {
 						var r = this.bitmap.data[idx + 0];
 						var g = this.bitmap.data[idx + 1];
 						var b = this.bitmap.data[idx + 2];
-						if (r < imageColorData.imgDevs.red - tr*imageColorData.imgDevs.redStd
-						|| r > imageColorData.imgDevs.red + tr*imageColorData.imgDevs.redStd
-						|| g < imageColorData.imgDevs.green - tr*imageColorData.imgDevs.greenStd
-						|| g > imageColorData.imgDevs.green + tr*imageColorData.imgDevs.greenStd
-						|| b < imageColorData.imgDevs.blue - tr*imageColorData.imgDevs.blueStd
-						|| b > imageColorData.imgDevs.blue + tr*imageColorData.imgDevs.blueStd) {
+						if (is_color({'red': r, 'green': g, 'blue': b}, imageColorData,tr)) {
 							this.bitmap.data[idx + 0] = paperColor.red;
 							this.bitmap.data[idx + 1] = paperColor.green;
 							this.bitmap.data[idx + 2] = paperColor.blue;
