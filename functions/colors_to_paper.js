@@ -10,20 +10,20 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 	let gridWidthBorder = width%grid, gridHeightBorder = height%grid;
 	var colorMap = [], colorsOnMap = [];
 	var paperColor = {'red':0,'green':0,'blue':0}, areaPaper = 0;
-	for (let i = 0; i < width/grid; i++) {
+	for (let i = 0; i < height/grid; i++) {
 		colorMap.push([]);
 		colorsOnMap.push([]);
 	}
-	for (let row = 0; row < width; row += grid) {
-		if (row+grid > width) {
-			gridWidth = gridWidthBorder;
+	for (let row = 0; row < height; row += grid) {
+		if (row+grid > height) {
+			gridHeight = gridHeightBorder;
 		}
-		for (let col = 0; col < height; col += grid) {
+		for (let col = 0; col < width; col += grid) {
 			var r=row/grid, c=col/grid;
-			if (col + grid > height)
-				gridHeight = gridHeightBorder;
+			if (col + grid > width)
+				gridWidth = gridWidthBorder;
 			let redTot = 0, greenTot = 0, blueTot = 0;
-			image.scan(row, col, gridWidth, gridHeight, function(x, y, idx) {
+			image.scan(col, row, gridWidth, gridHeight, function(x, y, idx) {
 				let red = this.bitmap.data[idx + 0];
 				let green = this.bitmap.data[idx + 1];
 				let blue = this.bitmap.data[idx + 2];
@@ -74,9 +74,9 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 					colorsOnMap[r][c].isPaper = 1;
 				}
 			}*/
-			gridHeight = grid;
+			gridWidth = grid;
 		}
-		gridWidth = grid;
+		gridHeight = grid;
 	}
 	paperColor.red = Math.floor(paperColor.red/areaPaper);
 	paperColor.green = Math.floor(paperColor.green/areaPaper);
@@ -86,15 +86,15 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 
 	do {
 		var changes = 0;
-		for (let row = 0; row < width; row += grid) {
-			if (row+grid > width) {
-				gridWidth = gridWidthBorder;
+		for (let row = 0; row < height; row += grid) {
+			if (row+grid > height) {
+				gridHeight = gridHeightBorder;
 			}
-			for (let col = 0; col < height; col += grid) {
-				if (col + grid > height)
-					gridHeight = gridHeightBorder;
+			for (let col = 0; col < width; col += grid) {
+				if (col + grid > width)
+					gridWidth = gridWidthBorder;
 				r=row/grid; c=col/grid;
-				if (colorMap[r][c] != 2) 
+				if (colorMap[r][c] != 2)
 					continue;
 				var nei = [];
 				//if (colorsOnMap[r][c] && colorsOnMap[r][c].isPaper)
@@ -132,7 +132,7 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 				var red = Math.floor(redSum/nei.length);
 				var green = Math.floor(greenSum/nei.length); 
 				var blue = Math.floor(blueSum/nei.length);
-				image.scan(row, col, gridWidth, gridHeight, function(x, y, idx) {
+				image.scan(col, row, gridWidth, gridHeight, function(x, y, idx) {
 					this.bitmap.data[idx + 0] = red;
 					this.bitmap.data[idx + 1] = green;
 					this.bitmap.data[idx + 2] = blue;
@@ -144,58 +144,58 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 				colorsOnMap[r][c].blue = blue;
 				changes = 1;
 				//console.log(r, c);
-				gridHeight = grid;
+				gridWidth = grid;
 			}
-			gridWidth = grid;
+			gridHeight = grid;
 		}
 	} while (changes !=0);
 
-	for (let row = 0; row < width; row += grid) {
-		if (row+grid > width) {
-			gridWidth = gridWidthBorder;
+	for (let row = 0; row < height; row += grid) {
+		if (row+grid > height) {
+			gridHeight = gridHeightBorder;
 		}
-		for (let col = 0; col < height; col += grid) {
+		for (let col = 0; col < width; col += grid) {
 			r = row/grid; c = col/grid;
-			if (col + grid > height)
-				gridHeight = gridHeightBorder;
+			if (col + grid > width)
+				gridWidth = gridWidthBorder;
 			if(colorMap[r][c]==2){
-				image.scan(row, col, gridWidth, gridHeight, function(x, y, idx) {
+				image.scan(col, row, gridWidth, gridHeight, function(x, y, idx) {
 					this.bitmap.data[idx + 0] = paperColor.red;
 					this.bitmap.data[idx + 1] = paperColor.green;
 					this.bitmap.data[idx + 2] = paperColor.blue;
 				});
 				colorMap[r][c] = 3;
 			}
-			gridHeight = grid;
+			gridWidth = grid;
 		}
-		gridWidth = grid;
+		gridHeight = grid;
 	}
-	for (let row = 0; row < width; row += grid) {
-		if (row+grid > width) {
-			gridWidth = gridWidthBorder;
+	for (let row = 0; row < height; row += grid) {
+		if (row+grid > height) {
+			gridHeight = gridHeightBorder;
 		}
-		for (let col = 0; col < height; col += grid) {
+		for (let col = 0; col < width; col += grid) {
 			r = row/grid; c = col/grid;
-			if (col + grid > height)
-				gridHeight = gridHeightBorder;
+			if (col + grid > width)
+				gridWidth = gridWidthBorder;
 			if(colorMap[r][c]==3){
 				var nei = [];
 				if (colorsOnMap[r][c+1] && colorMap[r][c+1] != 3)
-					nei.push([r*grid,(c+1)*grid,gridWidth,gridHeight]);
+					nei.push([(c+1)*grid,r*grid,gridWidth,gridHeight]);
 				if (colorsOnMap[r][c-1] && colorMap[r][c-1] != 3)
-					nei.push([r*grid,(c-1)*grid,gridWidth,gridHeight]);
+					nei.push([(c-1)*grid,r*grid,gridWidth,gridHeight]);
 				if ((colorsOnMap[r+1]||[])[c] && (colorMap[r+1]||[])[c] != 3)
-					nei.push([(r+1)*grid,c*grid,gridWidth,gridHeight]);
+					nei.push([c*grid,(r+1)*grid,gridWidth,gridHeight]);
 				if ((colorsOnMap[r-1]||[])[c] && (colorMap[r-1]||[])[c] != 3)
-					nei.push([(r-1)*grid,c*grid,gridWidth,gridHeight]);
+					nei.push([c*grid,(r-1)*grid,gridWidth,gridHeight]);
 				if ((colorsOnMap[r+1]||[])[c+1] && (colorMap[r+1||[]])[c+1] != 3)
-					nei.push([(r+1)*grid,(c+1)*grid,gridWidth,gridHeight]);
+					nei.push([(c+1)*grid,(r+1)*grid,gridWidth,gridHeight]);
 				if ((colorsOnMap[r+1]||[])[c-1] && (colorMap[r+1]||[])[c-1] != 3)
-					nei.push([(r+1)*grid,(c-1)*grid,gridWidth,gridHeight]);
+					nei.push([(c-1)*grid,(r+1)*grid,gridWidth,gridHeight]);
 				if ((colorsOnMap[r-1]||[])[c+1] && (colorMap[r-1]||[])[c+1] != 3)
-					nei.push([(r-1)*grid,(c+1)*grid,gridWidth,gridHeight]);
+					nei.push([(c+1)*grid,(r-1)*grid,gridWidth,gridHeight]);
 				if ((colorsOnMap[r-1]||[])[c-1] && (colorMap[r-1]||[])[c-1] != 3)
-					nei.push([(r-1)*grid,(c-1)*grid,gridWidth,gridHeight]);
+					nei.push([(c-1)*grid,(r-1)*grid,gridWidth,gridHeight]);
 				if (nei.length == 0)
 					continue;
 				for (let i = 0; i < nei.length; i++) {
@@ -211,9 +211,9 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 					});
 				}
 			}
-			gridHeight = grid;
+			gridWidth = grid;
 		}
-		gridWidth = grid;
+		gridHeight = grid;
 	}
 }
 

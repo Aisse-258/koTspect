@@ -7,18 +7,19 @@ var simple_colors = function (image, grid, maxStd) {
 	let gridWidth = grid, gridHeight = grid;
 	let gridWidthBorder = width%grid, gridHeightBorder = height%grid;
 	var simpleMap = [];
-	for(let i = 0;i < width/grid; i++) {
+	for(let i = 0;i < height/grid; i++) {
 		simpleMap.push([]);
 	}
-	for (let row = 0; row < width; row += grid) {
-		if (row+grid > width) {
-			gridWidth = gridWidthBorder;
+	for (let row = 0; row < height; row += grid) {
+		if (row+grid > height) {
+			gridHeight = gridHeightBorder;
 		}
-		for (let col = 0; col < height; col += grid) {
-			if (col + grid > height) gridHeight = gridHeightBorder;
+		for (let col = 0; col < width; col += grid) {
+			if (col + grid > width)
+				gridWidth = gridWidthBorder;
 			let redData = [], greenData = [], blueData = [];//значения rgb в каждом пикселе плитки
 			let redTot = 0, greenTot = 0, blueTot = 0;//всего цвета в 1 плитке
-			image.scan(row, col, gridWidth, gridHeight, function(x, y, idx) {
+			image.scan(col, row, gridWidth, gridHeight, function(x, y, idx) {
 				let red = this.bitmap.data[idx + 0];
 				let green = this.bitmap.data[idx + 1];
 				let blue = this.bitmap.data[idx + 2];
@@ -40,17 +41,18 @@ var simple_colors = function (image, grid, maxStd) {
 				simpleMap[row/grid][col/grid] = {'red':r,'green':g,'blue':b};
 				//console.log (r, g, b, w*h);
 				let hex = Jimp.rgbaToInt(r, g, b, 255);
-				for (let i = row; i < row + gridWidth; i++){
-					for (let j = col; j < col + gridHeight; j++){
-						image.setPixelColor(hex, i, j);
+				for (let i = row; i < row + gridHeight; i++){
+					for (let j = col; j < col + gridWidth; j++){
+						image.setPixelColor(hex, j, i);
 					}
 				}
 			}
 			else {
 				simpleMap[row/grid][col/grid] = 0;
 			}
-			gridHeight = grid;
+			gridWidth = grid;
 		}
+		gridHeight = grid;
 	}
 	return simpleMap;
 }
