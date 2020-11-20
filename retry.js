@@ -11,10 +11,11 @@ var simple_colors = require('./functions/simple_colors.js');
 Jimp.read(img, (err, image) => {
 if (err) throw err;
 	var imageColorData = img_color_data(image);
-	var grid1 = 32, grid2 = 16
+	var grid1 = 32, grid2 = 16;
+	var threshold = Number(process.argv[3]);
 	simple_colors(image, grid1, 8);
 	var simpleMap = simple_colors(image, grid2, 10);
-	colors_to_paper(image, imageColorData, simpleMap, grid2);
+	colors_to_paper(image, imageColorData, simpleMap, grid2, threshold);
 	//find_plain(image, 8, 20);
 	image.write(img.slice(0,-4) + '_mod.jpg');
 });
