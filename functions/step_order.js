@@ -1,4 +1,4 @@
-var h = Number(process.argv[2]), w = Number(process.argv[3]);
+//var h = Number(process.argv[2]), w = Number(process.argv[3]);
 
 var step_order = function (height, width) {
     var stepOrder = [];
@@ -11,19 +11,19 @@ var step_order = function (height, width) {
     }
     var center = find_center(mas);
     for (let i = 0;i < height;i++){
-        console.log(mas[i].join(', '))
+        //console.log(mas[i].join(', '))
     }
-    console.log(center);
+    //console.log(center);
 
     snail(mas, center[0], center[1], stepOrder);
     for (let i = 0;i < height;i++){
-        console.log(mas[i].join(', '))
+        //console.log(mas[i].join(', '))
     }
     return stepOrder.slice(0,-1);
 }
 
-var stepOrder = step_order(h, w);
-console.log(stepOrder);
+//var stepOrder = step_order(h, w);
+//console.log(stepOrder);
 
 function find_center (mas) {
     var h = mas.length, w = mas[0].length;
