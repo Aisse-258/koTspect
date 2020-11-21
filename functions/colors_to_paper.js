@@ -2,6 +2,7 @@ var Jimp = require('jimp');
 var math = require('mathjs');
 var mark_edges = require('./mark_edges');
 var is_color = require('./is_color.js');
+var step_order = require('./step_order.js');
 
 var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold) {
 	let width = image.bitmap.width;
@@ -83,72 +84,67 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 	paperColor.blue = Math.floor(paperColor.blue/areaPaper);
 	//console.log(colorMap);
 	mark_edges(colorMap);
-
-	do {
-		var changes = 0;
-		for (let row = 0; row < height; row += grid) {
-			if (row+grid > height) {
-				gridHeight = gridHeightBorder;
-			}
-			for (let col = 0; col < width; col += grid) {
-				if (col + grid > width)
-					gridWidth = gridWidthBorder;
-				r=row/grid; c=col/grid;
-				if (colorMap[r][c] != 2)
-					continue;
-				var nei = [];
-				//if (colorsOnMap[r][c] && colorsOnMap[r][c].isPaper)
-				//	nei.push(colorsOnMap[r][c]);
-				var rad = 1;
-				do {
-					if (colorsOnMap[r][c+rad] && (colorsOnMap[r][c+rad]||{'isPaper':0}).isPaper && colorMap[r][c+rad] != 2)
-						nei.push(colorsOnMap[r][c+rad]);
-					if (colorsOnMap[r][c-rad] && (colorsOnMap[r][c-rad]||{'isPaper':0}).isPaper && colorMap[r][c-rad] != 2)
-						nei.push(colorsOnMap[r][c-rad]);
-					if ((colorsOnMap[r+rad]||[])[c] && ((colorsOnMap[r+rad]||[])[c]||{'isPaper':0}).isPaper && (colorMap[r+rad]||[])[c] != 2)
-						nei.push(colorsOnMap[r+rad][c]);
-					if ((colorsOnMap[r-rad]||[])[c] && ((colorsOnMap[r-rad]||[])[c]||{'isPaper':0}).isPaper && (colorMap[r-rad]||[])[c] != 2)
-						nei.push(colorsOnMap[r-rad][c]);
-					if ((colorsOnMap[r+rad]||[])[c+rad] && ((colorsOnMap[r+rad]||[])[c+rad]||{'isPaper':0}).isPaper && (colorMap[r+rad||[]])[c+rad] != 2)
-						nei.push(colorsOnMap[r+rad][c+rad]);
-					if ((colorsOnMap[r+rad]||[])[c-rad] && ((colorsOnMap[r+rad]||[])[c-rad]||{'isPaper':0}).isPaper && (colorMap[r+rad]||[])[c-rad] != 2)
-						nei.push(colorsOnMap[r+rad][c-rad]);
-					if ((colorsOnMap[r-rad]||[])[c+rad] && ((colorsOnMap[r-rad]||[])[c+rad]||{'isPaper':0}).isPaper && (colorMap[r-rad]||[])[c+rad] != 2)
-						nei.push(colorsOnMap[r-rad][c+rad]);
-					if ((colorsOnMap[r-rad]||[])[c-rad] && ((colorsOnMap[r-rad]||[])[c-rad]||{'isPaper':0}).isPaper && (colorMap[r-rad]||[])[c-rad] != 2)
-						nei.push(colorsOnMap[r-rad][c-rad]);
-					rad++;
-				} while (nei.length == 0 && rad < 4);
-
-				//console.log(r,c,nei);
-				if (nei.length == 0)
-					continue;
-				var redSum = 0, blueSum = 0, greenSum = 0;
-				for (let i=0;i<nei.length;i++){
-					redSum += nei[i].red;
-					greenSum += nei[i].green;
-					blueSum += nei[i].blue;
-				}
-				var red = Math.floor(redSum/nei.length);
-				var green = Math.floor(greenSum/nei.length); 
-				var blue = Math.floor(blueSum/nei.length);
-				image.scan(col, row, gridWidth, gridHeight, function(x, y, idx) {
-					this.bitmap.data[idx + 0] = red;
-					this.bitmap.data[idx + 1] = green;
-					this.bitmap.data[idx + 2] = blue;
-				});
-				colorsOnMap[r][c].isPaper = 1;
-				colorMap[r][c] = 3;
-				colorsOnMap[r][c].red = red;
-				colorsOnMap[r][c].green = green;
-				colorsOnMap[r][c].blue = blue;
-				changes = 1;
-				//console.log(r, c);
-				gridWidth = grid;
-			}
-			gridHeight = grid;
+	var stepOrder = step_order((height-gridHeightBorder)/grid, (width-gridWidthBorder)/grid);
+	for (let i = 0; i < stepOrder.length; i++) {
+		let r = stepOrder[i][0];
+		let c = stepOrder[i][1];
+		if (r*grid+grid > height) {
+			gridHeight = gridHeightBorder;
 		}
-	} while (changes !=0);
+		if (c*grid + grid > width) {
+			gridWidth = gridWidthBorder;
+		}
+		if (colorMap[r][c] != 2)
+		continue;
+		var nei = [];
+		//if (colorsOnMap[r][c] && colorsOnMap[r][c].isPaper)
+		//	nei.push(colorsOnMap[r][c]);
+		var rad = 1;
+		do {
+			if (colorsOnMap[r][c+rad] && (colorsOnMap[r][c+rad]||{'isPaper':0}).isPaper && colorMap[r][c+rad] != 2)
+				nei.push(colorsOnMap[r][c+rad]);
+			if (colorsOnMap[r][c-rad] && (colorsOnMap[r][c-rad]||{'isPaper':0}).isPaper && colorMap[r][c-rad] != 2)
+				nei.push(colorsOnMap[r][c-rad]);
+			if ((colorsOnMap[r+rad]||[])[c] && ((colorsOnMap[r+rad]||[])[c]||{'isPaper':0}).isPaper && (colorMap[r+rad]||[])[c] != 2)
+				nei.push(colorsOnMap[r+rad][c]);
+			if ((colorsOnMap[r-rad]||[])[c] && ((colorsOnMap[r-rad]||[])[c]||{'isPaper':0}).isPaper && (colorMap[r-rad]||[])[c] != 2)
+				nei.push(colorsOnMap[r-rad][c]);
+			if ((colorsOnMap[r+rad]||[])[c+rad] && ((colorsOnMap[r+rad]||[])[c+rad]||{'isPaper':0}).isPaper && (colorMap[r+rad||[]])[c+rad] != 2)
+				nei.push(colorsOnMap[r+rad][c+rad]);
+			if ((colorsOnMap[r+rad]||[])[c-rad] && ((colorsOnMap[r+rad]||[])[c-rad]||{'isPaper':0}).isPaper && (colorMap[r+rad]||[])[c-rad] != 2)
+				nei.push(colorsOnMap[r+rad][c-rad]);
+			if ((colorsOnMap[r-rad]||[])[c+rad] && ((colorsOnMap[r-rad]||[])[c+rad]||{'isPaper':0}).isPaper && (colorMap[r-rad]||[])[c+rad] != 2)
+				nei.push(colorsOnMap[r-rad][c+rad]);
+			if ((colorsOnMap[r-rad]||[])[c-rad] && ((colorsOnMap[r-rad]||[])[c-rad]||{'isPaper':0}).isPaper && (colorMap[r-rad]||[])[c-rad] != 2)
+				nei.push(colorsOnMap[r-rad][c-rad]);
+			rad++;
+		} while (nei.length == 0 && rad < 4);
+
+		if (nei.length == 0)
+			continue;
+		
+		var redSum = 0, blueSum = 0, greenSum = 0;
+		for (let i=0;i<nei.length;i++){
+			redSum += nei[i].red;
+			greenSum += nei[i].green;
+			blueSum += nei[i].blue;
+		}
+		var red = Math.floor(redSum/nei.length);
+		var green = Math.floor(greenSum/nei.length); 
+		var blue = Math.floor(blueSum/nei.length);
+		image.scan(c*grid, r*grid, gridWidth, gridHeight, function(x, y, idx) {
+			this.bitmap.data[idx + 0] = red;
+			this.bitmap.data[idx + 1] = green;
+			this.bitmap.data[idx + 2] = blue;
+		});
+		colorsOnMap[r][c].isPaper = 1;
+		colorMap[r][c] = 3;
+		colorsOnMap[r][c].red = red;
+		colorsOnMap[r][c].green = green;
+		colorsOnMap[r][c].blue = blue;
+		gridWidth = grid;
+		gridHeight = grid;
+	}
 
 	for (let row = 0; row < height; row += grid) {
 		if (row+grid > height) {
