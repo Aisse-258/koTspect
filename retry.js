@@ -1,5 +1,6 @@
 var Jimp = require('jimp');
 var math = require('mathjs');
+var childProcess = require('child_process');
 var img = process.argv[2];
 
 var find_plain = require('./functions/find_plain.js');
@@ -17,5 +18,9 @@ if (err) throw err;
 	var simpleMap = simple_colors(image, grid2, 10);
 	colors_to_paper(image, imageColorData, simpleMap, grid2, threshold);
 	//find_plain(image, 8, 20);
-	image.write(img.slice(0,-4) + '_mod.jpg');
+	image.write(img.slice(0,-4) + '_mod.bmp', function() {
+		childProcess.execSync('convert ' + img.slice(0,-4) + '_mod.bmp -quality ' +
+		childProcess.execSync('identify -format \'%Q\' ' + img).toString() + ' ' + img.slice(0,-4) + '_mod.jpg');
+		childProcess.execSync('rm ' + img.slice(0,-4) + '_mod.bmp');
+	});
 });
