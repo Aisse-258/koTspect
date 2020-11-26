@@ -3,6 +3,7 @@ var math = require('mathjs');
 var mark_edges = require('./mark_edges');
 var is_color = require('./is_color.js');
 var step_order = require('./step_order.js');
+var simplify_area = require('./simplify_area.js');
 
 var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold) {
 	let width = image.bitmap.width;
@@ -221,6 +222,7 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 							this.bitmap.data[idx + 2] = colorsOnMap[r][c].blue;
 						}
 					});
+					simplify_area(image, nei[i][0], nei[i][1], grid, nei[i][2], nei[i][3], 10, simpleMap);
 				}
 			}
 			gridWidth = grid;
