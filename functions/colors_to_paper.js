@@ -212,13 +212,13 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 					continue;
 				for (let i = 0; i < nei.length; i++) {
 					image.scan(nei[i][0], nei[i][1], nei[i][2], nei[i][3], function(x, y, idx) {
-						var r = this.bitmap.data[idx + 0];
-						var g = this.bitmap.data[idx + 1];
-						var b = this.bitmap.data[idx + 2];
-						if (is_color({'red': r, 'green': g, 'blue': b}, imageColorData,treshold)) {
-							this.bitmap.data[idx + 0] = paperColor.red;
-							this.bitmap.data[idx + 1] = paperColor.green;
-							this.bitmap.data[idx + 2] = paperColor.blue;
+						let red = this.bitmap.data[idx + 0];
+						let green = this.bitmap.data[idx + 1];
+						let blue = this.bitmap.data[idx + 2];
+						if (is_color({'red': red, 'green': green, 'blue': blue}, imageColorData,treshold)) {
+							this.bitmap.data[idx + 0] = colorsOnMap[r][c].red;
+							this.bitmap.data[idx + 1] = colorsOnMap[r][c].green;
+							this.bitmap.data[idx + 2] = colorsOnMap[r][c].blue;
 						}
 					});
 				}
