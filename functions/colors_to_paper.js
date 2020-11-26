@@ -177,21 +177,37 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 			if(colorMap[r][c]==3){
 				var nei = [];
 				if (colorsOnMap[r][c+1] && colorMap[r][c+1] != 3)
-					nei.push([(c+1)*grid,r*grid,gridWidth,gridHeight]);
+					nei.push([(c+1)*grid,r*grid,
+						grid_width((c+1)*grid, width, grid, gridWidthBorder),
+						grid_width(r*grid, height, grid, gridHeightBorder)]);
 				if (colorsOnMap[r][c-1] && colorMap[r][c-1] != 3)
-					nei.push([(c-1)*grid,r*grid,gridWidth,gridHeight]);
+					nei.push([(c-1)*grid,r*grid,
+						grid_width((c-1)*grid, width, grid, gridWidthBorder),
+						grid_width(r*grid, height, grid, gridHeightBorder)]);
 				if ((colorsOnMap[r+1]||[])[c] && (colorMap[r+1]||[])[c] != 3)
-					nei.push([c*grid,(r+1)*grid,gridWidth,gridHeight]);
+					nei.push([c*grid,(r+1)*grid,
+						grid_width(c*grid, width, grid, gridWidthBorder),
+						grid_width((r+1)*grid, height, grid, gridHeightBorder)]);
 				if ((colorsOnMap[r-1]||[])[c] && (colorMap[r-1]||[])[c] != 3)
-					nei.push([c*grid,(r-1)*grid,gridWidth,gridHeight]);
+					nei.push([c*grid,(r-1)*grid,
+						grid_width(c*grid, width, grid, gridWidthBorder),
+						grid_width((r-1)*grid, height, grid, gridHeightBorder)]);
 				if ((colorsOnMap[r+1]||[])[c+1] && (colorMap[r+1||[]])[c+1] != 3)
-					nei.push([(c+1)*grid,(r+1)*grid,gridWidth,gridHeight]);
+					nei.push([(c+1)*grid,(r+1)*grid,
+						grid_width((c+1)*grid, width, grid, gridWidthBorder),
+						grid_width((r+1)*grid, height, grid, gridHeightBorder)]);
 				if ((colorsOnMap[r+1]||[])[c-1] && (colorMap[r+1]||[])[c-1] != 3)
-					nei.push([(c-1)*grid,(r+1)*grid,gridWidth,gridHeight]);
+					nei.push([(c-1)*grid,(r+1)*grid,
+						grid_width((c-1)*grid, width, grid, gridWidthBorder),
+						grid_width((r+1)*grid, height, grid, gridHeightBorder)]);
 				if ((colorsOnMap[r-1]||[])[c+1] && (colorMap[r-1]||[])[c+1] != 3)
-					nei.push([(c+1)*grid,(r-1)*grid,gridWidth,gridHeight]);
+					nei.push([(c+1)*grid,(r-1)*grid,
+						grid_width((c+1)*grid, width, grid, gridWidthBorder),
+						grid_width((r-1)*grid, height, grid, gridHeightBorder)]);
 				if ((colorsOnMap[r-1]||[])[c-1] && (colorMap[r-1]||[])[c-1] != 3)
-					nei.push([(c-1)*grid,(r-1)*grid,gridWidth,gridHeight]);
+					nei.push([(c-1)*grid,(r-1)*grid,
+						grid_width((c-1)*grid, width, grid, gridWidthBorder),
+						grid_width((r-1)*grid, height, grid, gridHeightBorder)]);
 				if (nei.length == 0)
 					continue;
 				for (let i = 0; i < nei.length; i++) {
@@ -211,6 +227,13 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 		}
 		gridHeight = grid;
 	}
+}
+
+function grid_width (RowCol, HeightWidth, grid, border) {
+	if (RowCol + grid > HeightWidth)
+		return border;
+	else
+		return grid;
 }
 
 module.exports = colors_to_paper;
