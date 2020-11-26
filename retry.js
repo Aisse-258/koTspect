@@ -9,6 +9,8 @@ var get_paper_color = require('./functions/get_paper_color.js');
 var colors_to_paper = require('./functions/colors_to_paper.js');
 var simple_colors = require('./functions/simple_colors.js');
 
+//var t = Date.now();
+
 Jimp.read(img, (err, image) => {
 if (err) throw err;
 	var imageColorData = img_color_data(image);
@@ -19,8 +21,15 @@ if (err) throw err;
 	colors_to_paper(image, imageColorData, simpleMap, grid2, threshold);
 	//find_plain(image, 8, 20);
 	image.write(img.slice(0,-4) + '_mod.bmp', function() {
-		childProcess.execSync('convert ' + img.slice(0,-4) + '_mod.bmp -quality ' +
-		childProcess.execSync('identify -format \'%Q\' ' + img).toString() + ' ' + img.slice(0,-4) + '_mod.jpg');
+		if (img.slice(-4) == '.jpg') {
+			childProcess.execSync('convert ' + img.slice(0,-4) + '_mod.bmp -quality ' +
+			childProcess.execSync('identify -format \'%Q\' ' + img).toString() + ' ' + img.slice(0,-4) + '_mod.jpg');
+			//console.log(Date.now()-t);
+		}
+		else {
+			childProcess.execSync('convert ' + img.slice(0,-4) + '_mod.bmp ' + img.slice(0,-4) + '_mod.jpg');
+			//console.log(Date.now()-t);
+		}
 		childProcess.execSync('rm ' + img.slice(0,-4) + '_mod.bmp');
 	});
 });
