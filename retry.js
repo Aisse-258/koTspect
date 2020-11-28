@@ -2,6 +2,7 @@ var Jimp = require('jimp');
 var math = require('mathjs');
 var childProcess = require('child_process');
 var img = process.argv[2];
+var divide = process.argv[4] || '1x1';
 
 var find_plain = require('./functions/find_plain.js');
 var img_color_data = require('./functions/img_color_data.js');
@@ -13,7 +14,7 @@ var simple_colors = require('./functions/simple_colors.js');
 
 Jimp.read(img, (err, image) => {
 if (err) throw err;
-	var imageColorData = img_color_data(image);
+	var imageColorData = img_color_data(image, Number(divide.slice(0,1)), divide.slice(-1));
 	var grid1 = 32, grid2 = 16;
 	var threshold = Number(process.argv[3]);
 	simple_colors(image, grid1, 8);

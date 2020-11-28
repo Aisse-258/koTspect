@@ -50,7 +50,9 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 				//console.log(colorsOnMap[r][c]);
 			}*/
 			//console.log(colorsOnMap[r][c], math.std([[colorsOnMap[r][c].red, colorsOnMap[r][c].green, colorsOnMap[r][c].blue]],1))
-			colorMap[r][c] = is_color(colorsOnMap[r][c], imageColorData,treshold);
+			colorMap[r][c] = is_color(colorsOnMap[r][c], imageColorData,
+				color_data_position(row,col,height,width,imageColorData.imgDevs.length,
+				imageColorData.imgDevs[0].length),treshold);
 			if(!colorMap[r][c] && simpleMap[r][c]) {
 				paperColor.red += simpleMap[r][c].red;
 				paperColor.green += simpleMap[r][c].green;
@@ -216,7 +218,9 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 						let red = this.bitmap.data[idx + 0];
 						let green = this.bitmap.data[idx + 1];
 						let blue = this.bitmap.data[idx + 2];
-						if (is_color({'red': red, 'green': green, 'blue': blue}, imageColorData,treshold)) {
+						if (is_color({'red': red, 'green': green, 'blue': blue}, imageColorData,
+						color_data_position(y,x,height,width,imageColorData.imgDevs.length,
+							imageColorData.imgDevs[0].length),treshold)) {
 							this.bitmap.data[idx + 0] = colorsOnMap[r][c].red;
 							this.bitmap.data[idx + 1] = colorsOnMap[r][c].green;
 							this.bitmap.data[idx + 2] = colorsOnMap[r][c].blue;
@@ -236,6 +240,29 @@ function grid_width (RowCol, HeightWidth, grid, border) {
 		return border;
 	else
 		return grid;
+}
+
+function color_data_position (row, col, height, width, heightDivide, widthDivide) {
+	var borderHeight = height%heightDivide;
+	var gridHeight = (height - borderHeight)/heightDivide;
+	var borderWidth = width%widthDivide;
+	var gridWidth = (width - borderWidth)/widthDivide;
+	for (let i = 0; i < heightDivide; i++) {
+		for (let j = 0; j < widthDivide; j++){
+			if (i == heightDivide - 1 && j == widthDivide -1 && row >= i*gridHeight && col >= j*gridWidth) {
+				return [i,j];
+			}
+			else if (i == heightDivide - 1 && row >= i*gridHeight && col >= j*gridWidth && col < (j+1)*gridWidth) {
+				return [i,j];
+			}
+			else if (j == widthDivide -1 && col >= j*gridWidth && row >= i*gridHeight && row < (i+1)*gridHeight) {
+				return [i,j];
+			}
+			else if (row >= i*gridHeight && row < (i+1)*gridHeight && col >= j*gridWidth && col < (j+1)*gridWidth) {
+				return [i,j];
+			}
+		}
+	}
 }
 
 module.exports = colors_to_paper;
