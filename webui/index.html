@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf8"/>
+		<!--<link rel="shortcut icon" href="icon.png" type="image/png">-->
+		<title>koTspect</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+	<body style="height:100%; margin:10px;">
+		<link rel="stylesheet" href="info_style.css">
+		<link rel="stylesheet" href="number_input_style.css">
+		<link rel="stylesheet" href="../node_modules/bootstrap3/dist/css/bootstrap.css">
+		<link rel="stylesheet" href="../node_modules/bootstrap3/dist/css/bootstrap-theme.css">
+
+		<div class="container-fluid">
+			<form action="/upload" method="post" enctype="multipart/form-data">
+				<label class="btn btn-default btn-file">
+					Загрузить файл
+					<input type="file" name="filedata" style="display:none;"/>
+				</label><br><br>
+				Размер плиток (1) и (2):
+				<div class="def-number-input number-input safari_only">
+					<button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
+					<input class="quantity" min="8" name="quantity" value="16" step="8" type="number" id="grid1">
+					<button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+				</div>
+				<div class="def-number-input number-input safari_only">
+					<button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
+					<input class="quantity" min="16" name="quantity" value="32" step="8" type="number" id="grid2">
+					<button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+				</div>
+				Порог отсечения цветных пикселей:
+				<div class="def-number-input number-input safari_only">
+					<button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
+					<input class="quantity" min="1" name="quantity" value="2" step="0.1" type="number" id="treshold">
+					<button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+				</div>
+				Разделение по высоте:
+				<div class="def-number-input number-input safari_only">
+					<button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
+					<input class="quantity" min="1" max="10" name="quantity" value="2" type="number" id="divide-height">
+					<button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+				</div>
+				Разделение по ширине:
+				<div class="def-number-input number-input safari_only">
+					<button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
+					<input class="quantity" min="1" max="10" name="quantity" value="2" type="number" id="divide-width">
+					<button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+				</div>
+				<label class="btn btn-default btn-send">
+					Обработать
+					<input type="submit" style="display:none;"/>
+				</label>
+			</form>
+		<div>
+		<script src="../node_modules/jquery/dist/jquery.js"></script>
+		<script src="../node_modules/bootstrap3/dist/js/bootstrap.js"></script>
+	</body>
+</html>
