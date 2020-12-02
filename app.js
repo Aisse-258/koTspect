@@ -20,17 +20,17 @@ server.use(express.static(__dirname));
 server.use(multer({dest:"uploads"}).single("filedata"));
 server.post("/upload",function(req,res,next){
 	let filedata = req.file;
-	console.log(filedata);
+	//console.log(filedata);
 	if(!filedata){
 		res.send("error on load");
 	}
 	else {
 		res.setHeader('Content-Type', 'text/html');
-		var treshold = 2;//1 * $('#treshold').val();
-		var divH = 1,//1 * $('#divide-height').val(),
-		divW = 1;//1 * $('#divide-width').val();
-		var grid1 = 16,//1 * $('#grid1').val(),
-		grid2 = 32;//1 * $('#grid2').val();
+		var treshold = req.body.treshold;
+		var divH = req.body.divide_height,
+		divW = req.body.divide_width;
+		var grid1 = req.body.grid1,
+		grid2 = req.body.grid2;
 		childProcess.exec('node retry.js \'' + JSON.stringify(filedata) + '\' ' +
 		treshold + ' ' + divH + 'x' + divW + ' ' + grid1 + ' ' + grid2,
 		function(err, stdout, stderr){
