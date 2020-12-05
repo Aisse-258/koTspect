@@ -31,8 +31,9 @@ server.post("/upload",function(req,res,next){
 		divW = req.body.divide_width;
 		var grid1 = req.body.grid1,
 		grid2 = req.body.grid2;
-		childProcess.exec('node retry.js \'' + JSON.stringify(filedata) + '\' ' +
-		treshold + ' ' + divH + 'x' + divW + ' ' + grid1 + ' ' + grid2,
+		childProcess.exec('node retry.js -t ' + treshold + ' -h ' + divH + ' -w ' + divW +
+		' -G ' + grid1 + ' -g ' + grid2 +
+		' -- \'' + JSON.stringify(filedata) + '\'',
 		function(err, stdout, stderr){
 			console.log(err,stdout,stderr);
 			Jimp.read(filedata.path,(err, image) => {
