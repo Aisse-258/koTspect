@@ -4,8 +4,8 @@ var childProcess = require('child_process');
 const minimist = require('minimist');
 const args = minimist(process.argv.slice(2), {
 	string: ['size'],
-	alias: {'treshold':'t','height-divide':'h','width-divide':'w', 'grid1':'G','grid2':'g'},
-	default: {'treshold':2,'height-divide':2,'width-divide':2,'grid1':32,'grid2':16},
+	alias: {'treshold':'t','height-divide':'h','width-divide':'w', 'grid1':'G','grid2':'g','simplify':'s'},
+	default: {'treshold':2,'height-divide':2,'width-divide':2,'grid1':32,'grid2':16, 'simplify': true},
 	unknown: (arg) => {
 	console.log('Unknown option: ', arg);
 	//return false;
@@ -29,10 +29,10 @@ Jimp.read(img.path, (err, image) => {
 if (err) throw err;
 	var imageColorData = img_color_data(image, Number(divide[0]), divide[1]);
 	if (grid1 > 0){
-		simple_colors(image, grid1, 8);
+		simple_colors(image, grid1, 8, args.simplify);
 	}
-	var simpleMap = simple_colors(image, grid2, 10);
-	colors_to_paper(image, imageColorData, simpleMap, grid2, threshold);
+	var simpleMap = simple_colors(image, grid2, 10, args.simplify);
+	colors_to_paper(image, imageColorData, simpleMap, grid2, threshold, args.simplify);
 	//find_plain(image, 8, 20);
 	fs.writeFileSync('test.txt','test');
 	image.write('./uploads/'+img.originalname.slice(0,-4) + '_mod.bmp', function() {

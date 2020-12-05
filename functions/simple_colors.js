@@ -1,7 +1,7 @@
 var Jimp = require('jimp');
 var math = require('mathjs');
 
-var simple_colors = function (image, grid, maxStd) {
+var simple_colors = function (image, grid, maxStd, doSimplify) {
 	let width = image.bitmap.width;
 	let height = image.bitmap.height;
 	let gridWidth = grid, gridHeight = grid;
@@ -40,10 +40,12 @@ var simple_colors = function (image, grid, maxStd) {
 				let b = Math.floor(blueTot/(gridWidth*gridHeight));
 				simpleMap[row/grid][col/grid] = {'red':r,'green':g,'blue':b};
 				//console.log (r, g, b, w*h);
-				let hex = Jimp.rgbaToInt(r, g, b, 255);
-				for (let i = row; i < row + gridHeight; i++){
-					for (let j = col; j < col + gridWidth; j++){
-						image.setPixelColor(hex, j, i);
+				if (doSimplify){
+					let hex = Jimp.rgbaToInt(r, g, b, 255);
+					for (let i = row; i < row + gridHeight; i++){
+						for (let j = col; j < col + gridWidth; j++){
+							image.setPixelColor(hex, j, i);
+						}
 					}
 				}
 			}

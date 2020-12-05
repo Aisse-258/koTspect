@@ -20,7 +20,7 @@ server.use(express.static(__dirname));
 server.use(multer({dest:"uploads"}).single("filedata"));
 server.post("/upload",function(req,res,next){
 	let filedata = req.file;
-	//console.log(filedata);
+	//console.log(req.body);
 	if(!filedata){
 		res.send("error on load");
 	}
@@ -29,10 +29,11 @@ server.post("/upload",function(req,res,next){
 		var treshold = req.body.treshold;
 		var divH = req.body.divide_height,
 		divW = req.body.divide_width;
-		var grid1 = req.body['simplify-big-areas'] == 'on' ? req.body.grid1 : 0,
-		grid2 = req.body.grid2;
+		var simplifyAreas = req.body['simplify-areas'] == 'on' ? '' : ' --no-simplify ';
+		var grid1 = req.body['simplify-areas'] == 'on' && req.body['simplify-big-areas'] == 'on' ? req.body.grid1 : 0,
+		grid2 = req.body['simplify-areas'] == 'on' ? req.body.grid2 : req.body.grid;
 		childProcess.exec('node retry.js -t ' + treshold + ' -h ' + divH + ' -w ' + divW +
-		' -G ' + grid1 + ' -g ' + grid2 +
+		' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas +
 		' -- \'' + JSON.stringify(filedata) + '\'',
 		function(err, stdout, stderr){
 			console.log(err,stdout,stderr);

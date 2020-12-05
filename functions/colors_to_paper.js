@@ -5,7 +5,7 @@ var is_color = require('./is_color.js');
 var step_order = require('./step_order.js');
 var simplify_area = require('./simplify_area.js');
 
-var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold) {
+var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold, doSimplify) {
 	let width = image.bitmap.width;
 	let height = image.bitmap.height;
 	let gridWidth = grid, gridHeight = grid;
@@ -226,7 +226,9 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 							this.bitmap.data[idx + 2] = colorsOnMap[r][c].blue;
 						}
 					});
-					simplify_area(image, nei[i][0], nei[i][1], grid, nei[i][2], nei[i][3], 10, simpleMap);
+					if (doSimplify){
+						simplify_area(image, nei[i][0], nei[i][1], grid, nei[i][2], nei[i][3], 10, simpleMap);
+					}
 				}
 			}
 			gridWidth = grid;
