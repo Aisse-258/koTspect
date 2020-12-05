@@ -6,7 +6,9 @@
 		<title>koTspect</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
-	<body style="height:100%; margin:10px;">
+	<body style="height:100%; margin:10px;" onload="
+		$('#simplify-big-areas-info').tooltip({html: 'true', placement: 'right'});
+		$('#grids-info').tooltip({html: 'true', placement: 'right'});">
 		<link rel="stylesheet" href="info_style.css">
 		<link rel="stylesheet" href="number_input_style.css">
 		<link rel="stylesheet" href="../node_modules/bootstrap3/dist/css/bootstrap.css">
@@ -18,9 +20,10 @@
 					Загрузить файл
 					<input type="file" name="filedata" style="display:none;"/>
 				</label><br><br>
-				Размер плиток (1) и (2):
+				Размер плиток (1) и (2): <label class="custom-control-input"><div id="grids-info" class="info" title="Размеры усредняемых плиток (1) - для усреднения больших однородных областей, (2) - для усреднения областей поменьше и дальнейшей обработки изображения.">ⓘ</div></label><br>
 				<label class="custom-control-input">
 				<input type="checkbox" id="simplify-big-areas" onclick="if(!document.getElementById('simplify-big-areas').checked) {document.getElementById('big-grid-input').setAttribute('style','display:none')} else {document.getElementById('big-grid-input').setAttribute('style','display:auto')}" name="simplify-big-areas" checked> Усреднение больших однородных областей
+					<div id="simplify-big-areas-info" class="info" title="Не обязательно">ⓘ</div>
 				</label>
 				<div id="big-grid-input" class="def-number-input number-input safari_only">
 					<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
