@@ -14,7 +14,7 @@ const port = 3000;
 var childProcess = require('child_process');
 //var main = fs.readFileSync('./webui/index.html','utf-8');
 const server = express();
-var onloadOrig = fs.readFileSync('./webui/onload.html','utf-8');
+var onloadOrig = fs.readFileSync('./webui/onload_template.html','utf-8');
 
 server.use(express.static(__dirname));
 server.use(multer({dest:"uploads"}).single("filedata"));
@@ -40,6 +40,7 @@ server.post("/upload",function(req,res,next){
 				onload = onload.replace(/image-mod-name/,filedata.originalname.slice(0,-4)+'_mod.jpg');
 				onload = onload.replace(/image-height/g,String(image.bitmap.height*0.3));
 				onload = onload.replace(/image-width/g,String(image.bitmap.width*0.3));
+				fs.writeFileSync('./webui/onload.html',onload);
 				res.send(onload);
 			});
 		});
