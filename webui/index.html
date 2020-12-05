@@ -19,7 +19,10 @@
 					<input type="file" name="filedata" style="display:none;"/>
 				</label><br><br>
 				Размер плиток (1) и (2):
-				<div class="def-number-input number-input safari_only">
+				<label class="custom-control-input">
+				<input type="checkbox" id="simplify-big-areas" onclick="if(!document.getElementById('simplify-big-areas').checked) {document.getElementById('big-grid-input').setAttribute('style','display:none')} else {document.getElementById('big-grid-input').setAttribute('style','display:auto')}" name="simplify-big-areas" checked> Усреднение больших однородных областей
+				</label>
+				<div id="big-grid-input" class="def-number-input number-input safari_only">
 					<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
 					<input class="quantity" min="8" name="grid1" value="16" step="8" type="number" id="grid1">
 					<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>

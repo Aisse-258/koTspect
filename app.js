@@ -29,7 +29,7 @@ server.post("/upload",function(req,res,next){
 		var treshold = req.body.treshold;
 		var divH = req.body.divide_height,
 		divW = req.body.divide_width;
-		var grid1 = req.body.grid1,
+		var grid1 = req.body['simplify-big-areas'] == 'on' ? req.body.grid1 : 0,
 		grid2 = req.body.grid2;
 		childProcess.exec('node retry.js -t ' + treshold + ' -h ' + divH + ' -w ' + divW +
 		' -G ' + grid1 + ' -g ' + grid2 +

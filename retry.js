@@ -28,7 +28,9 @@ var simple_colors = require('./functions/simple_colors.js');
 Jimp.read(img.path, (err, image) => {
 if (err) throw err;
 	var imageColorData = img_color_data(image, Number(divide[0]), divide[1]);
-	simple_colors(image, grid1, 8);
+	if (grid1 > 0){
+		simple_colors(image, grid1, 8);
+	}
 	var simpleMap = simple_colors(image, grid2, 10);
 	colors_to_paper(image, imageColorData, simpleMap, grid2, threshold);
 	//find_plain(image, 8, 20);
