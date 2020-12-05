@@ -15,7 +15,7 @@
 		<link rel="stylesheet" href="../node_modules/bootstrap3/dist/css/bootstrap-theme.css">
 
 		<div class="container-fluid">
-			<form action="/upload" method="post" enctype="multipart/form-data">
+			<form action="/upload" method="post" enctype="multipart/form-data" target="compare-imgs">
 				<label class="btn btn-default btn-file">
 					Загрузить файл
 					<input type="file" name="filedata" style="display:none;"/>
@@ -57,7 +57,10 @@
 					Обработать
 					<input type="submit" style="display:none;"/>
 				</label>
-			</form>
+			</form><br><hr><br>
+			<div>
+				<iframe name="compare-imgs" style="width: 100%; height: 1024px; border:none"></iframe>
+			</div>
 		<div>
 		<script src="../node_modules/jquery/dist/jquery.js"></script>
 		<script src="../node_modules/bootstrap3/dist/js/bootstrap.js"></script>
