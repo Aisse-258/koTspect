@@ -2,14 +2,11 @@
 <html>
 	<head>
 		<meta charset="utf8"/>
-		<!--<link rel="shortcut icon" href="icon.png" type="image/png">-->
+		<link rel="shortcut icon" href="kotspect.png" type="image/png">
 		<title>koTspect</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
-	<body style="height:100%; margin:10px;" onload="
-		$('#simplify-big-areas-info').tooltip({html: 'true', placement: 'right'});
-		$('#simplify-areas-info').tooltip({html: 'true', placement: 'right'});
-		$('#grids-info').tooltip({html: 'true', placement: 'right'});">
+	<body style="height:100%; margin:10px;">
 		<link rel="stylesheet" href="info_style.css">
 		<link rel="stylesheet" href="number_input_style.css">
 		<link rel="stylesheet" href="../node_modules/bootstrap3/dist/css/bootstrap.css">
@@ -19,23 +16,16 @@
 			<form action="/upload" method="post" enctype="multipart/form-data" target="compare-imgs">
 				<label class="btn btn-default btn-file">
 					Загрузить файл
-					<input type="file" name="filedata" style="display:none;"/>
-				</label><br><br>
+					<input id="filedata" type="file" name="filedata" style="display:none;"/>
+				</label><span id="loading-button"></span><br><br>
 				<label class="custom-control-input">
-					<input type="checkbox" id="simplify-areas" onclick="
-						if(!document.getElementById('simplify-areas').checked) {
-							document.getElementById('simplify-areas-settings').setAttribute('style','display:none');
-							document.getElementById('grid-to-work').setAttribute('style','display:auto');
-						} else {
-							document.getElementById('simplify-areas-settings').setAttribute('style','display:auto');
-							document.getElementById('grid-to-work').setAttribute('style','display:none');
-						}" name="simplify-areas" checked> Усреднение однородных областей
+					<input type="checkbox" id="simplify-areas" name="simplify-areas" checked> Усреднение однородных областей
 					<div id="simplify-areas-info" class="info" title="Закрашивание однородных областей их средними цветами. Не рекомендуется, если есть важные элементы, близкие по цвету с окружением (напр. текст написан бледными чернилами)">ⓘ</div>
 				</label><br>
 				<div id="simplify-areas-settings">
 					Размер плиток (1) и (2): <label class="custom-control-input"><div id="grids-info" class="info" title="Размеры усредняемых плиток (1) - для усреднения больших однородных областей, (2) - для усреднения областей поменьше и дальнейшей обработки изображения.">ⓘ</div></label><br>
 					<label class="custom-control-input">
-					<input type="checkbox" id="simplify-big-areas" onclick="if(!document.getElementById('simplify-big-areas').checked) {document.getElementById('big-grid-input').setAttribute('style','display:none')} else {document.getElementById('big-grid-input').setAttribute('style','display:auto')}" name="simplify-big-areas" checked> Усреднение больших однородных областей
+					<input type="checkbox" id="simplify-big-areas" name="simplify-big-areas" checked> Усреднение больших однородных областей
 						<div id="simplify-big-areas-info" class="info" title="Если теряются важные, но мелкие (меньше размеров большой плитки) элементы, попробуйте отключить.">ⓘ</div>
 					</label>
 					<div id="big-grid-input" class="def-number-input number-input safari_only">
@@ -89,5 +79,6 @@
 		<div>
 		<script src="../node_modules/jquery/dist/jquery.js"></script>
 		<script src="../node_modules/bootstrap3/dist/js/bootstrap.js"></script>
+		<script src="./front.js"></script>
 	</body>
 </html>
