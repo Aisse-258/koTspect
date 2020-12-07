@@ -44,21 +44,24 @@ server.post("/upload",function(req,res,next){
 			' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + doColorsToPaper +
 			' -- \'' + JSON.stringify(filedata[i]) + '\' & ';
 
-			imgsShow += '<div id="img-res'+i+'">\n'+
-			'<img src="../uploads/'+filedata[i].filename+'" style="max-width: 49%;">\n'+
-			'<a href="../uploads/'+filedata[i].originalname.slice(0,-4)+'_mod.jpg" download="'+
-			filedata[i].originalname.slice(0,-4)+'_mod.jpg">\n'+
-			'<img src="../uploads/'+filedata[i].originalname.slice(0,-4)+'_mod.jpg'+'" style="max-width: 49%;"></a><br>\n'+
-			'<a href="../uploads/'+filedata[i].originalname.slice(0,-4)+'_mod.jpg" download="'+
-			filedata[i].originalname.slice(0,-4)+
-			'_mod.jpg" style="margin-left: 50%;">Скачать изображение</a>'+
-			'\n</div>\n';
 			if(req.body['make-archive']=='on'||req.body['make-pdf']){
 				resList += ' ./uploads/' + filedata[i].originalname.slice(0,-4)+'_mod.jpg';
 			}
 		}
 		command += 'wait';
 		childProcess.exec(command, function(err, stdout, stderr){
+			for(let i = 0; i < filedata.length; i++){
+				let size = Math.ceil(fs.statSync("./uploads/"+filedata[i].originalname.slice(0,-4)+"_mod.jpg").size/1024);
+				imgsShow += '<div id="img-res'+i+'">\n'+
+				'<img src="../uploads/'+filedata[i].filename+'" style="max-width: 49%;">\n'+
+				'<a href="../uploads/'+filedata[i].originalname.slice(0,-4)+'_mod.jpg" download="'+
+				filedata[i].originalname.slice(0,-4)+'_mod.jpg">\n'+
+				'<img src="../uploads/'+filedata[i].originalname.slice(0,-4)+'_mod.jpg'+'" style="max-width: 49%;"></a><br>\n'+
+				'<a href="../uploads/'+filedata[i].originalname.slice(0,-4)+'_mod.jpg" download="'+
+				filedata[i].originalname.slice(0,-4)+
+				'_mod.jpg" style="margin-left: 50%;">Скачать изображение ('+size+' кБ)</a>'+
+				'\n</div>\n';
+			}
 			console.log(err,stdout,stderr);
 			if(req.body['make-archive']=='on'){
 				var archieveName = uuid.v4();

@@ -9,9 +9,9 @@ $('#divide-info').tooltip({html: 'true', placement: 'right'});
 //название файла рядом с кнопкой загрузки
 $('#filedata').change(function(){
     var files = document.getElementById("filedata").files;
-    var fileList = '';
+    var fileList = '| ';
     for(let i=0;i<files.length;i++){
-        fileList += '   ' + files[i].name + ' ' + Math.ceil(files[i].size/1024) + ' кБ'
+        fileList += '   ' + files[i].name + ' (' + Math.ceil(files[i].size/1024) + ' кБ) |'
     }
     $('#loading-button').text(fileList);
 });
