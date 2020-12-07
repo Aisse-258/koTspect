@@ -4,8 +4,24 @@ var childProcess = require('child_process');
 const minimist = require('minimist');
 const args = minimist(process.argv.slice(2), {
 	string: ['size'],
-	alias: {'treshold':'t','height-divide':'h','width-divide':'w', 'grid1':'G','grid2':'g','simplify':'s'},
-	default: {'treshold':2,'height-divide':2,'width-divide':2,'grid1':32,'grid2':16, 'simplify': true},
+	alias: {
+		'treshold':'t',
+		'height-divide':'h',
+		'width-divide':'w',
+		'grid1':'G',
+		'grid2':'g',
+		'simplify':'s',
+		'colors-to-paper':'colors-to-paper'
+	},
+	default: {
+		'treshold':2,
+		'height-divide':2,
+		'width-divide':2,
+		'grid1':32,
+		'grid2':16,
+		'simplify': true,
+		'colors-to-paper': true
+	},
 	unknown: (arg) => {
 	console.log('Unknown option: ', arg);
 	//return false;
@@ -13,8 +29,6 @@ const args = minimist(process.argv.slice(2), {
 });
 //console.log(args);
 var img = JSON.parse(args._[0]);
-var divide = [args['height-divide'], args['width-divide']];
-var threshold = args.treshold;
 var grid1 = args.grid1, grid2 =  args.grid2;
 var fs = require('fs');
 
@@ -27,14 +41,17 @@ var simple_colors = require('./functions/simple_colors.js');
 //var t = Date.now();
 Jimp.read(img.path, (err, image) => {
 if (err) throw err;
-	var imageColorData = img_color_data(image, Number(divide[0]), divide[1]);
 	if (grid1 > 0){
 		simple_colors(image, grid1, 8, args.simplify);
 	}
 	var simpleMap = simple_colors(image, grid2, 10, args.simplify);
-	colors_to_paper(image, imageColorData, simpleMap, grid2, threshold, args.simplify);
+	if (args['colors-to-paper']) {
+		var divide = [args['height-divide'], args['width-divide']];
+		var threshold = args.treshold;
+		var imageColorData = img_color_data(image, Number(divide[0]), divide[1]);
+		colors_to_paper(image, imageColorData, simpleMap, grid2, threshold, args.simplify);
+	}
 	//find_plain(image, 8, 20);
-	fs.writeFileSync('test.txt','test');
 	image.write('./uploads/'+img.originalname.slice(0,-4) + '_mod.bmp', function() {
 		if (img.originalname.slice(-4) == '.jpg') {
 			childProcess.execSync('convert ' +'./uploads/'+ img.originalname.slice(0,-4) + '_mod.bmp -quality ' +

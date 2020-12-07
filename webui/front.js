@@ -2,6 +2,8 @@
 $('#simplify-big-areas-info').tooltip({html: 'true', placement: 'right'});
 $('#simplify-areas-info').tooltip({html: 'true', placement: 'right'});
 $('#grids-info').tooltip({html: 'true', placement: 'right'});
+$('#do-colors-to-paper-info').tooltip({html: 'true', placement: 'right'});
+$('#colors-to-paper-info').tooltip({html: 'true', placement: 'right'});
 
 //название файла рядом с кнопкой загрузки
 $('#filedata').change(function(){
@@ -28,5 +30,13 @@ $('#simplify-big-areas').click(function(){
         document.getElementById('big-grid-input').setAttribute('style','display:none')
     } else {
         document.getElementById('big-grid-input').setAttribute('style','display:auto')
+    }
+})
+
+$('#do-colors-to-paper').click(function(){
+    if(!document.getElementById('do-colors-to-paper').checked) {
+        document.getElementById('colors-to-paper-settings').setAttribute('style','display:none')
+    } else {
+        document.getElementById('colors-to-paper-settings').setAttribute('style','display:auto')
     }
 })

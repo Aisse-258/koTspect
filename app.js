@@ -27,12 +27,13 @@ server.post("/upload",function(req,res,next){
 	}
 	else {
 		res.setHeader('Content-Type', 'text/html');
-		var treshold = req.body.treshold;
-		var divH = req.body.divide_height,
-		divW = req.body.divide_width;
 		var simplifyAreas = req.body['simplify-areas'] == 'on' ? '' : ' --no-simplify ';
 		var grid1 = req.body['simplify-areas'] == 'on' && req.body['simplify-big-areas'] == 'on' ? req.body.grid1 : 0,
 		grid2 = req.body['simplify-areas'] == 'on' ? req.body.grid2 : req.body.grid;
+		var doColorsToPaper = req.body['do-colors-to-paper'] == 'on' ? '' : ' --no-colors-to-paper';
+		var treshold = req.body.treshold;
+		var divH = req.body.divide_height,
+		divW = req.body.divide_width;
 		var command = '';
 		var imgsShow = '';
 		if(req.body['make-archive']=='on'||req.body['make-pdf']){
@@ -40,7 +41,7 @@ server.post("/upload",function(req,res,next){
 		}
 		for(let i = 0; i < filedata.length; i++){
 			command += 'node retry.js -t ' + treshold + ' -h ' + divH + ' -w ' + divW +
-			' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas +
+			' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + doColorsToPaper +
 			' -- \'' + JSON.stringify(filedata[i]) + '\' & ';
 
 			imgsShow += '<div id="img-res'+i+'">\n'+
