@@ -61,15 +61,23 @@
 						</div>
 					</div>
 					<div></div>
-					Разделение по высоте:
-					<div class="def-number-input number-input safari_only">
+					<b>
+						Деление на "квадраты"
+						<div id="divide-info" class="info" title='Использование "сетки" H*W для раздельной обработки неодинаково освещенных областей.'>ⓘ</div>
+					</b><br>
+					<label class="custom-control-input">
+						<input type="checkbox" id="do-height-divide" name="do-height-divide" checked> Разделение по высоте:
+					</label><br>
+					<div id="height-divide-input" class="def-number-input number-input safari_only">
 						<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
 						<input class="quantity" min="1" max="9.00" name="divide_height" value="2" type="number" id="divide-height">
 						<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
 					</div>
 					<div></div>
-					Разделение по ширине:
-					<div class="def-number-input number-input safari_only">
+					<label class="custom-control-input">
+						<input type="checkbox" id="do-width-divide" name="do-width-divide" checked> Разделение по ширине:
+					</label><br>
+					<div id="width-divide-input" class="def-number-input number-input safari_only">
 						<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
 						<input class="quantity" min="1" max="9.00" name="divide_width" value="2" type="number" id="divide-width">
 						<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>

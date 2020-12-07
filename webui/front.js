@@ -4,6 +4,7 @@ $('#simplify-areas-info').tooltip({html: 'true', placement: 'right'});
 $('#grids-info').tooltip({html: 'true', placement: 'right'});
 $('#do-colors-to-paper-info').tooltip({html: 'true', placement: 'right'});
 $('#colors-to-paper-info').tooltip({html: 'true', placement: 'right'});
+$('#divide-info').tooltip({html: 'true', placement: 'right'});
 
 //название файла рядом с кнопкой загрузки
 $('#filedata').change(function(){
@@ -38,5 +39,22 @@ $('#do-colors-to-paper').click(function(){
         document.getElementById('colors-to-paper-settings').setAttribute('style','display:none')
     } else {
         document.getElementById('colors-to-paper-settings').setAttribute('style','display:auto')
+    }
+})
+
+$('#do-height-divide').click(function(){
+    if(!document.getElementById('do-height-divide').checked) {
+        document.getElementById('height-divide-input').setAttribute('style','display:none')
+    } else {
+        document.getElementById('height-divide-input').setAttribute('style','display:auto')
+    }
+})
+
+
+$('#do-width-divide').click(function(){
+    if(!document.getElementById('do-width-divide').checked) {
+        document.getElementById('width-divide-input').setAttribute('style','display:none')
+    } else {
+        document.getElementById('width-divide-input').setAttribute('style','display:auto')
     }
 })

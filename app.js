@@ -32,8 +32,8 @@ server.post("/upload",function(req,res,next){
 		grid2 = req.body['simplify-areas'] == 'on' ? req.body.grid2 : req.body.grid;
 		var doColorsToPaper = req.body['do-colors-to-paper'] == 'on' ? '' : ' --no-colors-to-paper';
 		var treshold = req.body.treshold;
-		var divH = req.body.divide_height,
-		divW = req.body.divide_width;
+		var divH = req.body['do-height-divide'] == 'on' ? req.body.divide_height : 1,
+		divW = req.body['do-width-divide'] == 'on' ? req.body.divide_width : 1;
 		var command = '';
 		var imgsShow = '';
 		if(req.body['make-archive']=='on'||req.body['make-pdf']){
