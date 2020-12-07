@@ -5,9 +5,12 @@ $('#grids-info').tooltip({html: 'true', placement: 'right'});
 
 //название файла рядом с кнопкой загрузки
 $('#filedata').change(function(){
-    var name = document.getElementById("filedata").files[0].name;
-    var size = Math.ceil(document.getElementById("filedata").files[0].size/1024);
-    $('#loading-button').text('  ' + name + ' ' + size + ' кБ');
+    var files = document.getElementById("filedata").files;
+    var fileList = '';
+    for(let i=0;i<files.length;i++){
+        fileList += '   ' + files[i].name + ' ' + Math.ceil(files[i].size/1024) + ' кБ'
+    }
+    $('#loading-button').text(fileList);
 });
 
 $('#simplify-areas').click(function(){
