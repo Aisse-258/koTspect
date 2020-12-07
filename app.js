@@ -3,6 +3,7 @@ const http = require('http');
 const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
+const uuid = require('uuid');
 var Jimp = require('jimp');
 const hostname = '127.0.0.1';
 const port = 3000;
@@ -34,6 +35,9 @@ server.post("/upload",function(req,res,next){
 		grid2 = req.body['simplify-areas'] == 'on' ? req.body.grid2 : req.body.grid;
 		var command = '';
 		var imgsShow = '';
+		if(req.body['make-archive']=='on'||req.body['make-pdf']){
+			var resList = '';
+		}
 		for(let i = 0; i < filedata.length; i++){
 			command += 'node retry.js -t ' + treshold + ' -h ' + divH + ' -w ' + divW +
 			' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas +
@@ -41,17 +45,34 @@ server.post("/upload",function(req,res,next){
 
 			imgsShow += '<div id="img-res'+i+'">\n'+
 			'<img src="../uploads/'+filedata[i].filename+'" style="max-width: 49%;">\n'+
-			'<a href="'+filedata[i].originalname.slice(0,-4)+'_mod.jpg" download="'+
+			'<a href="../uploads/'+filedata[i].originalname.slice(0,-4)+'_mod.jpg" download="'+
 			filedata[i].originalname.slice(0,-4)+'_mod.jpg">\n'+
 			'<img src="../uploads/'+filedata[i].originalname.slice(0,-4)+'_mod.jpg'+'" style="max-width: 49%;"></a><br>\n'+
-			'<a href="'+filedata[i].originalname.slice(0,-4)+'_mod.jpg" download="'+
+			'<a href="../uploads/'+filedata[i].originalname.slice(0,-4)+'_mod.jpg" download="'+
 			filedata[i].originalname.slice(0,-4)+
-			'_mod.jpg">Скачать изображение</a>'+
+			'_mod.jpg" style="margin-left: 50%;">Скачать изображение</a>'+
 			'\n</div>\n';
+			if(req.body['make-archive']=='on'||req.body['make-pdf']){
+				resList += ' ./uploads/' + filedata[i].originalname.slice(0,-4)+'_mod.jpg';
+			}
 		}
 		command += 'wait';
 		childProcess.exec(command, function(err, stdout, stderr){
 			console.log(err,stdout,stderr);
+			if(req.body['make-archive']=='on'){
+				var archieveName = uuid.v4();
+				imgsShow += '<a id="download-res-archieve" href="../uploads/'+archieveName + '.zip'+
+				'" download="'+archieveName + '.zip'+'">\n'+
+				'<label class="btn btn-default btn-file">\nСкачать архив\n</label>\n</a>\n';
+				childProcess.exec('zip ./uploads/' + archieveName + '.zip' + resList);
+			}
+			if(req.body['make-pdf']=='on'){
+				var pdfName = uuid.v4();
+				imgsShow += '<a id="download-res-pdf" href="../uploads/'+pdfName + '.pdf'+
+				'" download="'+pdfName + '.pdf'+'">\n'+
+				'<label class="btn btn-default btn-file">\nСкачать PDF\n</label>\n</a>\n';
+				childProcess.exec('img2pdf' + resList+' -o ./uploads/' + pdfName + '.pdf');
+			}
 			var onload = onloadOrig.replace(/insert-imgs-here/,imgsShow);
 			//fs.writeFileSync('./webui/onload.html',onload);
 			res.send(onload);

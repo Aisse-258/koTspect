@@ -68,6 +68,12 @@
 					<input class="quantity" min="1" max="9.00" name="divide_width" value="2" type="number" id="divide-width">
 					<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
 				</div>
+				<label class="custom-control-input">
+					<input type="checkbox" id="make-archive" name="make-archive"> Поместить изображения в архив
+				</label><br>
+				<label class="custom-control-input">
+					<input type="checkbox" id="make-pdf" name="make-pdf"> Поместить изображения в PDF-файл
+				</label><br>
 				<label class="btn btn-default btn-send">
 					Обработать
 					<input type="submit" style="display:none;"/>
