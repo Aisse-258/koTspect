@@ -52,16 +52,17 @@ if (err) throw err;
 		colors_to_paper(image, imageColorData, simpleMap, grid2, threshold, args.simplify);
 	}
 	//find_plain(image, 8, 20);
-	image.write('./uploads/'+img.originalname.slice(0,-4) + '_mod.bmp', function() {
-		if (img.originalname.slice(-4) == '.jpg') {
-			childProcess.execSync('convert ' +'./uploads/'+ img.originalname.slice(0,-4) + '_mod.bmp -quality ' +
-			childProcess.execSync('identify -format \'%Q\' ' + img.path).toString() + ' ' +'./uploads/'+ img.originalname.slice(0,-4) + '_mod.jpg');
+	var extData = /([^\.]+)\.([^\.]+)$/.exec(img.originalname).slice(1,3);//[name,extension]
+	image.write('./uploads/'+extData[0] + '_mod.bmp', function() {
+		if (extData[1].toLowerCase() == 'jpg' || extData[1].toLowerCase() == 'jpeg') {
+			childProcess.execSync('convert ' +'./uploads/'+ extData[0] + '_mod.bmp -quality ' +
+			childProcess.execSync('identify -format \'%Q\' ' + img.path).toString() + ' ' +'./uploads/'+ extData[0] + '_mod.jpg');
 			//console.log(Date.now()-t);
 		}
 		else {
-			childProcess.execSync('convert ' +'./uploads/'+ img.originalname.slice(0,-4) + '_mod.bmp ' +'./uploads/'+ img.originalname.slice(0,-4) + '_mod.jpg');
+			childProcess.execSync('convert ' +'./uploads/'+ extData[0] + '_mod.bmp ' +'./uploads/'+ extData[0] + '_mod.jpg');
 			//console.log(Date.now()-t);
 		}
-		childProcess.execSync('rm ' +'./uploads/'+ img.originalname.slice(0,-4) + '_mod.bmp');
+		childProcess.execSync('rm ' +'./uploads/'+ extData[0] + '_mod.bmp');
 	});
 });
