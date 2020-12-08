@@ -39,6 +39,43 @@ server.post("/upload",function(req,res,next){
 		if(req.body['make-archive']=='on'||req.body['make-pdf']){
 			var resList = '';
 		}
+		//TODO: Переписать асинхронно
+		for(let i = 0; i < filedata.length; i++){
+			if(filedata[i].mimetype == 'application/pdf'){
+				childProcess.execSync('pdfimages -j ' + filedata[i].path + ' ' + filedata[i].path);
+				let imgQ = childProcess.execSync('pdfimages -list ' + filedata[i].path + ' | wc -l') - 2;
+				for (let j=0; j<imgQ;j++) {
+					var num='';
+					if (j == 0) {
+						num='000'
+					}
+					else if (j<10) {
+						num = '00'+j;
+					}
+					else if (j<100){
+						num = '0'+j;
+					}
+					else {
+						num = j;
+					}
+					filedata.push({
+						fieldname: 'filedata',
+						originalname:  filedata[i].filename+'-'+num+'.jpg',
+						encoding: '7bit',
+						mimetype: 'image/jpeg',
+						destination: 'uploads',
+						filename: filedata[i].filename+'-'+num+'.jpg',
+						path: filedata[i].path+'-'+num+'.jpg',
+						size: fs.statSync(filedata[i].path+'-'+num+'.jpg').size
+					});
+				}
+				filedata.splice(i,1);
+			}
+		}
+		console.log(filedata);
+		if(filedata.length == 0){
+			res.send('Файлы не выбраны или выбранные файлы не содержат изображений.');
+		}
 		for(let i = 0; i < filedata.length; i++){
 			command += 'node retry.js -t ' + treshold + ' -h ' + divH + ' -w ' + divW +
 			' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + doColorsToPaper +
