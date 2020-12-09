@@ -123,7 +123,6 @@ server.post("/upload",function(req,res,next){
 				childProcess.exec('img2pdf' + resList+' -o ./uploads/' + pdfName + '.pdf');
 			}
 			var onload = onloadOrig.replace(/insert-imgs-here/,imgsShow);
-			//fs.writeFileSync('./webui/onload.html',onload);
 			res.send(onload);
 		});
 	}
