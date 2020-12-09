@@ -89,6 +89,7 @@ server.post("/upload",function(req,res,next){
 		}
 		command += 'wait';
 		childProcess.exec(command, function(err, stdout, stderr){
+			console.log(err,stdout,stderr);
 			for(let i = 0; i < filedata.length; i++){
 				let extData = /([^\.]+)\.([^\.]+)$/.exec(filedata[i].originalname).slice(1,3);//[name,extension]
 				let size = Math.ceil(fs.statSync("./uploads/"+extData[0]+'_mod.'+ (extData[1].toLowerCase()=='png' ? 'png' : 'jpg')).size/1024);
@@ -107,7 +108,6 @@ server.post("/upload",function(req,res,next){
 				'" style="margin-left: 50%;">Скачать изображение ('+size+' кБ)</a>'+
 				'\n</div>\n';
 			}
-			console.log(err,stdout,stderr);
 			if(req.body['make-archive']=='on'){
 				var archieveName = uuid.v4();
 				imgsShow += '<a id="download-res-archieve" href="../uploads/'+archieveName + '.zip'+
