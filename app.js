@@ -53,9 +53,6 @@ server.post("/upload",function(req,res,next){
 					else {
 						num = j;
 					}
-					console.log(filedata[i].path + '-'+num + '.jpg ');
-					console.log(childProcess.execSync('ls -lt ./'+filedata[i].path+'*').toString());
-					console.log(fs.existsSync('./'+filedata[i].path + '-'+num + '.jpg'));
 					if (fs.existsSync(filedata[i].path + '-'+num + '.ppm')) {
 						childProcess.execSync('convert ' + filedata[i].path + '-'+num + '.ppm ' + filedata[i].path + '-'+num + '.png');
 						childProcess.execSync('rm ' + filedata[i].path + '-'+num + '.ppm');
