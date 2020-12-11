@@ -111,6 +111,7 @@ server.post("/upload",function(req,res,next){
 		console.log(filedata);
 		if(filedata.length == 0){
 			res.send('Файлы не выбраны или выбранные файлы не содержат изображений.');
+			return;
 		}
 		for(let i = 0; i < filedata.length; i++){
 			command += 'node retry.js -t ' + treshold + ' -h ' + divH + ' -w ' + divW +
