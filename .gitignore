@@ -91,3 +91,5 @@ _SpecRunner.html
 *.out
 *.synctex.gz
 
+experimental_imgs/
+uploads/
