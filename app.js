@@ -8,12 +8,7 @@ var Jimp = require('jimp');
 const hostname = '127.0.0.1';
 const port = 3000;
 
-//const { JSDOM } = require( "jsdom" );
-//const { window } = new JSDOM( "" );
-//const $ = require( "jquery" )( window );
-//var $ = require('jquery-with-bootstrap-for-browserify');
 var childProcess = require('child_process');
-//var main = fs.readFileSync('./webui/index.html','utf-8');
 const server = express();
 var onloadOrig = fs.readFileSync('./webui/onload_template.html','utf-8');
 
@@ -21,7 +16,7 @@ server.use(express.static(__dirname));
 server.use(multer({dest:"uploads"}).array("filedata"));
 server.post("/upload",function(req,res,next){
 	let filedata = req.files;
-	console.log(req);
+	//console.log(req);
 	if(!filedata){
 		res.send("error on load");
 	}
@@ -108,7 +103,7 @@ server.post("/upload",function(req,res,next){
 				filedata.splice(i,1);
 			}
 		}
-		console.log(filedata);
+		//console.log(filedata);
 		if(filedata.length == 0){
 			res.send('Файлы не выбраны или выбранные файлы не содержат изображений.');
 			return;
@@ -164,15 +159,6 @@ server.post("/upload",function(req,res,next){
 		});
 	}
 });
-/*server.get('/download',function(req, res){
-	const file = `${__dirname}/upload/img.jpg`;
-	res.download(file);
-});
-const server = http.createServer((req, res) => {
-	res.statusCode = 200;
-	res.setHeader('Content-Type', 'text/html');
-	res.end(main);
-});*/
 
 server.listen(port, hostname, () => {
 	console.log(`Server running at http://${hostname}:${port}/`);
