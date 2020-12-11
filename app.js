@@ -42,7 +42,7 @@ server.post("/upload",function(req,res,next){
 		//TODO: Переписать асинхронно
 		for(let i = 0; i < filedata.length; i++){
 			if(filedata[i].mimetype == 'application/pdf'){
-				childProcess.execSync('pdfimages -j ' + filedata[i].path + ' ' + filedata[i].path);
+				childProcess.execSync('pdfimages -all ' + filedata[i].path + ' ' + filedata[i].path);
 				let imgQ = childProcess.execSync('pdfimages -list ' + filedata[i].path + ' | wc -l') - 2;
 				for (let j=0; j<imgQ;j++) {
 					var num='';
@@ -58,16 +58,52 @@ server.post("/upload",function(req,res,next){
 					else {
 						num = j;
 					}
-					filedata.push({
-						fieldname: 'filedata',
-						originalname:  filedata[i].filename+'-'+num+'.jpg',
-						encoding: '7bit',
-						mimetype: 'image/jpeg',
-						destination: 'uploads',
-						filename: filedata[i].filename+'-'+num+'.jpg',
-						path: filedata[i].path+'-'+num+'.jpg',
-						size: fs.statSync(filedata[i].path+'-'+num+'.jpg').size
-					});
+					console.log(filedata[i].path + '-'+num + '.jpg ');
+					console.log(childProcess.execSync('ls -lt ./'+filedata[i].path+'*').toString());
+					console.log(fs.existsSync('./'+filedata[i].path + '-'+num + '.jpg'));
+					if (fs.existsSync(filedata[i].path + '-'+num + '.ppm')) {
+						childProcess.execSync('convert ' + filedata[i].path + '-'+num + '.ppm ' + filedata[i].path + '-'+num + '.png');
+						childProcess.execSync('rm ' + filedata[i].path + '-'+num + '.ppm');
+						filedata.push({
+							fieldname: 'filedata',
+							originalname:  filedata[i].filename+'-'+num+'.png',
+							encoding: '7bit',
+							mimetype: 'image/png',
+							destination: 'uploads',
+							filename: filedata[i].filename+'-'+num+'.png',
+							path: filedata[i].path+'-'+num+'.png',
+							size: fs.statSync(filedata[i].path+'-'+num+'.png').size
+						});
+					}
+					else if (fs.existsSync(filedata[i].path + '-'+num + '.png')) {
+						filedata.push({
+							fieldname: 'filedata',
+							originalname:  filedata[i].filename+'-'+num+'.png',
+							encoding: '7bit',
+							mimetype: 'image/png',
+							destination: 'uploads',
+							filename: filedata[i].filename+'-'+num+'.png',
+							path: filedata[i].path+'-'+num+'.png',
+							size: fs.statSync(filedata[i].path+'-'+num+'.png').size
+						});
+					}
+					else if (fs.existsSync(filedata[i].path + '-'+num + '.jpg')) {
+						filedata.push({
+							fieldname: 'filedata',
+							originalname:  filedata[i].filename+'-'+num+'.jpg',
+							encoding: '7bit',
+							mimetype: 'image/jpeg',
+							destination: 'uploads',
+							filename: filedata[i].filename+'-'+num+'.jpg',
+							path: filedata[i].path+'-'+num+'.jpg',
+							size: fs.statSync(filedata[i].path+'-'+num+'.jpg').size
+						});
+					}
+					else {
+						let imgs = childProcess.execSync('ls -l '+filedata[i].path+'-*');
+						res.send('Присутствуют изображения в неподдерживаемых форматах.\n'+imgs);
+						return;
+					}
 				}
 				filedata.splice(i,1);
 			}
