@@ -20,6 +20,7 @@ const args = minimist(process.argv.slice(2), {
 		'grid1':32,
 		'grid2':16,
 		'simplify': true,
+		'simplify-treshold': 10,
 		'colors-to-paper': true
 	},
 	unknown: (arg) => {
@@ -42,9 +43,9 @@ var simple_colors = require('./functions/simple_colors.js');
 Jimp.read(img.path, (err, image) => {
 if (err) throw err;
 	if (grid1 > 0){
-		simple_colors(image, grid1, 8, args.simplify);
+		simple_colors(image, grid1, args['simplify-treshold']-2, args.simplify);
 	}
-	var simpleMap = simple_colors(image, grid2, 10, args.simplify);
+	var simpleMap = simple_colors(image, grid2, args['simplify-treshold'], args.simplify);
 	if (args['colors-to-paper']) {
 		var divide = [args['height-divide'], args['width-divide']];
 		var threshold = args.treshold;

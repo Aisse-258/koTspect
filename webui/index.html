@@ -38,6 +38,12 @@
 						<input class="quantity" min="8" name="grid2" value="16" step="8" type="number" id="grid2">
 						<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
 					</div>
+					Порог усреднения: <label class="custom-control-input"><div id="simplify-treshold-info" class="info" title="Допустимый разброс цветовых показателей. Если усредняет лишнее - уменьшить.">ⓘ</div></label><br>
+					<div id="simplify-treshold-input" class="def-number-input number-input safari_only">
+						<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
+						<input class="quantity" min="2" name="simplify-treshold" value="10" step="1" type="number" id="simplify-treshold">
+						<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+					</div>
 				</div>
 				<div></div>
 				<label class="custom-control-input">

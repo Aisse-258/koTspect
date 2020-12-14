@@ -5,6 +5,7 @@ $('#grids-info').tooltip({html: 'true', placement: 'right'});
 $('#do-colors-to-paper-info').tooltip({html: 'true', placement: 'right'});
 $('#colors-to-paper-info').tooltip({html: 'true', placement: 'right'});
 $('#divide-info').tooltip({html: 'true', placement: 'right'});
+$('#simplify-treshold-info').tooltip({html: 'true', placement: 'right'});
 
 //название файла рядом с кнопкой загрузки
 $('#filedata').change(function(){

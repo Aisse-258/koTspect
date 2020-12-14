@@ -27,6 +27,7 @@ server.post("/upload",function(req,res,next){
 		grid2 = req.body['simplify-areas'] == 'on' ? req.body.grid2 : req.body.grid;
 		var doColorsToPaper = req.body['do-colors-to-paper'] == 'on' ? '' : ' --no-colors-to-paper';
 		var treshold = req.body.treshold;
+		var simplifyTreshold = req.body['simplify-areas'] == 'on' ? req.body['simplify-treshold'] : 0;
 		var divH = req.body['do-height-divide'] == 'on' ? req.body.divide_height : 1,
 		divW = req.body['do-width-divide'] == 'on' ? req.body.divide_width : 1;
 		var command = '';
@@ -107,7 +108,7 @@ server.post("/upload",function(req,res,next){
 		}
 		for(let i = 0; i < filedata.length; i++){
 			command += 'node retry.js -t ' + treshold + ' -h ' + divH + ' -w ' + divW +
-			' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + doColorsToPaper +
+			' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + simplifyTreshold + doColorsToPaper +
 			' -- \'' + JSON.stringify(filedata[i]) + '\' & ';
 
 			let extData = /([^\.]+)\.([^\.]+)$/.exec(filedata[i].originalname).slice(1,3);//[name,extension]
