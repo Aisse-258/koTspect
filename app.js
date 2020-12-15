@@ -123,6 +123,11 @@ server.post("/upload",function(req,res,next){
 			console.log(err,stdout,stderr);
 			for(let i = 0; i < filedata.length; i++){
 				let extData = /([^\.]+)\.([^\.]+)$/.exec(filedata[i].originalname).slice(1,3);//[name,extension]
+				if(!fs.existsSync("./uploads/"+extData[0]+'_mod.'+ (extData[1].toLowerCase()=='png' ? 'png' : 'jpg'))) {
+					childProcess.execSync('node retry.js -t ' + treshold + ' -h ' + divH + ' -w ' + divW +
+					' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + simplifyTreshold + doColorsToPaper +
+					doPixelColors + ' -- \'' + JSON.stringify(filedata[i]) + '\'');
+				}
 				let size = Math.ceil(fs.statSync("./uploads/"+extData[0]+'_mod.'+ (extData[1].toLowerCase()=='png' ? 'png' : 'jpg')).size/1024);
 				imgsShow += '<div id="img-res'+i+'">\n'+
 				'<img src="../uploads/'+filedata[i].filename+'" style="max-width: 49%;">\n'+
