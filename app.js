@@ -164,6 +164,11 @@ server.post("/upload",function(req,res,next){
 	}
 });
 
+server.use(function (req, res, next) {
+	res.status(404)
+	.send('<html><body>404: Page not found. Main page: <a href="./webui/index.html">link</a></body></html>')
+})
+
 server.listen(port, hostname, () => {
 	console.log(`Server running at http://${hostname}:${port}/`);
 });
