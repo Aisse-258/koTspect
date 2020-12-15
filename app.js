@@ -30,6 +30,7 @@ server.post("/upload",function(req,res,next){
 		var simplifyTreshold = req.body['simplify-areas'] == 'on' ? req.body['simplify-treshold'] : 0;
 		var divH = req.body['do-height-divide'] == 'on' ? req.body.divide_height : 1,
 		divW = req.body['do-width-divide'] == 'on' ? req.body.divide_width : 1;
+		var doPixelColors = req.body['do-pixel-colors'] == 'on' ? '' : ' --no-pixel-colors ';
 		var command = '';
 		var imgsShow = '';
 		if(req.body['make-archive']=='on'||req.body['make-pdf']){
@@ -109,7 +110,7 @@ server.post("/upload",function(req,res,next){
 		for(let i = 0; i < filedata.length; i++){
 			command += 'node retry.js -t ' + treshold + ' -h ' + divH + ' -w ' + divW +
 			' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + simplifyTreshold + doColorsToPaper +
-			' -- \'' + JSON.stringify(filedata[i]) + '\' & ';
+			doPixelColors + ' -- \'' + JSON.stringify(filedata[i]) + '\' & ';
 
 			let extData = /([^\.]+)\.([^\.]+)$/.exec(filedata[i].originalname).slice(1,3);//[name,extension]
 			if(req.body['make-archive']=='on'||req.body['make-pdf']){

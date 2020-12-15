@@ -11,7 +11,8 @@ const args = minimist(process.argv.slice(2), {
 		'grid1':'G',
 		'grid2':'g',
 		'simplify':'s',
-		'colors-to-paper':'colors-to-paper'
+		'colors-to-paper':'colors-to-paper',
+		'pixel-colors':'pixel-colors'
 	},
 	default: {
 		'treshold':2,
@@ -21,7 +22,8 @@ const args = minimist(process.argv.slice(2), {
 		'grid2':16,
 		'simplify': true,
 		'simplify-treshold': 10,
-		'colors-to-paper': true
+		'colors-to-paper': true,
+		'pixel-colors': true
 	},
 	unknown: (arg) => {
 	console.log('Unknown option: ', arg);
@@ -50,7 +52,7 @@ if (err) throw err;
 		var divide = [args['height-divide'], args['width-divide']];
 		var threshold = args.treshold;
 		var imageColorData = img_color_data(image, Number(divide[0]), divide[1]);
-		colors_to_paper(image, imageColorData, simpleMap, grid2, threshold, args.simplify);
+		colors_to_paper(image, imageColorData, simpleMap, grid2, threshold, args.simplify, args['pixel-colors']);
 	}
 	//find_plain(image, 8, 20);
 	var extData = /([^\.]+)\.([^\.]+)$/.exec(img.originalname).slice(1,3);//[name,extension]

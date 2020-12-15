@@ -5,7 +5,7 @@ var is_color = require('./is_color.js');
 var step_order = require('./step_order.js');
 var simplify_area = require('./simplify_area.js');
 
-var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold, doSimplify) {
+var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold, doSimplify, doPixelColors) {
 	let width = image.bitmap.width;
 	let height = image.bitmap.height;
 	let gridWidth = grid, gridHeight = grid;
@@ -169,71 +169,73 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 		}
 		gridHeight = grid;
 	}
-	for (let row = 0; row < height; row += grid) {
-		if (row+grid > height) {
-			gridHeight = gridHeightBorder;
-		}
-		for (let col = 0; col < width; col += grid) {
-			r = row/grid; c = col/grid;
-			if (col + grid > width)
-				gridWidth = gridWidthBorder;
-			if(colorMap[r][c]==3){
-				var nei = [];
-				if (colorsOnMap[r][c+1] && colorMap[r][c+1] != 3)
-					nei.push([(c+1)*grid,r*grid,
-						grid_width((c+1)*grid, width, grid, gridWidthBorder),
-						grid_width(r*grid, height, grid, gridHeightBorder)]);
-				if (colorsOnMap[r][c-1] && colorMap[r][c-1] != 3)
-					nei.push([(c-1)*grid,r*grid,
-						grid_width((c-1)*grid, width, grid, gridWidthBorder),
-						grid_width(r*grid, height, grid, gridHeightBorder)]);
-				if ((colorsOnMap[r+1]||[])[c] && (colorMap[r+1]||[])[c] != 3)
-					nei.push([c*grid,(r+1)*grid,
-						grid_width(c*grid, width, grid, gridWidthBorder),
-						grid_width((r+1)*grid, height, grid, gridHeightBorder)]);
-				if ((colorsOnMap[r-1]||[])[c] && (colorMap[r-1]||[])[c] != 3)
-					nei.push([c*grid,(r-1)*grid,
-						grid_width(c*grid, width, grid, gridWidthBorder),
-						grid_width((r-1)*grid, height, grid, gridHeightBorder)]);
-				if ((colorsOnMap[r+1]||[])[c+1] && (colorMap[r+1||[]])[c+1] != 3)
-					nei.push([(c+1)*grid,(r+1)*grid,
-						grid_width((c+1)*grid, width, grid, gridWidthBorder),
-						grid_width((r+1)*grid, height, grid, gridHeightBorder)]);
-				if ((colorsOnMap[r+1]||[])[c-1] && (colorMap[r+1]||[])[c-1] != 3)
-					nei.push([(c-1)*grid,(r+1)*grid,
-						grid_width((c-1)*grid, width, grid, gridWidthBorder),
-						grid_width((r+1)*grid, height, grid, gridHeightBorder)]);
-				if ((colorsOnMap[r-1]||[])[c+1] && (colorMap[r-1]||[])[c+1] != 3)
-					nei.push([(c+1)*grid,(r-1)*grid,
-						grid_width((c+1)*grid, width, grid, gridWidthBorder),
-						grid_width((r-1)*grid, height, grid, gridHeightBorder)]);
-				if ((colorsOnMap[r-1]||[])[c-1] && (colorMap[r-1]||[])[c-1] != 3)
-					nei.push([(c-1)*grid,(r-1)*grid,
-						grid_width((c-1)*grid, width, grid, gridWidthBorder),
-						grid_width((r-1)*grid, height, grid, gridHeightBorder)]);
-				if (nei.length == 0)
-					continue;
-				for (let i = 0; i < nei.length; i++) {
-					image.scan(nei[i][0], nei[i][1], nei[i][2], nei[i][3], function(x, y, idx) {
-						let red = this.bitmap.data[idx + 0];
-						let green = this.bitmap.data[idx + 1];
-						let blue = this.bitmap.data[idx + 2];
-						if (is_color({'red': red, 'green': green, 'blue': blue}, imageColorData,
-						color_data_position(y,x,height,width,imageColorData.imgDevs.length,
-							imageColorData.imgDevs[0].length),treshold)) {
-							this.bitmap.data[idx + 0] = colorsOnMap[r][c].red;
-							this.bitmap.data[idx + 1] = colorsOnMap[r][c].green;
-							this.bitmap.data[idx + 2] = colorsOnMap[r][c].blue;
+	if (doPixelColors) {
+		for (let row = 0; row < height; row += grid) {
+			if (row+grid > height) {
+				gridHeight = gridHeightBorder;
+			}
+			for (let col = 0; col < width; col += grid) {
+				r = row/grid; c = col/grid;
+				if (col + grid > width)
+					gridWidth = gridWidthBorder;
+				if(colorMap[r][c]==3){
+					var nei = [];
+					if (colorsOnMap[r][c+1] && colorMap[r][c+1] != 3)
+						nei.push([(c+1)*grid,r*grid,
+							grid_width((c+1)*grid, width, grid, gridWidthBorder),
+							grid_width(r*grid, height, grid, gridHeightBorder)]);
+					if (colorsOnMap[r][c-1] && colorMap[r][c-1] != 3)
+						nei.push([(c-1)*grid,r*grid,
+							grid_width((c-1)*grid, width, grid, gridWidthBorder),
+							grid_width(r*grid, height, grid, gridHeightBorder)]);
+					if ((colorsOnMap[r+1]||[])[c] && (colorMap[r+1]||[])[c] != 3)
+						nei.push([c*grid,(r+1)*grid,
+							grid_width(c*grid, width, grid, gridWidthBorder),
+							grid_width((r+1)*grid, height, grid, gridHeightBorder)]);
+					if ((colorsOnMap[r-1]||[])[c] && (colorMap[r-1]||[])[c] != 3)
+						nei.push([c*grid,(r-1)*grid,
+							grid_width(c*grid, width, grid, gridWidthBorder),
+							grid_width((r-1)*grid, height, grid, gridHeightBorder)]);
+					if ((colorsOnMap[r+1]||[])[c+1] && (colorMap[r+1||[]])[c+1] != 3)
+						nei.push([(c+1)*grid,(r+1)*grid,
+							grid_width((c+1)*grid, width, grid, gridWidthBorder),
+							grid_width((r+1)*grid, height, grid, gridHeightBorder)]);
+					if ((colorsOnMap[r+1]||[])[c-1] && (colorMap[r+1]||[])[c-1] != 3)
+						nei.push([(c-1)*grid,(r+1)*grid,
+							grid_width((c-1)*grid, width, grid, gridWidthBorder),
+							grid_width((r+1)*grid, height, grid, gridHeightBorder)]);
+					if ((colorsOnMap[r-1]||[])[c+1] && (colorMap[r-1]||[])[c+1] != 3)
+						nei.push([(c+1)*grid,(r-1)*grid,
+							grid_width((c+1)*grid, width, grid, gridWidthBorder),
+							grid_width((r-1)*grid, height, grid, gridHeightBorder)]);
+					if ((colorsOnMap[r-1]||[])[c-1] && (colorMap[r-1]||[])[c-1] != 3)
+						nei.push([(c-1)*grid,(r-1)*grid,
+							grid_width((c-1)*grid, width, grid, gridWidthBorder),
+							grid_width((r-1)*grid, height, grid, gridHeightBorder)]);
+					if (nei.length == 0)
+						continue;
+					for (let i = 0; i < nei.length; i++) {
+						image.scan(nei[i][0], nei[i][1], nei[i][2], nei[i][3], function(x, y, idx) {
+							let red = this.bitmap.data[idx + 0];
+							let green = this.bitmap.data[idx + 1];
+							let blue = this.bitmap.data[idx + 2];
+							if (is_color({'red': red, 'green': green, 'blue': blue}, imageColorData,
+							color_data_position(y,x,height,width,imageColorData.imgDevs.length,
+								imageColorData.imgDevs[0].length),treshold)) {
+								this.bitmap.data[idx + 0] = colorsOnMap[r][c].red;
+								this.bitmap.data[idx + 1] = colorsOnMap[r][c].green;
+								this.bitmap.data[idx + 2] = colorsOnMap[r][c].blue;
+							}
+						});
+						if (doSimplify){
+							simplify_area(image, nei[i][0], nei[i][1], grid, nei[i][2], nei[i][3], 10, simpleMap);
 						}
-					});
-					if (doSimplify){
-						simplify_area(image, nei[i][0], nei[i][1], grid, nei[i][2], nei[i][3], 10, simpleMap);
 					}
 				}
+				gridWidth = grid;
 			}
-			gridWidth = grid;
+			gridHeight = grid;
 		}
-		gridHeight = grid;
 	}
 }
 
