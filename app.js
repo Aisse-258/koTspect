@@ -166,7 +166,10 @@ server.post("/upload",function(req,res,next){
 
 server.use(function (req, res, next) {
 	res.status(404)
-	.send('<html><body>404: Page not found. Main page: <a href="./webui/index.html">link</a></body></html>')
+	.send('<html>'+
+	'<head><meta http-equiv="refresh" content="1;URL=http://localhost:3000/webui/index.html" /></head>'+
+	'<body>404: Страница не найдена. <br> Если автоматического перенаправления не произошло, нажмите <a href="./webui/index.html">сюда</a> .</body>'+
+	'</html>')
 })
 
 server.listen(port, hostname, () => {
