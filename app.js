@@ -112,7 +112,10 @@ server.post("/upload",function(req,res,next){
 			' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + simplifyTreshold + doColorsToPaper +
 			doPixelColors + ' -- \'' + JSON.stringify(filedata[i]) + '\' & ';
 
-			let extData = /([^\.]+)\.([^\.]+)$/.exec(filedata[i].originalname).slice(1,3);//[name,extension]
+			let extData = (/([^\.]+)\.([^\.]+)$/.exec(filedata[i].originalname) || 
+				[0, filedata[i].originalname,
+				(/[^\/]+\/([^\/]+)$/.exec(filedata[i].mimetype)[1] == 'jpeg' ? 'jpg' : /[^\/]+\/([^\/]+)$/.exec(filedata[i].mimetype)[1])])
+				.slice(1,3);//[name,extension]
 			if(req.body['make-archive']=='on'||req.body['make-pdf']){
 				resList += ' ./uploads/' + extData[0] +'_mod.'+
 				(extData[1].toLowerCase()=='png' ? 'png' : 'jpg');
@@ -122,7 +125,10 @@ server.post("/upload",function(req,res,next){
 		childProcess.exec(command, function(err, stdout, stderr){
 			console.log(err,stdout,stderr);
 			for(let i = 0; i < filedata.length; i++){
-				let extData = /([^\.]+)\.([^\.]+)$/.exec(filedata[i].originalname).slice(1,3);//[name,extension]
+				let extData = (/([^\.]+)\.([^\.]+)$/.exec(filedata[i].originalname) || 
+					[0, filedata[i].originalname,
+					(/[^\/]+\/([^\/]+)$/.exec(filedata[i].mimetype)[1] == 'jpeg' ? 'jpg' : /[^\/]+\/([^\/]+)$/.exec(filedata[i].mimetype)[1])])
+					.slice(1,3);//[name,extension]
 				if(!fs.existsSync("./uploads/"+extData[0]+'_mod.'+ (extData[1].toLowerCase()=='png' ? 'png' : 'jpg'))) {
 					childProcess.execSync('node retry.js -t ' + treshold + ' -h ' + divH + ' -w ' + divW +
 					' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + simplifyTreshold + doColorsToPaper +

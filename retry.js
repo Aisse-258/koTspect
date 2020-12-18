@@ -55,7 +55,10 @@ if (err) throw err;
 		colors_to_paper(image, imageColorData, simpleMap, grid2, threshold, args.simplify, args['pixel-colors']);
 	}
 	//find_plain(image, 8, 20);
-	var extData = /([^\.]+)\.([^\.]+)$/.exec(img.originalname).slice(1,3);//[name,extension]
+	var extData = (/([^\.]+)\.([^\.]+)$/.exec(img.originalname) || 
+		[0, img.originalname,
+		(/[^\/]+\/([^\/]+)$/.exec(img.mimetype)[1] == 'jpeg' ? 'jpg' : /[^\/]+\/([^\/]+)$/.exec(img.mimetype)[1])])
+		.slice(1,3);//[name,extension]
 	if (extData[1].toLowerCase() == 'png'){
 		image.write('./uploads/'+extData[0] + '_mod.png', function() {
 			childProcess.execSync('convert -depth 24 -define png:compression-level=9 ' +'./uploads/'+ extData[0] + '_mod.png ' +'./uploads/'+ extData[0] + '_mod.png');
