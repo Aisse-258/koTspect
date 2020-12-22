@@ -22,6 +22,13 @@ server.post("/upload",function(req,res,next){
 	}
 	else {
 		res.setHeader('Content-Type', 'text/html');
+		for(let i = 0; i < filedata.length; i++){
+			if(filedata[i].mimetype != 'application/pdf' &&
+			/([^\/]+)\/[^\/]+$/.exec(filedata[i].mimetype)[1] != 'image'){
+				res.send('Формат '+filedata[i].mimetype+' не поддерживается.');
+				return;
+			}
+		}
 		var onloadName = uuid.v4();
 		var onload = '<html>\n'+
 		'<head><meta http-equiv="refresh" content="3;http://localhost:3000/uploads/'+onloadName+'.html" /></head>\n'+
