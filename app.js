@@ -22,6 +22,14 @@ server.post("/upload",function(req,res,next){
 	}
 	else {
 		res.setHeader('Content-Type', 'text/html');
+		var onloadName = uuid.v4();
+		var onload = '<html>\n'+
+		'<head><meta http-equiv="refresh" content="3;http://localhost:3000/uploads/'+onloadName+'.html" /></head>\n'+
+		'<body>\n'+
+		'Подождите, файлы обрабатываются...'+
+		'</body>\n</html>';
+		fs.writeFileSync('uploads/'+onloadName+'.html', onload);
+		res.send(onload);
 		var simplifyAreas = req.body['simplify-areas'] == 'on' ? '' : ' --no-simplify ';
 		var grid1 = req.body['simplify-areas'] == 'on' && req.body['simplify-treshold'] > 2 && req.body['simplify-big-areas'] == 'on' ? req.body.grid1 : 0,
 		grid2 = req.body['simplify-areas'] == 'on' ? req.body.grid2 : req.body.grid;
@@ -95,7 +103,8 @@ server.post("/upload",function(req,res,next){
 					}
 					else {
 						let imgs = childProcess.execSync('ls -l '+filedata[i].path+'-*');
-						res.send('Присутствуют изображения в неподдерживаемых форматах.\n'+imgs);
+						onload = 'Присутствуют изображения в неподдерживаемых форматах.\n'+imgs;
+						fs.writeFileSync('uploads/'+onloadName+'.html', onload);
 						return;
 					}
 				}
@@ -104,7 +113,8 @@ server.post("/upload",function(req,res,next){
 		}
 		//console.log(filedata);
 		if(filedata.length == 0){
-			res.send('Файлы не выбраны или выбранные файлы не содержат изображений.');
+			onload = 'Файлы не выбраны или выбранные файлы не содержат изображений.';
+			fs.writeFileSync('uploads/'+onloadName+'.html', onload);
 			return;
 		}
 		for(let i = 0; i < filedata.length; i++){
@@ -164,8 +174,8 @@ server.post("/upload",function(req,res,next){
 				'<label class="btn btn-default btn-file">\nСкачать PDF\n</label>\n</a>\n';
 				childProcess.exec('img2pdf' + resList+' -o ./uploads/' + pdfName + '.pdf');
 			}
-			var onload = onloadOrig.replace(/insert-imgs-here/,imgsShow);
-			res.send(onload);
+			onload = onloadOrig.replace(/insert-imgs-here/,imgsShow);
+			fs.writeFileSync('uploads/'+onloadName+'.html', onload);
 		});
 	}
 });
