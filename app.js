@@ -141,6 +141,11 @@ server.post("/upload",function(req,res,next){
 		command += 'wait';
 		childProcess.exec(command, function(err, stdout, stderr){
 			console.log(err,stdout,stderr);
+			if(!!stderr && /\/git\/koTspect\/retry\.js:46/.test(stderr)) {
+				onload = 'Формат не поддерживается.';
+				fs.writeFileSync('uploads/'+onloadName+'.html', onload);
+				return;
+			}
 			for(let i = 0; i < filedata.length; i++){
 				let extData = (/([^\.]+)\.([^\.]+)$/.exec(filedata[i].originalname) || 
 					[0, filedata[i].originalname,
