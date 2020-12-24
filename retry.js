@@ -12,7 +12,8 @@ const args = minimist(process.argv.slice(2), {
 		'grid2':'g',
 		'simplify':'s',
 		'colors-to-paper':'colors-to-paper',
-		'pixel-colors':'pixel-colors'
+        'pixel-colors':'pixel-colors',
+        'dir-to-save':'d'
 	},
 	default: {
 		'treshold':2,
@@ -23,7 +24,8 @@ const args = minimist(process.argv.slice(2), {
 		'simplify': true,
 		'simplify-treshold': 10,
 		'colors-to-paper': true,
-		'pixel-colors': true
+        'pixel-colors': true,
+        'dir-to-save': './uploads/'
 	},
 	unknown: (arg) => {
 	console.log('Unknown option: ', arg);
@@ -60,22 +62,22 @@ if (err) throw err;
 		(/[^\/]+\/([^\/]+)$/.exec(img.mimetype)[1] == 'jpeg' ? 'jpg' : /[^\/]+\/([^\/]+)$/.exec(img.mimetype)[1])])
 		.slice(1,3);//[name,extension]
 	if (extData[1].toLowerCase() == 'png'){
-		image.write('./uploads/'+extData[0] + '_mod.png', function() {
-			childProcess.execSync('convert -depth 24 -define png:compression-level=9 ' +'./uploads/'+ extData[0] + '_mod.png ' +'./uploads/'+ extData[0] + '_mod.png');
+		image.write(`${args['dir-to-save']}`+extData[0] + '_mod.png', function() {
+			childProcess.execSync('convert -depth 24 -define png:compression-level=9 ' +`${args['dir-to-save']}`+ extData[0] + '_mod.png ' +`${args['dir-to-save']}`+ extData[0] + '_mod.png');
 		});
 	}
 	else {
-		image.write('./uploads/'+extData[0] + '_mod.bmp', function() {
+		image.write(`${args['dir-to-save']}`+extData[0] + '_mod.bmp', function() {
 			if (extData[1].toLowerCase() == 'jpg' || extData[1].toLowerCase() == 'jpeg') {
-				childProcess.execSync('convert ' +'./uploads/'+ extData[0] + '_mod.bmp -quality ' +
-				childProcess.execSync('identify -format \'%Q\' ' + img.path).toString() + ' ' +'./uploads/'+ extData[0] + '_mod.jpg');
+				childProcess.execSync('convert ' +`${args['dir-to-save']}`+ extData[0] + '_mod.bmp -quality ' +
+				childProcess.execSync('identify -format \'%Q\' ' + img.path).toString() + ' ' +`${args['dir-to-save']}`+ extData[0] + '_mod.jpg');
 				//console.log(Date.now()-t);
 			}
 			else {
-				childProcess.execSync('convert ' +'./uploads/'+ extData[0] + '_mod.bmp ' +'./uploads/'+ extData[0] + '_mod.jpg');
+				childProcess.execSync('convert ' +`${args['dir-to-save']}`+ extData[0] + '_mod.bmp ' +`${args['dir-to-save']}`+ extData[0] + '_mod.jpg');
 				//console.log(Date.now()-t);
 			}
-			childProcess.execSync('rm ' +'./uploads/'+ extData[0] + '_mod.bmp');
+			childProcess.execSync('rm ' +`${args['dir-to-save']}`+ extData[0] + '_mod.bmp');
 		});
 	}
 });
