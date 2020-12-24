@@ -16,7 +16,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha -R spec --check-leaks test/*-test.js"
+    "test": "./node_modules/mocha/bin/mocha --timeout 100000 -R spec --check-leaks test/*-test.js"
   },
   "repository": {
     "type": "git",
