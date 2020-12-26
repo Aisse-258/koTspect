@@ -48,8 +48,10 @@ Jimp.read(img.path, (err, image) => {
 if (err) throw err;
 	if (grid1 > 0){
 		simple_colors(image, grid1, args['simplify-treshold']-2, args.simplify);
-	}
-	var simpleMap = simple_colors(image, grid2, args['simplify-treshold'], args.simplify);
+    }
+    if (args.simplify || args['colors-to-paper']){
+        var simpleMap = simple_colors(image, grid2, args['simplify-treshold'], args.simplify);
+    }
 	if (args['colors-to-paper']) {
 		var divide = [args['height-divide'], args['width-divide']];
 		var threshold = args.treshold;
