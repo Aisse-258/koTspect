@@ -60,3 +60,7 @@ $('#do-width-divide').click(function(){
         document.getElementById('width-divide-input').setAttribute('style','display:auto')
     }
 })
+
+$('#send-imgs').click(function(){
+    document.getElementById('display-results').setAttribute('style','display:auto')
+})
