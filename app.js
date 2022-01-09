@@ -48,7 +48,7 @@ server.post("/upload",function(req,res,next){
 		var doPixelColors = req.body['do-pixel-colors'] == 'on' ? '' : ' --no-pixel-colors ';
 		var command = '';
 		var imgsShow = '';
-		if(req.body['make-archive']=='on'||req.body['make-pdf']){
+		if(req.body['make-archive']=='on' || req.body['make-pdf']=='on'){
 			var resList = '';
 		}
 		//TODO: Переписать асинхронно
@@ -133,7 +133,7 @@ server.post("/upload",function(req,res,next){
 				[0, filedata[i].originalname,
 				(/[^\/]+\/([^\/]+)$/.exec(filedata[i].mimetype)[1] == 'jpeg' ? 'jpg' : /[^\/]+\/([^\/]+)$/.exec(filedata[i].mimetype)[1])])
 				.slice(1,3);//[name,extension]
-			if(req.body['make-archive']=='on'||req.body['make-pdf']){
+			if(req.body['make-archive']=='on'||req.body['make-pdf']=='on'){
 				resList += ' ./uploads/' + extData[0] +'_mod.'+
 				(extData[1].toLowerCase()=='png' ? 'png' : 'jpg');
 			}
