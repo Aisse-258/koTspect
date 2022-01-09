@@ -5,8 +5,8 @@ var is_color = function (colorToCheck, imageColorData, position, treshold) {
 		|| colorToCheck.green > imageColorData.imgDevs[position[0]][position[1]].green + treshold*imageColorData.imgDevs[position[0]][position[1]].greenStd
 		|| colorToCheck.blue < imageColorData.imgDevs[position[0]][position[1]].blue - treshold*imageColorData.imgDevs[position[0]][position[1]].blueStd
 		|| colorToCheck.blue > imageColorData.imgDevs[position[0]][position[1]].blue + treshold*imageColorData.imgDevs[position[0]][position[1]].blueStd) {
-			return 1;
-		}
+		return 1;
+	}
 	else {
 		return 0;
 	}

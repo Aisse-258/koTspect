@@ -43,7 +43,7 @@ var img_color_data = function (image, heightDivide, widthDivide) {
 	//console.log(imgDevs);
 	return {
 		'imgDevs': imgDevs
-		};
+	};
 }
 
 module.exports = img_color_data;
