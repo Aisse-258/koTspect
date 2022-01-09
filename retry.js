@@ -12,8 +12,8 @@ const args = minimist(process.argv.slice(2), {
 		'grid2':'g',
 		'simplify':'s',
 		'colors-to-paper':'colors-to-paper',
-        'pixel-colors':'pixel-colors',
-        'dir-to-save':'d'
+		'pixel-colors':'pixel-colors',
+		'dir-to-save':'d'
 	},
 	default: {
 		'treshold':2,
@@ -24,8 +24,8 @@ const args = minimist(process.argv.slice(2), {
 		'simplify': true,
 		'simplify-treshold': 10,
 		'colors-to-paper': true,
-        'pixel-colors': true,
-        'dir-to-save': './uploads/'
+		'pixel-colors': true,
+		'dir-to-save': './uploads/'
 	},
 	unknown: (arg) => {
 	console.log('Unknown option: ', arg);
@@ -48,10 +48,10 @@ Jimp.read(img.path, (err, image) => {
 if (err) throw err;
 	if (grid1 > 0){
 		simple_colors(image, grid1, args['simplify-treshold']-2, args.simplify);
-    }
-    if (args.simplify || args['colors-to-paper']){
-        var simpleMap = simple_colors(image, grid2, args['simplify-treshold'], args.simplify);
-    }
+	}
+	if (args.simplify || args['colors-to-paper']){
+		var simpleMap = simple_colors(image, grid2, args['simplify-treshold'], args.simplify);
+	}
 	if (args['colors-to-paper']) {
 		var divide = [args['height-divide'], args['width-divide']];
 		var threshold = args.treshold;

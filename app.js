@@ -39,7 +39,7 @@ server.post("/upload",function(req,res,next){
 		res.send(onload);
 		var simplifyAreas = req.body['simplify-areas'] == 'on' ? '' : ' --no-simplify ';
 		var grid1 = req.body['simplify-areas'] == 'on' && req.body['simplify-treshold'] > 2 && req.body['simplify-big-areas'] == 'on' ? req.body.grid1 : 0,
-		grid2 = req.body['simplify-areas'] == 'on' ? req.body.grid2 : req.body.grid;
+			grid2 = req.body['simplify-areas'] == 'on' ? req.body.grid2 : req.body.grid;
 		var doColorsToPaper = req.body['do-colors-to-paper'] == 'on' ? '' : ' --no-colors-to-paper';
 		var treshold = req.body.treshold;
 		var simplifyTreshold = req.body['simplify-areas'] == 'on' ? req.body['simplify-treshold'] : 0;
