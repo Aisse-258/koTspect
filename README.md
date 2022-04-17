@@ -40,8 +40,10 @@ node koTspect.js {-f 'file1.jpg file2.jpg ...'}
 
 '--mk-zip', - create ZIP from images after all.
 
+'--color-system':'-c', - color space 'rgb' or 'hsv'
+
 Full command (all enabled):
 
 ```
-node koTspect.js -t 2 -h 2 -w 2  -G 32 -g 16 --simplify-treshold 10 -f 'file1.jpg file2.jpg' --mk-pdf --mk-zip
+node koTspect.js -t 2 -h 2 -w 2 -c rgb  -G 32 -g 16 --simplify-treshold 10 -f 'file1.jpg file2.jpg' --mk-pdf --mk-zip
 ```

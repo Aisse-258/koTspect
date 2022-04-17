@@ -5,7 +5,7 @@ var is_color = require('./is_color.js');
 var step_order = require('./step_order.js');
 var simplify_area = require('./simplify_area.js');
 
-var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold, doSimplify, doPixelColors) {
+var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold, doSimplify, doPixelColors,colorSystem) {
 	let width = image.bitmap.width;
 	let height = image.bitmap.height;
 	let gridWidth = grid, gridHeight = grid;
@@ -52,7 +52,7 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 			//console.log(colorsOnMap[r][c], math.std([[colorsOnMap[r][c].red, colorsOnMap[r][c].green, colorsOnMap[r][c].blue]],1))
 			colorMap[r][c] = is_color(colorsOnMap[r][c], imageColorData,
 				color_data_position(row,col,height,width,imageColorData.imgDevs.length,
-				imageColorData.imgDevs[0].length),treshold);
+				imageColorData.imgDevs[0].length),treshold,colorSystem);
 			if(!colorMap[r][c] && simpleMap[r][c]) {
 				paperColor.red += simpleMap[r][c].red;
 				paperColor.green += simpleMap[r][c].green;
@@ -221,7 +221,7 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 							let blue = this.bitmap.data[idx + 2];
 							if (is_color({'red': red, 'green': green, 'blue': blue}, imageColorData,
 							color_data_position(y,x,height,width,imageColorData.imgDevs.length,
-								imageColorData.imgDevs[0].length),treshold)) {
+								imageColorData.imgDevs[0].length),treshold,colorSystem)) {
 								this.bitmap.data[idx + 0] = colorsOnMap[r][c].red;
 								this.bitmap.data[idx + 1] = colorsOnMap[r][c].green;
 								this.bitmap.data[idx + 2] = colorsOnMap[r][c].blue;
