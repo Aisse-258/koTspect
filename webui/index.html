@@ -19,6 +19,11 @@
 					<input id="filedata" type="file" name="filedata" style="display:none;" multiple/>
 				</label><span id="loading-button"></span><br><br>
 				<label class="custom-control-input">
+					<input type="radio" id="color-space-rgb" name="color-space" value="rgb" checked> RGB 
+					<input type="radio" id="color-space-hsv" name="color-space" value="hsv"> HSV
+					<!--<div id="simplify-areas-info" class="info" title="Закрашивание однородных областей их средними цветами. Не рекомендуется, если есть важные элементы, близкие по цвету с окружением (напр. текст написан бледными чернилами)">ⓘ</div>-->
+				</label><br>
+				<label class="custom-control-input">
 					<input type="checkbox" id="simplify-areas" name="simplify-areas" checked> Усреднение однородных областей
 					<div id="simplify-areas-info" class="info" title="Закрашивание однородных областей их средними цветами. Не рекомендуется, если есть важные элементы, близкие по цвету с окружением (напр. текст написан бледными чернилами)">ⓘ</div>
 				</label><br>

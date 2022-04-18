@@ -46,6 +46,10 @@ server.post("/upload",function(req,res,next){
 		var divH = req.body['do-height-divide'] == 'on' ? req.body.divide_height : 1,
 		divW = req.body['do-width-divide'] == 'on' ? req.body.divide_width : 1;
 		var doPixelColors = req.body['do-pixel-colors'] == 'on' ? '' : ' --no-pixel-colors ';
+		//console.log(req.body);
+		//console.log(req.body['color-space']);
+		//console.log(req.body['color-space-rgb']);
+		var colorSystem = req.body['color-space'];
 		var command = '';
 		var imgsShow = '';
 		if(req.body['make-archive']=='on' || req.body['make-pdf']=='on'){
@@ -125,7 +129,7 @@ server.post("/upload",function(req,res,next){
 			return;
 		}
 		for(let i = 0; i < filedata.length; i++){
-			command += 'node retry.js -t ' + treshold + ' -h ' + divH + ' -w ' + divW +
+			command += 'node retry.js -t ' + treshold +' -c '+colorSystem+ ' -h ' + divH + ' -w ' + divW +
 			' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + simplifyTreshold + doColorsToPaper +
 			doPixelColors + ' -- \'' + JSON.stringify(filedata[i]) + '\' & ';
 
@@ -152,7 +156,7 @@ server.post("/upload",function(req,res,next){
 					(/[^\/]+\/([^\/]+)$/.exec(filedata[i].mimetype)[1] == 'jpeg' ? 'jpg' : /[^\/]+\/([^\/]+)$/.exec(filedata[i].mimetype)[1])])
 					.slice(1,3);//[name,extension]
 				if(!fs.existsSync("./uploads/"+extData[0]+'_mod.'+ (extData[1].toLowerCase()=='png' ? 'png' : 'jpg'))) {
-					childProcess.execSync('node retry.js -t ' + treshold + ' -h ' + divH + ' -w ' + divW +
+					childProcess.execSync('node retry.js -t ' + treshold +' -c '+colorSystem+ ' -h ' + divH + ' -w ' + divW +
 					' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + simplifyTreshold + doColorsToPaper +
 					doPixelColors + ' -- \'' + JSON.stringify(filedata[i]) + '\'');
 				}
