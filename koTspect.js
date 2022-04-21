@@ -3,8 +3,8 @@ const fs = require('fs');
 const uuid = require('uuid');
 var childProcess = require('child_process');
 function getMimeFromPath(filePath) {
-    const mimeType = childProcess.execSync('file --mime-type -b "' + filePath + '"').toString();
-    return mimeType.trim();
+	const mimeType = childProcess.execSync('file --mime-type -b "' + filePath + '"').toString();
+	return mimeType.trim();
 }
 const minimist = require('minimist');
 const { exit } = require('process');
