@@ -1,0 +1,13 @@
+.link-secondary{
+	text-decoration: none;
+	color: lightgrey;
+}
+
+.link-secondary:visited{
+	text-decoration: none;
+	color: lightgrey;
+}
+
+.link-secondary:hover{
+	color: grey;
+}
