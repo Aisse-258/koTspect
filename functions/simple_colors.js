@@ -77,7 +77,6 @@ var simple_colors = function (image, grid, maxStd, doSimplify, colorSystem) {
 				//let redData = [], greenData = [], blueData = [];//значения rgb в каждом пикселе плитки
 				let hueData =[], saturationData = [], valueData = [];
 				let redTot = 0, greenTot = 0, blueTot = 0;//всего цвета в 1 плитке
-				let hueTot = 0, saturationTot = 0, valueTot = 0;
 				image.scan(col, row, gridWidth, gridHeight, function(x, y, idx) {
 					let red = this.bitmap.data[idx + 0];
 					let green = this.bitmap.data[idx + 1];
@@ -88,30 +87,23 @@ var simple_colors = function (image, grid, maxStd, doSimplify, colorSystem) {
 					let bh = Math.floor(blue*100/255);
 					let cmin = Math.min(rh,gh,bh);
 					let cmax = Math.max(rh,gh,bh);
-					valueTot += cmax;
 					valueData.push(cmax);
 					if (cmax == 0) {
-						saturationTot +=0;
 						saturationData.push(0);
 					} else {
 						let sh = Math.floor((cmax-cmin)*100/cmax);
-						saturationTot +=sh;
 						saturationData.push(sh);
 					}
 					if (cmax == cmin) {
-						hueTot +=0;
 						hueData.push(0);
 					} else if(cmax == rh) {
 						hh = Math.floor(60*((gh-bh)>=0?gh-bh:bh-gh)/(cmax-cmin));
-						hueTot += hh;
 						hueData.push(hh);
 					} else if(cmax == gh) {
 						hh = Math.floor(60*(((bh-rh)>=0?bh-rh:rh-bh)/(cmax-cmin)+2));
-						hueTot += hh;
 						hueData.push(hh);
 					} else if(cmax == bh) {
 						hh = Math.floor(60*(((rh-gh)>=0?rh-gh:gh-rh)/(cmax-cmin)+4));
-						hueTot += hh;
 						hueData.push(hh);
 					}
 					redTot += red;//RGB
