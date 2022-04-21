@@ -47,3 +47,6 @@ Full command (all enabled):
 ```
 node koTspect.js -t 2 -h 2 -w 2 -c rgb  -G 32 -g 16 --simplify-treshold 10 -f 'file1.jpg file2.jpg' --mk-pdf --mk-zip
 ```
+
+Local server: node app.js
+Link: http://localhost:3000/webui/index.html
