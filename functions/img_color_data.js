@@ -1,6 +1,7 @@
 var Jimp = require('jimp');
 var math = require('mathjs');
 var divide_side = require('./divide_side.js');
+var circular_average = require('./circular_average');
 
 var img_color_data = function (image, heightDivide, widthDivide, colorSystem) {
 	if (colorSystem == 'rgb'){
@@ -94,7 +95,7 @@ var img_color_data = function (image, heightDivide, widthDivide, colorSystem) {
 				let r = heightPoints[h-1]/heightPoints[1];
 				let c = widthPoints[w-1]/widthPoints[1];
 				imgDevs[r][c] = {
-					'hue': Math.floor(math.sum(hueImg)/area),
+					'hue': Math.floor(circular_average(hueImg)),
 					'saturation': Math.floor(math.sum(saturationImg)/area),
 					'value': Math.floor(math.sum(valueImg)/area),
 					'hueStd':math.std([hueImg],1)[0],
