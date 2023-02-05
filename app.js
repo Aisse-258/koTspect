@@ -42,7 +42,7 @@ server.post("/upload",function(req,res,next){
 			grid2 = req.body['simplify-areas'] == 'on' ? req.body.grid2 : req.body.grid;
 		var doColorsToPaper = req.body['do-colors-to-paper'] == 'on' ? '' : ' --no-colors-to-paper';
 		var treshold = req.body.treshold;
-		var simplifyTreshold = req.body['simplify-areas'] == 'on' ? req.body['simplify-treshold'] : 0;
+		var simplifyTreshold = req.body['simplify-treshold'];
 		var divH = req.body['do-height-divide'] == 'on' ? req.body.divide_height : 1,
 		divW = req.body['do-width-divide'] == 'on' ? req.body.divide_width : 1;
 		var doPixelColors = req.body['do-pixel-colors'] == 'on' ? '' : ' --no-pixel-colors ';

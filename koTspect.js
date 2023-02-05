@@ -57,7 +57,7 @@ var grid1 = args.s ? (args.G >= 0 ? args.G - args.G%1 : 0) : 0,
 	grid2 = args.g >=8 ? args.g - args.g%1 : 8;
 var doColorsToPaper = args['colors-to-paper'] ? '' : ' --no-colors-to-paper';
 var treshold = args.t;
-var simplifyTreshold = args.s ? args['simplify-treshold'] : 0;
+var simplifyTreshold = args['simplify-treshold'];
 var divH = args.h >=1 ? args.h - args.h%1 : 1,
 	divW = args.w >=1 ? args.w - args.w%1 : 1;
 var doPixelColors = args['pixel-colors'] ? '' : ' --no-pixel-colors ';

@@ -18,16 +18,6 @@ $('#filedata').change(function(){
     $('#loading-button').text(fileList);
 });
 
-$('#simplify-areas').click(function(){
-    if(!document.getElementById('simplify-areas').checked) {
-        document.getElementById('simplify-areas-settings').setAttribute('style','display:none');
-        document.getElementById('grid-to-work').setAttribute('style','display:auto');
-    } else {
-        document.getElementById('simplify-areas-settings').setAttribute('style','display:auto');
-        document.getElementById('grid-to-work').setAttribute('style','display:none');
-    }
-})
-
 $('#simplify-big-areas').click(function(){
     if(!document.getElementById('simplify-big-areas').checked) {
         document.getElementById('big-grid-input').setAttribute('style','display:none')
