@@ -20,34 +20,34 @@ $('#filedata').change(function(){
 
 $('#simplify-big-areas').click(function(){
     if(!document.getElementById('simplify-big-areas').checked) {
-        document.getElementById('big-grid-input').setAttribute('style','display:none')
+        $('#big-grid-input').children().attr('disabled','disabled')
     } else {
-        document.getElementById('big-grid-input').setAttribute('style','display:auto')
+        $('#big-grid-input').children().removeAttr('disabled')
     }
 })
 
 $('#do-colors-to-paper').click(function(){
     if(!document.getElementById('do-colors-to-paper').checked) {
-        document.getElementById('colors-to-paper-settings').setAttribute('style','display:none')
+        $('#colors-to-paper-settings').find('input, textarea, button, select').attr('disabled','disabled')
     } else {
-        document.getElementById('colors-to-paper-settings').setAttribute('style','display:auto')
+        $('#colors-to-paper-settings').find('input, textarea, button, select').removeAttr('disabled')
     }
 })
 
 $('#do-height-divide').click(function(){
     if(!document.getElementById('do-height-divide').checked) {
-        document.getElementById('height-divide-input').setAttribute('style','display:none')
+        $('#height-divide-input').children().attr('disabled','disabled')
     } else {
-        document.getElementById('height-divide-input').setAttribute('style','display:auto')
+        $('#height-divide-input').children().removeAttr('disabled')
     }
 })
 
 
 $('#do-width-divide').click(function(){
     if(!document.getElementById('do-width-divide').checked) {
-        document.getElementById('width-divide-input').setAttribute('style','display:none')
+        $('#width-divide-input').children().attr('disabled','disabled')
     } else {
-        document.getElementById('width-divide-input').setAttribute('style','display:auto')
+        $('#width-divide-input').children().removeAttr('disabled')
     }
 })
 
