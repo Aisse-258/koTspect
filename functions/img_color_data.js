@@ -2,6 +2,7 @@ var Jimp = require('jimp');
 var math = require('mathjs');
 var divide_side = require('./divide_side.js');
 var circular_average = require('./circular_average');
+var circularSTD = require('./circularSTD.js');
 
 var img_color_data = function (image, heightDivide, widthDivide, colorSystem) {
 	if (colorSystem == 'rgb'){
@@ -98,11 +99,11 @@ var img_color_data = function (image, heightDivide, widthDivide, colorSystem) {
 					'hue': Math.floor(circular_average(hueImg)),
 					'saturation': Math.floor(math.sum(saturationImg)/area),
 					'value': Math.floor(math.sum(valueImg)/area),
-					'hueStd':math.std([hueImg],1)[0],
+					'hueStd': circularSTD(hueImg),
 					'saturationStd':math.std([saturationImg],1)[0],
 					'valueStd':math.std([valueImg],1)[0]
 				};
-				//console.log(imgDevs[r][c].redStd);
+				//console.log(imgDevs[r][c].hueStd);
 			}
 		}
 	}

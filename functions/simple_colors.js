@@ -1,6 +1,7 @@
 var Jimp = require('jimp');
 var math = require('mathjs');
 var simpleMap = [];
+var circularSTD = require('./circularSTD.js');
 
 var simple_colors = function (image, grid, maxStd, doSimplify, colorSystem) {
 	let width = image.bitmap.width;
@@ -106,7 +107,8 @@ var simple_colors = function (image, grid, maxStd, doSimplify, colorSystem) {
 					//blueData.push(blue);
 					//console.log([red,green,blue],x,y);
 				});
-				let devi = math.std([hueData, saturationData, valueData], 1);
+				let devi = math.std([saturationData, valueData], 1);//std для hueData считать отдельно, вставить первым элементом в этот массив
+				devi.unshift(circularSTD(hueData));
 				//console.log(devi);
 				if (devi[0] < maxStd && devi[1] < maxStd && devi[2] < maxStd){
 					let r = Math.floor(redTot/(gridWidth*gridHeight));
