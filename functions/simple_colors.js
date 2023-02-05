@@ -1,16 +1,16 @@
 var Jimp = require('jimp');
 var math = require('mathjs');
+var simpleMap = [];
 
 var simple_colors = function (image, grid, maxStd, doSimplify, colorSystem) {
+	let width = image.bitmap.width;
+	let height = image.bitmap.height;
+	let gridWidth = grid, gridHeight = grid;
+	let gridWidthBorder = width%grid, gridHeightBorder = height%grid;
+	for(let i = 0;i < height/grid; i++) {
+		simpleMap.push([]);
+	}
 	if(colorSystem == 'rgb') {
-		let width = image.bitmap.width;
-		let height = image.bitmap.height;
-		let gridWidth = grid, gridHeight = grid;
-		let gridWidthBorder = width%grid, gridHeightBorder = height%grid;
-		var simpleMap = [];
-		for(let i = 0;i < height/grid; i++) {
-			simpleMap.push([]);
-		}
 		for (let row = 0; row < height; row += grid) {
 			if (row+grid > height) {
 				gridHeight = gridHeightBorder;
@@ -57,16 +57,7 @@ var simple_colors = function (image, grid, maxStd, doSimplify, colorSystem) {
 			}
 			gridHeight = grid;
 		}
-		return simpleMap;
 	} else if (colorSystem == 'hsv') {
-		let width = image.bitmap.width;
-		let height = image.bitmap.height;
-		let gridWidth = grid, gridHeight = grid;
-		let gridWidthBorder = width%grid, gridHeightBorder = height%grid;
-		var simpleMap = [];
-		for(let i = 0;i < height/grid; i++) {
-			simpleMap.push([]);
-		}
 		for (let row = 0; row < height; row += grid) {
 			if (row+grid > height) {
 				gridHeight = gridHeightBorder;
@@ -138,8 +129,8 @@ var simple_colors = function (image, grid, maxStd, doSimplify, colorSystem) {
 			}
 			gridHeight = grid;
 		}
-		return simpleMap;
 	}
+	return simpleMap;
 }
 
 module.exports = simple_colors;
