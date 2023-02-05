@@ -35,6 +35,7 @@ var simple_colors = function (image, grid, maxStd, doSimplify, colorSystem) {
 				});
 				let devi = math.std([redData, greenData, blueData], 1);
 				//console.log(devi);
+				/*код для экспорта данных в csv вынесен в devs_to_csv.js*/
 				if (devi[0] < maxStd && devi[1] < maxStd && devi[2] < maxStd){
 					let r = Math.floor(redTot/(gridWidth*gridHeight));
 					let g = Math.floor(greenTot/(gridWidth*gridHeight));

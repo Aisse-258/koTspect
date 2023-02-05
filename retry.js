@@ -1,5 +1,5 @@
 var Jimp = require('jimp');
-var math = require('mathjs');
+//var math = require('mathjs');
 var childProcess = require('child_process');
 const minimist = require('minimist');
 const args = minimist(process.argv.slice(2), {
@@ -37,11 +37,11 @@ const args = minimist(process.argv.slice(2), {
 //console.log(args);
 var img = JSON.parse(args._[0]);
 var grid1 = args.grid1, grid2 =  args.grid2;
-var fs = require('fs');
+//var fs = require('fs');
 
-var find_plain = require('./functions/find_plain.js');
+//var find_plain = require('./functions/find_plain.js');
 var img_color_data = require('./functions/img_color_data.js');
-var get_paper_color = require('./functions/get_paper_color.js');
+//var get_paper_color = require('./functions/get_paper_color.js');
 var colors_to_paper = require('./functions/colors_to_paper.js');
 var simple_colors = require('./functions/simple_colors.js');
 
@@ -57,7 +57,7 @@ if (err) throw err;
 	if (args['colors-to-paper']) {
 		var divide = [args['height-divide'], args['width-divide']];
 		var threshold = args.treshold;
-		var imageColorData = img_color_data(image, Number(divide[0]), divide[1], args.c);
+		var imageColorData = img_color_data(image, Number(divide[0]), Number(divide[1]), args.c);
 		colors_to_paper(image, imageColorData, simpleMap, grid2, threshold, args.simplify, args['pixel-colors'], args.c);
 	}
 	//find_plain(image, 8, 20);

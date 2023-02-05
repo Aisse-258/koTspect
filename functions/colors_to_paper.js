@@ -10,7 +10,8 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 	let height = image.bitmap.height;
 	let gridWidth = grid, gridHeight = grid;
 	let gridWidthBorder = width%grid, gridHeightBorder = height%grid;
-	var colorMap = [], colorsOnMap = [];
+	var colorMap = [],//матрица цветности плиток. содержит значение true для цветных и false для бумажных плиток
+        colorsOnMap = [];//матрица цветов плиток. содержит усреднённые цвета плиток
 	var paperColor = {'red':0,'green':0,'blue':0}, areaPaper = 0;
 	for (let i = 0; i < height/grid; i++) {
 		colorMap.push([]);
@@ -53,31 +54,13 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 			colorMap[r][c] = is_color(colorsOnMap[r][c], imageColorData,
 				color_data_position(row,col,height,width,imageColorData.imgDevs.length,
 				imageColorData.imgDevs[0].length),treshold,colorSystem);
-			if(!colorMap[r][c] && simpleMap[r][c]) {
+			if(!colorMap[r][c] && simpleMap[r][c] != 0) {
 				paperColor.red += simpleMap[r][c].red;
 				paperColor.green += simpleMap[r][c].green;
 				paperColor.blue += simpleMap[r][c].blue;
 				areaPaper++;
 				colorsOnMap[r][c].isPaper = 1;
 			}
-			/*if (colorsOnMap[r][c].red < imageColorData.imgDevs.red - treshold*imageColorData.imgDevs.redStd
-			|| colorsOnMap[r][c].red > imageColorData.imgDevs.red + treshold*imageColorData.imgDevs.redStd
-			|| colorsOnMap[r][c].green < imageColorData.imgDevs.green - treshold*imageColorData.imgDevs.greenStd
-			|| colorsOnMap[r][c].green > imageColorData.imgDevs.green + treshold*imageColorData.imgDevs.greenStd
-			|| colorsOnMap[r][c].blue < imageColorData.imgDevs.blue - treshold*imageColorData.imgDevs.blueStd
-			|| colorsOnMap[r][c].blue > imageColorData.imgDevs.blue + treshold*imageColorData.imgDevs.blueStd) {
-				colorMap[r][c] = 1;
-			}
-			else {
-				colorMap[r][c] = 0;
-				if(simpleMap[r][c]){
-					paperColor.red += simpleMap[r][c].red;
-					paperColor.green += simpleMap[r][c].green;
-					paperColor.blue += simpleMap[r][c].blue;
-					areaPaper++;
-					colorsOnMap[r][c].isPaper = 1;
-				}
-			}*/
 			gridWidth = grid;
 		}
 		gridHeight = grid;
