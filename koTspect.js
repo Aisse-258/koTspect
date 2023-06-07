@@ -141,7 +141,7 @@ for(let i = 0; i < filedata.length; i++){
 }
 //console.log(filedata);
 if(filedata.length == 0){
-	console.log('Error: Choosen files are not containing images.');
+	console.log('Error: Chosen files contain no images.');
 	exit(1);
 }
 for(let i = 0; i < filedata.length; i++){
