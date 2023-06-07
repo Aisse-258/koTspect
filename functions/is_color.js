@@ -37,8 +37,25 @@ var is_color = function (colorToCheck, imageColorData, position, treshold,colorS
 			hh = Math.floor(60*(((rh-gh)>=0?rh-gh:gh-rh)/(cmax-cmin)+4));
 			ctcInHSV.hue=hh;
 		}
-		if (ctcInHSV.hue < imageColorData.imgDevs[position[0]][position[1]].hue - treshold*imageColorData.imgDevs[position[0]][position[1]].hueStd
-			|| ctcInHSV.hue > imageColorData.imgDevs[position[0]][position[1]].hue + treshold*imageColorData.imgDevs[position[0]][position[1]].hueStd
+		//проверка вхождения циклической величины в допустимый диапазон
+		let hRB = imageColorData.imgDevs[position[0]][position[1]].hue + treshold*imageColorData.imgDevs[position[0]][position[1]].hueStd
+			, hLB = imageColorData.imgDevs[position[0]][position[1]].hue - treshold*imageColorData.imgDevs[position[0]][position[1]].hueStd
+			, isHin;
+		/*диапазоны (hLB,hRB) могут быть 3х типов
+			hLB>=0 && hRB<360 - проверяется нормально
+			hLB>=0 && hRB>=360 - значения от hLB до 360 не вкл входят, отстальные проверяем вхождение в (0,hRB-360)
+			hLB<0 && hRB<360 - значения от 0 до hRB входят, отстальные проверяем вхождение в (hLB+360,360)*/
+		if (ctcInHSV.hue >= hLB && ctcInHSV.hue <= hRB) {
+			isHin = true;
+		}
+		else if (hRB >= 360) {
+			isHin = ctcInHSV.hue >= 0 && ctcInHSV.hue <= hRB - 360;
+		}
+		else if (hLB < 0) {
+			isHin = ctcInHSV.hue >= hLB + 360 && ctcInHSV.hue < 360;
+		}
+
+		if (! isHin
 			|| ctcInHSV.saturation < imageColorData.imgDevs[position[0]][position[1]].saturation - treshold*imageColorData.imgDevs[position[0]][position[1]].saturationStd
 			|| ctcInHSV.saturation > imageColorData.imgDevs[position[0]][position[1]].saturation + treshold*imageColorData.imgDevs[position[0]][position[1]].saturationStd
 			|| ctcInHSV.value < imageColorData.imgDevs[position[0]][position[1]].value - treshold*imageColorData.imgDevs[position[0]][position[1]].valueStd

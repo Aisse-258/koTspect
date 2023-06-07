@@ -1,32 +1,17 @@
-var math = require('mathjs');
-var angle_add = function (angle, num) {
-	sum = angle + num;
-	if (sum < 360) {
-		return sum;
-	} else {
-		return sum%360;
-	}
-}
+var ca = require('./circular_average.js');
+
 var circularSTD = function (angles) {
-	let angleclone = angles.slice(0);
-	angleclone.sort(function (a,b) {return b-a;});
-	let mindev = math.std([angleclone], 1)[0];
-	//console.log(angleclone[0],mindev);
-	for (let i=0; i<angleclone.length;i++) {
-		let shift = 360 - angleclone[i];
-		if (shift == 360) {
-			continue;
-		}
-		for (let j=0;j<angleclone.length;j++) {
-			angleclone[j] = angle_add(angleclone[j],shift);
-		}
-		mindev = Math.min(mindev,math.std([angleclone], 1)[0]);
-		if (mindev == 0) {
-			break;
-		}
-		//console.log(angleclone[0],mindev);
-	}
-	return mindev;
+	let rhos = []
+		, avg = ca(angles)
+		, min_rho;
+	avg = avg <= 180 ? avg : 360 - avg;
+	angles.forEach(angle => {
+		min_rho = angle <= 180 ? angle : 360 - angle;
+		rhos.push(min_rho-avg);
+	});
+	//console.log(avg, rhos, rhos.reduce((a, b) => a + b**2, 0));
+	cSTD = Math.sqrt(rhos.reduce((a, b) => a + b**2, 0)/(angles.length-1));
+	return cSTD;
 }
 
 //circularSTD([355,354,345,337,348,315,324,359,5,12,13,4,2,6,10]);

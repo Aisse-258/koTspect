@@ -211,7 +211,7 @@ var colors_to_paper = function (image, imageColorData, simpleMap, grid, treshold
 							}
 						});
 						if (doSimplify){
-							simplify_area(image, nei[i][0], nei[i][1], grid, nei[i][2], nei[i][3], 10, simpleMap);
+							simplify_area(image, nei[i][0], nei[i][1], grid, nei[i][2], nei[i][3], 10, simpleMap,colorSystem);
 						}
 					}
 				}
