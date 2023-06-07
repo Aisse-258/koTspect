@@ -3,6 +3,7 @@ const http = require('http');
 const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
+const np = require('./functions/num_pages.js');
 const uuid = require('uuid');
 var Jimp = require('jimp');
 const hostname = '127.0.0.1';
@@ -61,19 +62,7 @@ server.post("/upload",function(req,res,next){
 				childProcess.execSync('pdfimages -all ' + filedata[i].path + ' ' + filedata[i].path);
 				let imgQ = childProcess.execSync('pdfimages -list ' + filedata[i].path + ' | wc -l') - 2;
 				for (let j=0; j<imgQ;j++) {
-					var num='';
-					if (j == 0) {
-						num='000'
-					}
-					else if (j<10) {
-						num = '00'+j;
-					}
-					else if (j<100){
-						num = '0'+j;
-					}
-					else {
-						num = j;
-					}
+					let num = np(j,imgQ);
 					if (fs.existsSync(filedata[i].path + '-'+num + '.ppm')) {
 						childProcess.execSync('convert ' + filedata[i].path + '-'+num + '.ppm ' + filedata[i].path + '-'+num + '.png');
 						childProcess.execSync('rm ' + filedata[i].path + '-'+num + '.ppm');
