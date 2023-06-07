@@ -93,3 +93,6 @@ _SpecRunner.html
 
 experimental_imgs/
 uploads/
+*.kra~
+*.jpg~
+*.png~
