@@ -120,7 +120,8 @@ server.post("/upload",function(req,res,next){
 		for(let i = 0; i < filedata.length; i++){
 			command += 'node retry.js -t ' + treshold +' -c '+colorSystem+ ' -h ' + divH + ' -w ' + divW
 				+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + simplifyTreshold + doColorsToPaper
-				+ doPixelColors
+				+ doPixelColors + ' --left-decile ' + Number(req.body['left-decile']) + ' --right-decile ' + Number(req.body['right-decile'])
+				+ ' --top-decile ' + Number(req.body['top-decile']) + ' --bottom-decile ' + Number(req.body['bottom-decile'])
 				+ ' -- \'' + JSON.stringify(filedata[i]) + '\' & ';
 
 			let extData = (/([^\.]+)\.([^\.]+)$/.exec(filedata[i].originalname) || 
@@ -148,7 +149,8 @@ server.post("/upload",function(req,res,next){
 				if(!fs.existsSync("./uploads/"+extData[0]+'_mod.'+ (extData[1].toLowerCase()=='png' ? 'png' : 'jpg'))) {
 					childProcess.execSync('node retry.js -t ' + treshold +' -c '+colorSystem+ ' -h ' + divH + ' -w ' + divW
 						+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + simplifyTreshold + doColorsToPaper
-						+ doPixelColors
+						+ doPixelColors + ' --left-decile ' + Number(req.body['left-decile']) + ' --right-decile ' + Number(req.body['right-decile'])
+						+ ' --top-decile ' + Number(req.body['top-decile']) + ' --bottom-decile ' + Number(req.body['bottom-decile'])
 						+ ' -- \'' + JSON.stringify(filedata[i]) + '\'');
 				}
 				let size = Math.ceil(fs.statSync("./uploads/"+extData[0]+'_mod.'+ (extData[1].toLowerCase()=='png' ? 'png' : 'jpg')).size/1024);
