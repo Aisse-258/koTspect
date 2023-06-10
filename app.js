@@ -62,7 +62,7 @@ server.post("/upload",function(req,res,next){
 				childProcess.execSync('pdfimages -all ' + filedata[i].path + ' ' + filedata[i].path);
 				let imgQ = childProcess.execSync('pdfimages -list ' + filedata[i].path + ' | wc -l') - 2;
 				for (let j=0; j<imgQ;j++) {
-					let num = np(j,imgQ);
+					let num = np(j,100);
 					if (fs.existsSync(filedata[i].path + '-'+num + '.ppm')) {
 						childProcess.execSync('convert ' + filedata[i].path + '-'+num + '.ppm ' + filedata[i].path + '-'+num + '.png');
 						childProcess.execSync('rm ' + filedata[i].path + '-'+num + '.ppm');
