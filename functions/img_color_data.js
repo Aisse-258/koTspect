@@ -4,11 +4,13 @@ const divide_side = require('./divide_side.js');
 const circular_average = require('./circular_average');
 const circularSTD = require('./circularSTD.js');
 
-var img_color_data = function (image, heightDivide, widthDivide, colorSystem) {
+var img_color_data = function (image, heightDivide, widthDivide, colorSystem, deciles) {
 	let width = image.bitmap.width;
 	let height = image.bitmap.height;
-	let widthDecile = Math.floor(width*0.1);
-	let heightDecile = Math.floor(height*0.1);
+	let leftDecile = Math.floor(width*deciles[0])
+	  , rightDecile = Math.floor(width*deciles[1])
+	  , topDecile = Math.floor(height*deciles[2])
+	  , bottomDecile = Math.floor(height*deciles[3]);
 	let imgDevs = [];
 	for (let i = 0;i < heightDivide;i++) {
 		imgDevs.push([]);
@@ -23,7 +25,7 @@ var img_color_data = function (image, heightDivide, widthDivide, colorSystem) {
 					let red = this.bitmap.data[idx + 0];
 					let green = this.bitmap.data[idx + 1];
 					let blue = this.bitmap.data[idx + 2];
-					if (y >= heightDecile && y < height - heightDecile && x >= widthDecile && x < width - widthDecile) {
+					if (y >= topDecile && y < height - bottomDecile && x >= leftDecile && x < width - rightDecile) {
 						redImg.push(red);
 						greenImg.push(green);
 						blueImg.push(blue);
@@ -55,7 +57,7 @@ var img_color_data = function (image, heightDivide, widthDivide, colorSystem) {
 					let rh = Math.floor(red*100/255);//HSV
 					let gh = Math.floor(green*100/255);
 					let bh = Math.floor(blue*100/255);
-					if (y >= heightDecile && y < height - heightDecile && x >= widthDecile && x < width - widthDecile) {
+					if (y >= topDecile && y < height - bottomDecile && x >= leftDecile && x < width - rightDecile) {
 						let cmin = Math.min(rh,gh,bh);
 						let cmax = Math.max(rh,gh,bh);
 						valueImg.push(cmax);

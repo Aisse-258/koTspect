@@ -28,6 +28,10 @@ const args = minimist(process.argv.slice(2), {
 		,'pixel-colors': true
 		,'dir-to-save': './uploads/'
 		,'color-system':'rgb'
+		,'left-decile':0.1
+		,'right-decile':0.1
+		,'top-decile':0.1
+		,'bottom-decile':0.1
 	},
 	unknown: (arg) => {
 	console.log('Unknown option: ', arg);
@@ -57,7 +61,8 @@ if (err) throw err;
 	if (args['colors-to-paper']) {
 		var divide = [args['height-divide'], args['width-divide']];
 		var threshold = args.treshold;
-		var imageColorData = img_color_data(image, Number(divide[0]), Number(divide[1]), args.c);
+		var imageColorData = img_color_data(image, Number(divide[0]), Number(divide[1]), args.c
+											, [args['left-decile'],args['right-decile'],args['top-decile'],args['bottom-decile']]);
 		colors_to_paper(image, imageColorData, simpleMap, grid2, threshold, args.simplify, args['pixel-colors'], args.c);
 	}
 	//find_plain(image, 8, 20);

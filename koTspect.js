@@ -41,6 +41,10 @@ const args = minimist(process.argv.slice(2), {
 		,'mk-pdf':false
 		,'mk-zip':false
 		,'color-system':'rgb'
+		,'left-decile':0.1
+		,'right-decile':0.1
+		,'top-decile':0.1
+		,'bottom-decile':0.1
 	},
 	unknown: (arg) => {
 	console.log('Unknown option: ', arg);
@@ -147,7 +151,8 @@ if(filedata.length == 0){
 for(let i = 0; i < filedata.length; i++){
 	command += 'node retry.js -t ' + treshold +' -c '+args.c+ ' -h ' + divH + ' -w ' + divW + ' -d ' + args.d
 		+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + simplifyTreshold + doColorsToPaper
-		+ doPixelColors
+		+ doPixelColors + ' --left-decile ' + args['left-decile'] + ' --right-decile ' + args['right-decile']
+		+ ' --top-decile ' + args['top-decile'] + ' --bottom-decile ' + args['bottom-decile']
 		+ ' -- \'' + JSON.stringify(filedata[i]) + '\' & ';
 
 	let extData = (/([^\.]+)\.([^\.]+)$/.exec(filedata[i].originalname) || 
@@ -174,7 +179,8 @@ childProcess.exec(command, function(err, stdout, stderr){
 		if(!fs.existsSync(args.d+extData[0]+'_mod.'+ (extData[1].toLowerCase()=='png' ? 'png' : 'jpg'))) {
 			childProcess.execSync('node retry.js -t ' + treshold +' -c '+args.c+ ' -h ' + divH + ' -w ' + divW + ' -d ' + args.d
 			+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + simplifyTreshold + doColorsToPaper
-			+ doPixelColors
+			+ doPixelColors + ' --left-decile ' + args['left-decile'] + ' --right-decile ' + args['right-decile']
+			+ ' --top-decile ' + args['top-decile'] + ' --bottom-decile ' + args['bottom-decile']
 			+ ' -- \'' + JSON.stringify(filedata[i]) + '\'');
 		}
 		let size_before = Math.ceil(filedata[i].size)/1024;
