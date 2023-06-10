@@ -2,6 +2,7 @@
 const fs = require('fs');
 const uuid = require('uuid');
 var childProcess = require('child_process');
+const test_args = require('./functions/test_args.js');
 function getMimeFromPath(filePath) {
 	const mimeType = childProcess.execSync('file --mime-type -b "' + filePath + '"').toString();
 	return mimeType.trim();
@@ -47,8 +48,13 @@ const args = minimist(process.argv.slice(2), {
 		,'bottom-decile':0.1
 	},
 	unknown: (arg) => {
-	console.log('Unknown option: ', arg);
-	//return false;
+		let no_alias = {'--simplify-treshold':0,'--left-decile':0,'--right-decile':0,'--top-decile':0,'--bottom-decile':0
+		};
+		if (!arg in no_alias) {
+			console.log('Error 0: Unknown options: ', arg,'Look README.md for more information.');
+			exit(1);
+			//return false;
+		}
 	}
 });
 if(typeof(args['simplify-treshold']) == 'string' && /\[*,*,*\]/.test(args['simplify-treshold'])) {
@@ -67,11 +73,10 @@ if(typeof(args.treshold) !== 'object') {
 	args.t = [args.t,args.t,args.t];
 }
 
-if (!args.f) {
-	console.log("Error: files required.");
+if(!test_args(args)) {
+	console.log(args);
 	exit(1);
 }
-console.log(args);
 
 if(args['color-system'] == 'hsv') {//HSV default
 	if(args['simplify-treshold'][0] == 10 && args['simplify-treshold'][1] == 10 && args['simplify-treshold'][2] == 10) {
@@ -83,6 +88,7 @@ if(args['color-system'] == 'hsv') {//HSV default
 	}
 }
 
+console.log(args);
 var simplifyAreas = args.s ? '' : ' --no-simplify ';
 var grid1 = args.s ? (args.G >= 0 ? args.G - args.G%1 : 0) : 0,
 	grid2 = args.g >=8 ? args.g - args.g%1 : 8;
