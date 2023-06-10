@@ -1,24 +1,24 @@
-var Jimp = require('jimp');
-var math = require('mathjs');
-var divide_side = require('./divide_side.js');
-var circular_average = require('./circular_average');
-var circularSTD = require('./circularSTD.js');
+const Jimp = require('jimp');
+const math = require('mathjs');
+const divide_side = require('./divide_side.js');
+const circular_average = require('./circular_average');
+const circularSTD = require('./circularSTD.js');
 
 var img_color_data = function (image, heightDivide, widthDivide, colorSystem) {
+	let width = image.bitmap.width;
+	let height = image.bitmap.height;
+	let widthDecile = Math.floor(width*0.1);
+	let heightDecile = Math.floor(height*0.1);
+	let imgDevs = [];
+	for (let i = 0;i < heightDivide;i++) {
+		imgDevs.push([]);
+	}
+	let widthPoints = divide_side(width, widthDivide);
+	let heightPoints = divide_side(height, heightDivide);
 	if (colorSystem == 'rgb'){
-		var width = image.bitmap.width;
-		var height = image.bitmap.height;
-		var widthDecile = Math.floor(width*0.1);
-		var heightDecile = Math.floor(height*0.1);
-		var imgDevs = [];
-		for (let i = 0;i < heightDivide;i++) {
-			imgDevs.push([]);
-		}
-		var widthPoints = divide_side(width, widthDivide);
-		var heightPoints = divide_side(height, heightDivide);
 		for (let w = 1; w < widthDivide+1; w++) {
 			for (let h = 1; h < heightDivide+1; h++){
-				var redImg = [], greenImg = [], blueImg = [];
+				let redImg = [], greenImg = [], blueImg = [];
 				image.scan(widthPoints[w-1], heightPoints[h-1], widthPoints[w], heightPoints[h], function(x, y, idx) {
 					let red = this.bitmap.data[idx + 0];
 					let green = this.bitmap.data[idx + 1];
@@ -44,16 +44,6 @@ var img_color_data = function (image, heightDivide, widthDivide, colorSystem) {
 			}
 		}
 	} else if (colorSystem == 'hsv') {
-		var width = image.bitmap.width;
-		var height = image.bitmap.height;
-		var widthDecile = Math.floor(width*0.1);
-		var heightDecile = Math.floor(height*0.1);
-		var imgDevs = [];
-		for (let i = 0;i < heightDivide;i++) {
-			imgDevs.push([]);
-		}
-		var widthPoints = divide_side(width, widthDivide);
-		var heightPoints = divide_side(height, heightDivide);
 		for (let w = 1; w < widthDivide+1; w++) {
 			for (let h = 1; h < heightDivide+1; h++){
 				//var redImg = [], greenImg = [], blueImg = [];
@@ -66,9 +56,6 @@ var img_color_data = function (image, heightDivide, widthDivide, colorSystem) {
 					let gh = Math.floor(green*100/255);
 					let bh = Math.floor(blue*100/255);
 					if (y >= heightDecile && y < height - heightDecile && x >= widthDecile && x < width - widthDecile) {
-						//redImg.push(red);
-						//greenImg.push(green);
-						//blueImg.push(blue);
 						let cmin = Math.min(rh,gh,bh);
 						let cmax = Math.max(rh,gh,bh);
 						valueImg.push(cmax);

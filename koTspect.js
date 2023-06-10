@@ -12,35 +12,35 @@ const { exit } = require('process');
 const args = minimist(process.argv.slice(2), {
 	string: ['size'],
 	alias: {
-		'treshold':'t',
-		'height-divide':'h',
-		'width-divide':'w',
-		'grid1':'G',
-		'grid2':'g',
-		'simplify':'s',
-		'colors-to-paper':'colors-to-paper',
-		'pixel-colors':'pixel-colors',
-		'dir-to-save':'d',
-		'files':'f',
-		'mk-pdf':'mk-pdf',
-		'mk-zip':'mk-zip',
-		'color-system':'c'
+		'treshold':'t'
+		,'height-divide':'h'
+		,'width-divide':'w'
+		,'grid1':'G'
+		,'grid2':'g'
+		,'simplify':'s'
+		,'colors-to-paper':'colors-to-paper'
+		,'pixel-colors':'pixel-colors'
+		,'dir-to-save':'d'
+		,'files':'f'
+		,'mk-pdf':'mk-pdf'
+		,'mk-zip':'mk-zip'
+		,'color-system':'c'
 	},
 	default: {
-		'treshold':2,
-		'height-divide':2,
-		'width-divide':2,
-		'grid1':32,
-		'grid2':16,
-		'simplify': true,
-		'simplify-treshold': 10,
-		'colors-to-paper': true,
-		'pixel-colors': true,
-		'dir-to-save': './uploads/',
-		'files': undefined,
-		'mk-pdf':false,
-		'mk-zip':false,
-		'color-system':'rgb'
+		'treshold':2
+		,'height-divide':2
+		,'width-divide':2
+		,'grid1':32
+		,'grid2':16
+		,'simplify': true
+		,'simplify-treshold': 10
+		,'colors-to-paper': true
+		,'pixel-colors': true
+		,'dir-to-save': './uploads/'
+		,'files': undefined
+		,'mk-pdf':false
+		,'mk-zip':false
+		,'color-system':'rgb'
 	},
 	unknown: (arg) => {
 	console.log('Unknown option: ', arg);
@@ -145,9 +145,10 @@ if(filedata.length == 0){
 	exit(1);
 }
 for(let i = 0; i < filedata.length; i++){
-	command += 'node retry.js -t ' + treshold +' -c '+args.c+ ' -h ' + divH + ' -w ' + divW + ' -d ' + args.d +
-	' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + simplifyTreshold + doColorsToPaper +
-	doPixelColors + ' -- \'' + JSON.stringify(filedata[i]) + '\' & ';
+	command += 'node retry.js -t ' + treshold +' -c '+args.c+ ' -h ' + divH + ' -w ' + divW + ' -d ' + args.d
+		+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + simplifyTreshold + doColorsToPaper
+		+ doPixelColors
+		+ ' -- \'' + JSON.stringify(filedata[i]) + '\' & ';
 
 	let extData = (/([^\.]+)\.([^\.]+)$/.exec(filedata[i].originalname) || 
 		[0, filedata[i].originalname,
@@ -171,9 +172,10 @@ childProcess.exec(command, function(err, stdout, stderr){
 			(/[^\/]+\/([^\/]+)$/.exec(filedata[i].mimetype)[1] == 'jpeg' ? 'jpg' : /[^\/]+\/([^\/]+)$/.exec(filedata[i].mimetype)[1])])
 			.slice(1,3);//[name,extension]
 		if(!fs.existsSync(args.d+extData[0]+'_mod.'+ (extData[1].toLowerCase()=='png' ? 'png' : 'jpg'))) {
-			childProcess.execSync('node retry.js -t ' + treshold +' -c '+args.c+ ' -h ' + divH + ' -w ' + divW + ' -d ' + args.d +
-			' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + simplifyTreshold + doColorsToPaper +
-			doPixelColors + ' -- \'' + JSON.stringify(filedata[i]) + '\'');
+			childProcess.execSync('node retry.js -t ' + treshold +' -c '+args.c+ ' -h ' + divH + ' -w ' + divW + ' -d ' + args.d
+			+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + simplifyTreshold + doColorsToPaper
+			+ doPixelColors
+			+ ' -- \'' + JSON.stringify(filedata[i]) + '\'');
 		}
 		let size_before = Math.ceil(filedata[i].size)/1024;
 		let size_arter = Math.ceil(fs.statSync(args.d+extData[0]+'_mod.'+ (extData[1].toLowerCase()=='png' ? 'png' : 'jpg')).size/1024);

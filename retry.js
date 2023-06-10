@@ -5,29 +5,29 @@ const minimist = require('minimist');
 const args = minimist(process.argv.slice(2), {
 	string: ['size'],
 	alias: {
-		'treshold':'t',
-		'height-divide':'h',
-		'width-divide':'w',
-		'grid1':'G',
-		'grid2':'g',
-		'simplify':'s',
-		'colors-to-paper':'colors-to-paper',
-		'pixel-colors':'pixel-colors',
-		'dir-to-save':'d',
-		'color-system':'c'
+		'treshold':'t'
+		,'height-divide':'h'
+		,'width-divide':'w'
+		,'grid1':'G'
+		,'grid2':'g'
+		,'simplify':'s'
+		,'colors-to-paper':'colors-to-paper'
+		,'pixel-colors':'pixel-colors'
+		,'dir-to-save':'d'
+		,'color-system':'c'
 	},
 	default: {
-		'treshold':2,
-		'height-divide':2,
-		'width-divide':2,
-		'grid1':32,
-		'grid2':16,
-		'simplify': true,
-		'simplify-treshold': 10,
-		'colors-to-paper': true,
-		'pixel-colors': true,
-		'dir-to-save': './uploads/',
-		'color-system':'rgb'
+		'treshold':2
+		,'height-divide':2
+		,'width-divide':2
+		,'grid1':32
+		,'grid2':16
+		,'simplify': true
+		,'simplify-treshold': 10
+		,'colors-to-paper': true
+		,'pixel-colors': true
+		,'dir-to-save': './uploads/'
+		,'color-system':'rgb'
 	},
 	unknown: (arg) => {
 	console.log('Unknown option: ', arg);
