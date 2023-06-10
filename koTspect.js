@@ -27,13 +27,13 @@ const args = minimist(process.argv.slice(2), {
 		,'color-system':'c'
 	},
 	default: {
-		'treshold':2
+		'treshold':[2,2,2]
 		,'height-divide':2
 		,'width-divide':2
 		,'grid1':32
 		,'grid2':16
 		,'simplify': true
-		,'simplify-treshold': 10
+		,'simplify-treshold': [10,10,10]
 		,'colors-to-paper': true
 		,'pixel-colors': true
 		,'dir-to-save': './uploads/'
@@ -51,17 +51,43 @@ const args = minimist(process.argv.slice(2), {
 	//return false;
 	}
 });
+if(typeof(args['simplify-treshold']) == 'string' && /\[*,*,*\]/.test(args['simplify-treshold'])) {
+	args['simplify-treshold'] = JSON.parse(args['simplify-treshold']);
+}
+if(typeof(args.treshold) == 'string' && /\[*,*,*\]/.test(args.treshold)) {
+	args.treshold = JSON.parse(args.treshold);
+	args.t = JSON.parse(args.t);
+}
+
+if(typeof(args['simplify-treshold']) !== 'object') {
+	args['simplify-treshold'] = [args['simplify-treshold'],args['simplify-treshold'],args['simplify-treshold']];
+}
+if(typeof(args.treshold) !== 'object') {
+	args.treshold = [args.treshold,args.treshold,args.treshold];
+	args.t = [args.t,args.t,args.t];
+}
+
 if (!args.f) {
 	console.log("Error: files required.");
 	exit(1);
 }
 console.log(args);
 
+if(args['color-system'] == 'hsv') {//HSV default
+	if(args['simplify-treshold'][0] == 10 && args['simplify-treshold'][1] == 10 && args['simplify-treshold'][2] == 10) {
+		args['simplify-treshold'] = [12,8,8];
+	}
+	if(args.treshold[0] == 2 && args.treshold[1] == 2 && args.treshold[2] == 2) {
+		args.treshold = [3,2,2];
+		args.t = [3,2,2];
+	}
+}
+
 var simplifyAreas = args.s ? '' : ' --no-simplify ';
 var grid1 = args.s ? (args.G >= 0 ? args.G - args.G%1 : 0) : 0,
 	grid2 = args.g >=8 ? args.g - args.g%1 : 8;
 var doColorsToPaper = args['colors-to-paper'] ? '' : ' --no-colors-to-paper';
-var treshold = args.t;
+var treshold = args.treshold;
 var simplifyTreshold = args['simplify-treshold'];
 var divH = args.h >=1 ? args.h - args.h%1 : 1,
 	divW = args.w >=1 ? args.w - args.w%1 : 1;
@@ -149,8 +175,8 @@ if(filedata.length == 0){
 	exit(1);
 }
 for(let i = 0; i < filedata.length; i++){
-	command += 'node retry.js -t ' + treshold +' -c '+args.c+ ' -h ' + divH + ' -w ' + divW + ' -d ' + args.d
-		+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + simplifyTreshold + doColorsToPaper
+	command += 'node retry.js -t ' + JSON.stringify(treshold) +' -c '+args.c+ ' -h ' + divH + ' -w ' + divW + ' -d ' + args.d
+		+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + JSON.stringify(simplifyTreshold) + doColorsToPaper
 		+ doPixelColors + ' --left-decile ' + args['left-decile'] + ' --right-decile ' + args['right-decile']
 		+ ' --top-decile ' + args['top-decile'] + ' --bottom-decile ' + args['bottom-decile']
 		+ ' -- \'' + JSON.stringify(filedata[i]) + '\' & ';
@@ -177,11 +203,11 @@ childProcess.exec(command, function(err, stdout, stderr){
 			(/[^\/]+\/([^\/]+)$/.exec(filedata[i].mimetype)[1] == 'jpeg' ? 'jpg' : /[^\/]+\/([^\/]+)$/.exec(filedata[i].mimetype)[1])])
 			.slice(1,3);//[name,extension]
 		if(!fs.existsSync(args.d+extData[0]+'_mod.'+ (extData[1].toLowerCase()=='png' ? 'png' : 'jpg'))) {
-			childProcess.execSync('node retry.js -t ' + treshold +' -c '+args.c+ ' -h ' + divH + ' -w ' + divW + ' -d ' + args.d
-			+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + simplifyTreshold + doColorsToPaper
-			+ doPixelColors + ' --left-decile ' + args['left-decile'] + ' --right-decile ' + args['right-decile']
-			+ ' --top-decile ' + args['top-decile'] + ' --bottom-decile ' + args['bottom-decile']
-			+ ' -- \'' + JSON.stringify(filedata[i]) + '\'');
+			childProcess.execSync('node retry.js -t ' + JSON.stringify(treshold) +' -c '+args.c+ ' -h ' + divH + ' -w ' + divW + ' -d ' + args.d
+				+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + JSON.stringify(simplifyTreshold) + doColorsToPaper
+				+ doPixelColors + ' --left-decile ' + args['left-decile'] + ' --right-decile ' + args['right-decile']
+				+ ' --top-decile ' + args['top-decile'] + ' --bottom-decile ' + args['bottom-decile']
+				+ ' -- \'' + JSON.stringify(filedata[i]) + '\'');
 		}
 		let size_before = Math.ceil(filedata[i].size)/1024;
 		let size_arter = Math.ceil(fs.statSync(args.d+extData[0]+'_mod.'+ (extData[1].toLowerCase()=='png' ? 'png' : 'jpg')).size/1024);

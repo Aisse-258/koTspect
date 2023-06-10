@@ -37,7 +37,7 @@ var simple_colors = function (image, grid, maxStd, doSimplify, colorSystem) {
 				let devi = math.std([redData, greenData, blueData], 1);
 				//console.log(devi);
 				/*код для экспорта данных в csv вынесен в devs_to_csv.js*/
-				if (devi[0] < maxStd && devi[1] < maxStd && devi[2] < maxStd){
+				if (devi[0] < maxStd[0] && devi[1] < maxStd[1] && devi[2] < maxStd[2]){
 					let r = Math.floor(redTot/(gridWidth*gridHeight));
 					let g = Math.floor(greenTot/(gridWidth*gridHeight));
 					let b = Math.floor(blueTot/(gridWidth*gridHeight));
@@ -110,7 +110,7 @@ var simple_colors = function (image, grid, maxStd, doSimplify, colorSystem) {
 				let devi = math.std([saturationData, valueData], 1);//std для hueData считать отдельно, вставить первым элементом в этот массив
 				devi.unshift(circularSTD(hueData));
 				//console.log(devi);
-				if (devi[0] < maxStd && devi[1] < maxStd && devi[2] < maxStd){
+				if (devi[0] < maxStd[0] && devi[1] < maxStd[1] && devi[2] < maxStd[2]){
 					let r = Math.floor(redTot/(gridWidth*gridHeight));
 					let g = Math.floor(greenTot/(gridWidth*gridHeight));
 					let b = Math.floor(blueTot/(gridWidth*gridHeight));

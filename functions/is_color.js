@@ -1,11 +1,11 @@
 var is_color = function (colorToCheck, imageColorData, position, treshold,colorSystem) {
 	if (colorSystem == 'rgb'){
-		if (colorToCheck.red < imageColorData.imgDevs[position[0]][position[1]].red - treshold*imageColorData.imgDevs[position[0]][position[1]].redStd
-			|| colorToCheck.red > imageColorData.imgDevs[position[0]][position[1]].red + treshold*imageColorData.imgDevs[position[0]][position[1]].redStd
-			|| colorToCheck.green < imageColorData.imgDevs[position[0]][position[1]].green - treshold*imageColorData.imgDevs[position[0]][position[1]].greenStd
-			|| colorToCheck.green > imageColorData.imgDevs[position[0]][position[1]].green + treshold*imageColorData.imgDevs[position[0]][position[1]].greenStd
-			|| colorToCheck.blue < imageColorData.imgDevs[position[0]][position[1]].blue - treshold*imageColorData.imgDevs[position[0]][position[1]].blueStd
-			|| colorToCheck.blue > imageColorData.imgDevs[position[0]][position[1]].blue + treshold*imageColorData.imgDevs[position[0]][position[1]].blueStd) {
+		if (colorToCheck.red < imageColorData.imgDevs[position[0]][position[1]].red - treshold[0]*imageColorData.imgDevs[position[0]][position[1]].redStd
+			|| colorToCheck.red > imageColorData.imgDevs[position[0]][position[1]].red + treshold[0]*imageColorData.imgDevs[position[0]][position[1]].redStd
+			|| colorToCheck.green < imageColorData.imgDevs[position[0]][position[1]].green - treshold[1]*imageColorData.imgDevs[position[0]][position[1]].greenStd
+			|| colorToCheck.green > imageColorData.imgDevs[position[0]][position[1]].green + treshold[1]*imageColorData.imgDevs[position[0]][position[1]].greenStd
+			|| colorToCheck.blue < imageColorData.imgDevs[position[0]][position[1]].blue - treshold[2]*imageColorData.imgDevs[position[0]][position[1]].blueStd
+			|| colorToCheck.blue > imageColorData.imgDevs[position[0]][position[1]].blue + treshold[2]*imageColorData.imgDevs[position[0]][position[1]].blueStd) {
 			return 1;
 		}
 		else {
@@ -38,8 +38,8 @@ var is_color = function (colorToCheck, imageColorData, position, treshold,colorS
 			ctcInHSV.hue=hh;
 		}
 		//проверка вхождения циклической величины в допустимый диапазон
-		let hRB = imageColorData.imgDevs[position[0]][position[1]].hue + treshold*imageColorData.imgDevs[position[0]][position[1]].hueStd
-			, hLB = imageColorData.imgDevs[position[0]][position[1]].hue - treshold*imageColorData.imgDevs[position[0]][position[1]].hueStd
+		let hRB = imageColorData.imgDevs[position[0]][position[1]].hue + treshold[0]*imageColorData.imgDevs[position[0]][position[1]].hueStd
+			, hLB = imageColorData.imgDevs[position[0]][position[1]].hue - treshold[0]*imageColorData.imgDevs[position[0]][position[1]].hueStd
 			, isHin;
 		/*диапазоны (hLB,hRB) могут быть 3х типов
 			hLB>=0 && hRB<360 - проверяется нормально
@@ -56,10 +56,10 @@ var is_color = function (colorToCheck, imageColorData, position, treshold,colorS
 		}
 
 		if (! isHin
-			|| ctcInHSV.saturation < imageColorData.imgDevs[position[0]][position[1]].saturation - treshold*imageColorData.imgDevs[position[0]][position[1]].saturationStd
-			|| ctcInHSV.saturation > imageColorData.imgDevs[position[0]][position[1]].saturation + treshold*imageColorData.imgDevs[position[0]][position[1]].saturationStd
-			|| ctcInHSV.value < imageColorData.imgDevs[position[0]][position[1]].value - treshold*imageColorData.imgDevs[position[0]][position[1]].valueStd
-			|| ctcInHSV.value > imageColorData.imgDevs[position[0]][position[1]].value + treshold*imageColorData.imgDevs[position[0]][position[1]].valueStd) {
+			|| ctcInHSV.saturation < imageColorData.imgDevs[position[0]][position[1]].saturation - treshold[1]*imageColorData.imgDevs[position[0]][position[1]].saturationStd
+			|| ctcInHSV.saturation > imageColorData.imgDevs[position[0]][position[1]].saturation + treshold[1]*imageColorData.imgDevs[position[0]][position[1]].saturationStd
+			|| ctcInHSV.value < imageColorData.imgDevs[position[0]][position[1]].value - treshold[2]*imageColorData.imgDevs[position[0]][position[1]].valueStd
+			|| ctcInHSV.value > imageColorData.imgDevs[position[0]][position[1]].value + treshold[2]*imageColorData.imgDevs[position[0]][position[1]].valueStd) {
 			return 1;
 		}
 		else {

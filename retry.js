@@ -17,13 +17,13 @@ const args = minimist(process.argv.slice(2), {
 		,'color-system':'c'
 	},
 	default: {
-		'treshold':2
+		'treshold':[2,2,2]
 		,'height-divide':2
 		,'width-divide':2
 		,'grid1':32
 		,'grid2':16
 		,'simplify': true
-		,'simplify-treshold': 10
+		,'simplify-treshold': [10,10,10]
 		,'colors-to-paper': true
 		,'pixel-colors': true
 		,'dir-to-save': './uploads/'
@@ -34,12 +34,15 @@ const args = minimist(process.argv.slice(2), {
 		,'bottom-decile':0.1
 	},
 	unknown: (arg) => {
-	console.log('Unknown option: ', arg);
+	//console.log('Unknown option: ', arg);
 	//return false;
 	}
 });
 //console.log(args);
 var img = JSON.parse(args._[0]);
+args['simplify-treshold'] = JSON.parse(args['simplify-treshold']);
+args.treshold = JSON.parse(args.treshold);
+
 var grid1 = args.grid1, grid2 =  args.grid2;
 //var fs = require('fs');
 
@@ -60,10 +63,10 @@ if (err) throw err;
 	}
 	if (args['colors-to-paper']) {
 		var divide = [args['height-divide'], args['width-divide']];
-		var threshold = args.treshold;
+		var treshold = args.treshold;
 		var imageColorData = img_color_data(image, Number(divide[0]), Number(divide[1]), args.c
 											, [args['left-decile'],args['right-decile'],args['top-decile'],args['bottom-decile']]);
-		colors_to_paper(image, imageColorData, simpleMap, grid2, threshold, args.simplify, args['pixel-colors'], args.c);
+		colors_to_paper(image, imageColorData, simpleMap, grid2, treshold, args.simplify, args['pixel-colors'], args.c);
 	}
 	//find_plain(image, 8, 20);
 	var extData = (/([^\.]+)\.([^\.]+)$/.exec(img.originalname) || 
