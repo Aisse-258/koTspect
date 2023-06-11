@@ -51,6 +51,8 @@ server.post("/upload",function(req,res,next){
 		//console.log(req.body['color-space']);
 		//console.log(req.body['color-space-rgb']);
 		var colorSystem = req.body['color-space'];
+		var doGrayscale = (req.body['do-grayscale'] == 'on');
+		var jpegQuality = req.body['jpeg-quality'] == 100 ? 'native' : Number(req.body['jpeg-quality']);
 		var command = '';
 		var imgsShow = '';
 		if(req.body['make-archive']=='on' || req.body['make-pdf']=='on'){
@@ -122,6 +124,7 @@ server.post("/upload",function(req,res,next){
 				+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + JSON.stringify(simplifyTreshold) + doColorsToPaper
 				+ doPixelColors + ' --left-decile ' + Number(req.body['left-decile']) + ' --right-decile ' + Number(req.body['right-decile'])
 				+ ' --top-decile ' + Number(req.body['top-decile']) + ' --bottom-decile ' + Number(req.body['bottom-decile'])
+				+ ' -Q ' + jpegQuality + (doGrayscale ? ' --grayscale ' : '')
 				+ ' -- \'' + JSON.stringify(filedata[i]) + '\' & ';
 
 			let extData = (/([^\.]+)\.([^\.]+)$/.exec(filedata[i].originalname) || 
@@ -151,6 +154,7 @@ server.post("/upload",function(req,res,next){
 						+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + JSON.stringify(simplifyTreshold) + doColorsToPaper
 						+ doPixelColors + ' --left-decile ' + Number(req.body['left-decile']) + ' --right-decile ' + Number(req.body['right-decile'])
 						+ ' --top-decile ' + Number(req.body['top-decile']) + ' --bottom-decile ' + Number(req.body['bottom-decile'])
+						+ ' -Q ' + jpegQuality + (doGrayscale ? ' --grayscale ' : '')
 						+ ' -- \'' + JSON.stringify(filedata[i]) + '\'');
 				}
 				let size = Math.ceil(fs.statSync("./uploads/"+extData[0]+'_mod.'+ (extData[1].toLowerCase()=='png' ? 'png' : 'jpg')).size/1024);

@@ -181,6 +181,19 @@
 						</div>
 						</div>
 					</div>
+					<div>
+						<label>Дополнительно:</label><br>
+						<label class="custom-control-input">
+							<input type="checkbox" id="do-grayscale" name="do-grayscale"> Оттенки серого
+						</label><br>
+						<div class="form-group">
+							<label for="right-decile">Качество JPEG:</label>
+							<input type="range" class="form-control-range" id="jpeg-quality" name="jpeg-quality"
+								min="1" max="100" value="100" step="1" oninput="this.nextElementSibling.value = this.value+'%'">
+							<output style="display: inline;">100%</output>
+						</div>
+
+					</div>
 				</div>
 
 				<div>
