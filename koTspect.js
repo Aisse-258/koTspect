@@ -1,4 +1,4 @@
-//node koTspect.js [-t treshold] [-c color_system] [-h divH] [-w divW]  [-G grid1] [-g grid2] [simplifyAreas] [--simplify-treshold simplifyTreshold] [doColorsToPaper] [doPixelColors] -f 'file1.jpg file2.jpg'
+//node koTspect.js [-t treshold] [-c color_system] [-h divH] [-w divW]  [-G grid1] [-g grid2] [simplifyAreas] [--simplify-treshold simplifyTreshold] [doColorsToPaper] [doPixelColors] [-Q 80] [doGrayscale] [--top-decile 0.1] [--bottom-decile 0.1] [--left-decile 0.1] [--right-decile 0.1] -f 'file1.jpg file2.jpg'
 const fs = require('fs');
 const uuid = require('uuid');
 var childProcess = require('child_process');
