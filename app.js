@@ -39,11 +39,11 @@ server.post("/upload",function(req,res,next){
 		fs.writeFileSync('uploads/'+onloadName+'.html', onload);
 		res.send(onload);
 		var simplifyAreas = req.body['simplify-areas'] == 'on' ? '' : ' --no-simplify ';
-		var grid1 = req.body['simplify-areas'] == 'on' && req.body['simplify-treshold'] > 2 && req.body['simplify-big-areas'] == 'on' ? req.body.grid1 : 0,
+		var grid1 = req.body['simplify-areas'] == 'on' && req.body['simplify-big-areas'] == 'on' ? req.body.grid1 : 0,
 			grid2 = req.body['simplify-areas'] == 'on' ? req.body.grid2 : req.body.grid;
 		var doColorsToPaper = req.body['do-colors-to-paper'] == 'on' ? '' : ' --no-colors-to-paper';
-		var treshold = req.body.treshold;
-		var simplifyTreshold = req.body['simplify-treshold'];
+		var treshold = req.body['color-space'] == 'rgb' ? [req.body.treshold,req.body.treshold,] : [req.body['treshold-hue'],req.body['treshold-saturation'],req.body['treshold-value']];
+		var simplifyTreshold = req.body['color-space'] == 'rgb' ? [req.body['simplify-treshold'],req.body['simplify-treshold'],req.body['simplify-treshold']] : [req.body['simplify-treshold-hue'],req.body['simplify-treshold-saturation'],req.body['simplify-treshold-value']];
 		var divH = req.body['do-height-divide'] == 'on' ? req.body.divide_height : 1,
 		divW = req.body['do-width-divide'] == 'on' ? req.body.divide_width : 1;
 		var doPixelColors = req.body['do-pixel-colors'] == 'on' ? '' : ' --no-pixel-colors ';
@@ -118,8 +118,8 @@ server.post("/upload",function(req,res,next){
 			return;
 		}
 		for(let i = 0; i < filedata.length; i++){
-			command += 'node retry.js -t ' + treshold +' -c '+colorSystem+ ' -h ' + divH + ' -w ' + divW
-				+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + simplifyTreshold + doColorsToPaper
+			command += 'node retry.js -t ' + JSON.stringify(treshold) +' -c '+colorSystem+ ' -h ' + divH + ' -w ' + divW
+				+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + JSON.stringify(simplifyTreshold) + doColorsToPaper
 				+ doPixelColors + ' --left-decile ' + Number(req.body['left-decile']) + ' --right-decile ' + Number(req.body['right-decile'])
 				+ ' --top-decile ' + Number(req.body['top-decile']) + ' --bottom-decile ' + Number(req.body['bottom-decile'])
 				+ ' -- \'' + JSON.stringify(filedata[i]) + '\' & ';
@@ -147,8 +147,8 @@ server.post("/upload",function(req,res,next){
 					(/[^\/]+\/([^\/]+)$/.exec(filedata[i].mimetype)[1] == 'jpeg' ? 'jpg' : /[^\/]+\/([^\/]+)$/.exec(filedata[i].mimetype)[1])])
 					.slice(1,3);//[name,extension]
 				if(!fs.existsSync("./uploads/"+extData[0]+'_mod.'+ (extData[1].toLowerCase()=='png' ? 'png' : 'jpg'))) {
-					childProcess.execSync('node retry.js -t ' + treshold +' -c '+colorSystem+ ' -h ' + divH + ' -w ' + divW
-						+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + simplifyTreshold + doColorsToPaper
+					childProcess.execSync('node retry.js -t ' + JSON.stringify(treshold) +' -c '+colorSystem+ ' -h ' + divH + ' -w ' + divW
+						+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + JSON.stringify(simplifyTreshold) + doColorsToPaper
 						+ doPixelColors + ' --left-decile ' + Number(req.body['left-decile']) + ' --right-decile ' + Number(req.body['right-decile'])
 						+ ' --top-decile ' + Number(req.body['top-decile']) + ' --bottom-decile ' + Number(req.body['bottom-decile'])
 						+ ' -- \'' + JSON.stringify(filedata[i]) + '\'');

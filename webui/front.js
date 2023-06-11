@@ -54,3 +54,18 @@ $('#do-width-divide').click(function(){
 $('#send-imgs').click(function(){
 	document.getElementById('display-results').setAttribute('style','display:auto')
 })
+
+$('#color-space-input').click(function(){
+	if(document.getElementById('color-space-hsv').checked) {
+		document.getElementById('simplify-treshold-input-hsv').setAttribute('style','display:auto')
+		document.getElementById('simplify-treshold-input-rgb').setAttribute('style','display:none')
+		document.getElementById('color-treshold-input-hsv').setAttribute('style','display:auto')
+		document.getElementById('color-treshold-input-rgb').setAttribute('style','display:none')
+	}
+	else if (document.getElementById('color-space-rgb').checked) {
+		document.getElementById('simplify-treshold-input-rgb').setAttribute('style','display:auto')
+		document.getElementById('simplify-treshold-input-hsv').setAttribute('style','display:none')
+		document.getElementById('color-treshold-input-rgb').setAttribute('style','display:auto')
+		document.getElementById('color-treshold-input-hsv').setAttribute('style','display:none')
+	}
+})

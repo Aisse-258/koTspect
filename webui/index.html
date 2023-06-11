@@ -19,7 +19,7 @@
 					Загрузить файлы
 					<input id="filedata" type="file" name="filedata" style="display:none;" multiple/>
 				</label><span id="loading-button"></span><br><br>
-				<label class="custom-control-input">
+				<label class="custom-control-input" id="color-space-input">
 					<input type="radio" id="color-space-rgb" name="color-space" value="rgb" checked> RGB 
 					<input type="radio" id="color-space-hsv" name="color-space" value="hsv"> HSV
 					<!--<div id="simplify-areas-info" class="info" title="Закрашивание однородных областей их средними цветами. Не рекомендуется, если есть важные элементы, близкие по цвету с окружением (напр. текст написан бледными чернилами)">ⓘ</div>-->
@@ -72,10 +72,36 @@
 							<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
 						</div>
 						Порог усреднения: <label class="custom-control-input"><div id="simplify-treshold-info" class="info" title="Допустимый разброс цветовых показателей. Если усредняет лишнее - уменьшить.">ⓘ</div></label><br>
-						<div id="simplify-treshold-input" class="def-number-input number-input safari_only">
+						<div id="simplify-treshold-input-rgb" class="def-number-input number-input safari_only">
 							<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
 							<input class="quantity" min="2" name="simplify-treshold" value="10" step="1" type="number" id="simplify-treshold">
 							<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+						</div>
+						<div style="display: none;" id="simplify-treshold-input-hsv">
+							<div style="display: inline-block;">
+								<label for="simplify-treshold-input-hue">Hue</label>
+								<div id="simplify-treshold-input-hue" class="def-number-input number-input safari_only">
+									<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
+									<input class="quantity" min="2" name="simplify-treshold-hue" value="12" step="1" type="number" id="simplify-treshold-hue">
+									<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+								</div>
+							</div>
+							<div style="display: inline-block;">
+								<label for="simplify-treshold-input-saturation">Saturation</label>
+								<div id="simplify-treshold-input-saturation" class="def-number-input number-input safari_only">
+									<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
+									<input class="quantity" min="2" name="simplify-treshold-saturation" value="8" step="1" type="number" id="simplify-treshold-saturation">
+									<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+								</div>
+							</div>
+							<div style="display: inline-block;">
+								<label for="simplify-treshold-input-value">Value</label>
+								<div id="simplify-treshold-input-value" class="def-number-input number-input safari_only">
+									<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
+									<input class="quantity" min="2" name="simplify-treshold-value" value="8" step="1" type="number" id="simplify-treshold-value">
+									<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div></div>
@@ -90,10 +116,36 @@
 					<div id="colors-to-paper-settings">
 						Порог цветности:
 						<div id="colors-to-paper-info" class="info" title='Если закрашивает лишнее - увеличить.'>ⓘ</div>
-						<div class="def-number-input number-input safari_only">
+						<div class="def-number-input number-input safari_only" id="color-treshold-input-rgb">
 							<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
 							<input class="quantity" min="1" name="treshold" value="2" step="0.1" type="number" id="treshold">
 							<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+						</div>
+						<div id="color-treshold-input-hsv" style="display: none;">
+							<div style="display: inline-block;">
+								<label for="color-treshold-input-hue">Hue</label>
+								<div class="def-number-input number-input safari_only" id="color-treshold-input-hue">
+									<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
+									<input class="quantity" min="1" name="treshold-hue" value="3" step="0.1" type="number" id="treshold-hue">
+									<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+								</div>
+							</div>
+							<div style="display: inline-block;">
+								<label for="color-treshold-input-saturation">Saturation</label>
+								<div class="def-number-input number-input safari_only" id="color-treshold-input-saturation">
+									<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
+									<input class="quantity" min="1" name="treshold-saturation" value="2" step="0.1" type="number" id="treshold-saturation">
+									<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+								</div>
+							</div>
+							<div style="display: inline-block;">
+								<label for="color-treshold-input-value">Value</label>
+								<div class="def-number-input number-input safari_only" id="color-treshold-input-value">
+									<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
+									<input class="quantity" min="1" name="treshold-value" value="2" step="0.1" type="number" id="treshold-value">
+									<button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+								</div>
+							</div>
 						</div>
 						<div id="grid-to-work" style="display: none;">
 							Размер закрашиваемых плиток:
