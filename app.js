@@ -157,21 +157,25 @@ server.post("/upload",function(req,res,next){
 						+ ' -Q ' + jpegQuality + (doGrayscale ? ' --grayscale ' : '')
 						+ ' -- \'' + JSON.stringify(filedata[i]) + '\'');
 				}
-				let size = Math.ceil(fs.statSync("./uploads/"+extData[0]+'_mod.'+ (extData[1].toLowerCase()=='png' ? 'png' : 'jpg')).size/1024);
-				imgsShow += '<div id="img-res'+i+'">\n'+
-				'<img src="../uploads/'+filedata[i].filename+'" style="max-width: 49%;">\n'+
+				let size_before = Math.ceil(fs.statSync("./uploads/"+filedata[i].filename).size/1024);
+				let size_after = Math.ceil(fs.statSync("./uploads/"+extData[0]+'_mod.'+ (extData[1].toLowerCase()=='png' ? 'png' : 'jpg')).size/1024);
+				imgsShow += '<div id="img-res-'+i+'">\n'+
+				'<div style="display: inline-block; width:49%">\n'+
+				'<img src="../uploads/'+filedata[i].filename+'" style="max-width:100%" id="img-before-'+i+'">\n'+
+				'<label for="img-before-'+i+'">Начальный размер изображения: '+size_before+' кБ</label>\n'+
+				'</div>\n<div style="display: inline-block; width:49%">\n'+
 				'<a href="../uploads/'+extData[0]+'_mod.'+
 				(extData[1].toLowerCase()=='png' ? 'png' : 'jpg')+'" download="'+
 				extData[0]+'_mod.'+
 				(extData[1].toLowerCase()=='png' ? 'png' : 'jpg')+'">\n'+
 				'<img src="../uploads/'+extData[0]+'_mod.'+
-				(extData[1].toLowerCase()=='png' ? 'png' : 'jpg')+'" style="max-width: 49%;"></a><br>\n'+
-				'<a href="../uploads/'+extData[0]+'_mod.'+
+				(extData[1].toLowerCase()=='png' ? 'png' : 'jpg')+'" style="max-width:100%" id="img-after-'+i+'">\n</a>\n'+
+				'<label for="img-after-'+i+'"><a href="../uploads/'+extData[0]+'_mod.'+
 				(extData[1].toLowerCase()=='png' ? 'png' : 'jpg')+'" download="'+
 				extData[0]+
 				'_mod.'+ (extData[1].toLowerCase()=='png' ? 'png' : 'jpg')+
-				'" style="margin-left: 50%;">Скачать изображение ('+size+' кБ)</a>'+
-				'\n</div>\n';
+				'">Скачать изображение ('+size_after+' кБ)</a></label>\n'+
+				'</div>\n</div>\n';
 			}
 			if(req.body['make-archive']=='on'){
 				var archieveName = uuid.v4();
