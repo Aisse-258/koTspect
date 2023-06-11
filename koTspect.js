@@ -26,6 +26,7 @@ const args = minimist(process.argv.slice(2), {
 		,'mk-pdf':'mk-pdf'
 		,'mk-zip':'mk-zip'
 		,'color-system':'c'
+		,'jpeg-quality':'Q'
 	},
 	default: {
 		'treshold':[2,2,2]
@@ -47,6 +48,7 @@ const args = minimist(process.argv.slice(2), {
 		,'top-decile':0.1
 		,'bottom-decile':0.1
 		,'grayscale':false
+		,'jpeg-quality':'native'
 	},
 	unknown: (arg) => {
 		let no_alias = {'--simplify-treshold':0,'--left-decile':0,'--right-decile':0,'--top-decile':0,'--bottom-decile':0
@@ -186,6 +188,7 @@ for(let i = 0; i < filedata.length; i++){
 		+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + JSON.stringify(simplifyTreshold) + doColorsToPaper
 		+ doPixelColors + ' --left-decile ' + args['left-decile'] + ' --right-decile ' + args['right-decile']
 		+ ' --top-decile ' + args['top-decile'] + ' --bottom-decile ' + args['bottom-decile'] + (args.grayscale ? ' --grayscale' : '')
+		+ ' -Q ' + args['jpeg-quality']
 		+ ' -- \'' + JSON.stringify(filedata[i]) + '\' & ';
 
 	let extData = (/([^\.]+)\.([^\.]+)$/.exec(filedata[i].originalname) || 
@@ -214,6 +217,7 @@ childProcess.exec(command, function(err, stdout, stderr){
 				+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + JSON.stringify(simplifyTreshold) + doColorsToPaper
 				+ doPixelColors + ' --left-decile ' + args['left-decile'] + ' --right-decile ' + args['right-decile']
 				+ ' --top-decile ' + args['top-decile'] + ' --bottom-decile ' + args['bottom-decile'] + (args.grayscale ? ' --grayscale' : '')
+				+ ' -Q ' + args['jpeg-quality']
 				+ ' -- \'' + JSON.stringify(filedata[i]) + '\'');
 		}
 		let size_before = Math.ceil(filedata[i].size/1024);

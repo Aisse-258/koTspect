@@ -15,6 +15,7 @@ const args = minimist(process.argv.slice(2), {
 		,'pixel-colors':'pixel-colors'
 		,'dir-to-save':'d'
 		,'color-system':'c'
+		,'jpeg-quality':'Q'
 	},
 	default: {
 		'treshold':[2,2,2]
@@ -33,6 +34,7 @@ const args = minimist(process.argv.slice(2), {
 		,'top-decile':0.1
 		,'bottom-decile':0.1
 		,'grayscale':false
+		,'jpeg-quality':'native'
 	},
 	unknown: (arg) => {
 	//console.log('Unknown option: ', arg);
@@ -86,13 +88,15 @@ if (err) throw err;
 			if (extData[1].toLowerCase() == 'jpg' || extData[1].toLowerCase() == 'jpeg') {
 				childProcess.execSync('convert '
 				+ (args.grayscale ? '-type Grayscale ' : '')
-				+ `${args['dir-to-save']}`+ extData[0] + '_mod.bmp -quality ' +
-				childProcess.execSync('identify -format \'%Q\' ' + img.path).toString() + ' '+`${args['dir-to-save']}`+ extData[0] + '_mod.jpg');
+				+ `${args['dir-to-save']}`+ extData[0] + '_mod.bmp -quality '
+				+ (args['jpeg-quality'] == 'native' ? childProcess.execSync('identify -format \'%Q\' ' + img.path).toString() : args['jpeg-quality']) + ' '
+				+`${args['dir-to-save']}`+ extData[0] + '_mod.jpg');
 				//console.log(Date.now()-t);
 			}
 			else {
 				childProcess.execSync('convert '
 				+ (args.grayscale ? '-type Grayscale ' : '')
+				+ '-quality ' + (args['jpeg-quality'] == 'native' ? 100 : args['jpeg-quality']) + ' '
 				+ `${args['dir-to-save']}`+ extData[0] + '_mod.bmp ' +`${args['dir-to-save']}`+ extData[0] + '_mod.jpg');
 				//console.log(Date.now()-t);
 			}
