@@ -32,6 +32,7 @@ const args = minimist(process.argv.slice(2), {
 		,'right-decile':0.1
 		,'top-decile':0.1
 		,'bottom-decile':0.1
+		,'grayscale':false
 	},
 	unknown: (arg) => {
 	//console.log('Unknown option: ', arg);
@@ -75,18 +76,24 @@ if (err) throw err;
 		.slice(1,3);//[name,extension]
 	if (extData[1].toLowerCase() == 'png'){
 		image.write(`${args['dir-to-save']}`+extData[0] + '_mod.png', function() {
-			childProcess.execSync('convert -depth 24 -define png:compression-level=9 ' +`${args['dir-to-save']}`+ extData[0] + '_mod.png ' +`${args['dir-to-save']}`+ extData[0] + '_mod.png');
+			childProcess.execSync('convert -depth 24 -define png:compression-level=9 '
+			+ (args.grayscale ? '-type Grayscale ' : '')
+			+ `${args['dir-to-save']}`+ extData[0] + '_mod.png ' +`${args['dir-to-save']}`+ extData[0] + '_mod.png');
 		});
 	}
 	else {
 		image.write(`${args['dir-to-save']}`+extData[0] + '_mod.bmp', function() {
 			if (extData[1].toLowerCase() == 'jpg' || extData[1].toLowerCase() == 'jpeg') {
-				childProcess.execSync('convert ' +`${args['dir-to-save']}`+ extData[0] + '_mod.bmp -quality ' +
-				childProcess.execSync('identify -format \'%Q\' ' + img.path).toString() + ' ' +`${args['dir-to-save']}`+ extData[0] + '_mod.jpg');
+				childProcess.execSync('convert '
+				+ (args.grayscale ? '-type Grayscale ' : '')
+				+ `${args['dir-to-save']}`+ extData[0] + '_mod.bmp -quality ' +
+				childProcess.execSync('identify -format \'%Q\' ' + img.path).toString() + ' '+`${args['dir-to-save']}`+ extData[0] + '_mod.jpg');
 				//console.log(Date.now()-t);
 			}
 			else {
-				childProcess.execSync('convert ' +`${args['dir-to-save']}`+ extData[0] + '_mod.bmp ' +`${args['dir-to-save']}`+ extData[0] + '_mod.jpg');
+				childProcess.execSync('convert '
+				+ (args.grayscale ? '-type Grayscale ' : '')
+				+ `${args['dir-to-save']}`+ extData[0] + '_mod.bmp ' +`${args['dir-to-save']}`+ extData[0] + '_mod.jpg');
 				//console.log(Date.now()-t);
 			}
 			childProcess.execSync('rm ' +`${args['dir-to-save']}`+ extData[0] + '_mod.bmp');

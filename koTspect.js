@@ -46,10 +46,11 @@ const args = minimist(process.argv.slice(2), {
 		,'right-decile':0.1
 		,'top-decile':0.1
 		,'bottom-decile':0.1
+		,'grayscale':false
 	},
 	unknown: (arg) => {
 		let no_alias = {'--simplify-treshold':0,'--left-decile':0,'--right-decile':0,'--top-decile':0,'--bottom-decile':0
-		};
+		,'--greyscale':0};
 		if (!arg in no_alias) {
 			console.log('Error 0: Unknown options: ', arg,'Look README.md for more information.');
 			exit(1);
@@ -184,7 +185,7 @@ for(let i = 0; i < filedata.length; i++){
 	command += 'node retry.js -t ' + JSON.stringify(treshold) +' -c '+args.c+ ' -h ' + divH + ' -w ' + divW + ' -d ' + args.d
 		+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + JSON.stringify(simplifyTreshold) + doColorsToPaper
 		+ doPixelColors + ' --left-decile ' + args['left-decile'] + ' --right-decile ' + args['right-decile']
-		+ ' --top-decile ' + args['top-decile'] + ' --bottom-decile ' + args['bottom-decile']
+		+ ' --top-decile ' + args['top-decile'] + ' --bottom-decile ' + args['bottom-decile'] + (args.grayscale ? ' --grayscale' : '')
 		+ ' -- \'' + JSON.stringify(filedata[i]) + '\' & ';
 
 	let extData = (/([^\.]+)\.([^\.]+)$/.exec(filedata[i].originalname) || 
@@ -212,10 +213,10 @@ childProcess.exec(command, function(err, stdout, stderr){
 			childProcess.execSync('node retry.js -t ' + JSON.stringify(treshold) +' -c '+args.c+ ' -h ' + divH + ' -w ' + divW + ' -d ' + args.d
 				+ ' -G ' + grid1 + ' -g ' + grid2 + simplifyAreas + ' --simplify-treshold ' + JSON.stringify(simplifyTreshold) + doColorsToPaper
 				+ doPixelColors + ' --left-decile ' + args['left-decile'] + ' --right-decile ' + args['right-decile']
-				+ ' --top-decile ' + args['top-decile'] + ' --bottom-decile ' + args['bottom-decile']
+				+ ' --top-decile ' + args['top-decile'] + ' --bottom-decile ' + args['bottom-decile'] + (args.grayscale ? ' --grayscale' : '')
 				+ ' -- \'' + JSON.stringify(filedata[i]) + '\'');
 		}
-		let size_before = Math.ceil(filedata[i].size)/1024;
+		let size_before = Math.ceil(filedata[i].size/1024);
 		let size_arter = Math.ceil(fs.statSync(args.d+extData[0]+'_mod.'+ (extData[1].toLowerCase()=='png' ? 'png' : 'jpg')).size/1024);
 		console.log('File '+filedata[i].path+' compressed from '+size_before+'Kb to '+size_arter+'Kb.');
 		console.log('Path to result: ' + args.d+extData[0]+'_mod.'+ (extData[1].toLowerCase()=='png' ? 'png' : 'jpg'));
